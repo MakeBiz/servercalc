@@ -90,7 +90,7 @@ rsync -av --delete out/ user@server:/var/www/servercalc/
 ```nginx
 server {
     listen 80;
-    server_name servercalc.ru www.servercalc.ru;
+    server_name servercalc.online www.servercalc.online;
     root /var/www/servercalc;
     index index.html;
 
@@ -114,7 +114,7 @@ server {
 }
 ```
 
-Сертификат: `sudo certbot --nginx -d servercalc.ru -d www.servercalc.ru`
+Сертификат: `sudo certbot --nginx -d servercalc.online -d www.servercalc.online`
 
 Пересборка после парсера цен вешается на тот же cron, что и сам парсер
 

@@ -1,8 +1,8 @@
 {
   "name": "ServerCalc",
   "tagline": "Подбор виртуальных серверов по задаче",
-  "domain": "servercalc.ru",
-  "url": "https://servercalc.ru",
+  "domain": "servercalc.online",
+  "url": "https://servercalc.online",
   "utmSource": "servercalc",
   "metrikaId": 111249191,
   "staleAfterDays": 7,
