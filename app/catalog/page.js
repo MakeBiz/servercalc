@@ -3,7 +3,7 @@ import PageHead from '@/components/PageHead';
 import Catalog from '@/components/Catalog';
 import JsonLd from '@/components/JsonLd';
 import { FreshnessRule } from '@/components/Freshness';
-import { catalogRows, PROVIDERS, GEOS, REQUIREMENTS, STATS, VISIBLE_PLANS } from '@/lib/data';
+import { catalogRows, PROVIDERS, GEOS, REQUIREMENTS, STATS, VISIBLE_PLANS, META } from '@/lib/data';
 import { plural, ruDate, price } from '@/lib/format';
 import { absUrl } from '@/lib/site';
 
@@ -73,6 +73,8 @@ export default function CatalogPage() {
       <section className="section paper">
         <div className="wrap">
           <Catalog rows={rows} providers={providers} geos={GEOS} requirements={REQUIREMENTS} />
+
+          <p className="faint mt">{META.rateNote}</p>
 
           <div className="grid-2 mt-lg">
             <div className="notice">
