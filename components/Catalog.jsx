@@ -258,7 +258,7 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
       <p className="disclosure mt">
         Часть переходов партнёрские: при оформлении услуги мы получаем вознаграждение, цена для вас
         не меняется. Порядок строк задаётся выбранной сортировкой, платных мест в таблице нет,{' '}
-        <Link href="/kak-my-zarabatyvaem">как устроен наш доход</Link>
+        <Link href="/metodologiya">формула подбора открыта</Link>
       </p>
     </div>
   );

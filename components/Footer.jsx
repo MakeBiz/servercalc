@@ -49,7 +49,6 @@ export default function Footer() {
             <h4>О сервисе</h4>
             <ul>
               <li><Link href="/metodologiya">Методология подбора</Link></li>
-              <li><Link href="/kak-my-zarabatyvaem">Как мы зарабатываем</Link></li>
               <li><Link href="/o-proekte">О проекте</Link></li>
               <li><Link href="/novosti">Новости и обзоры</Link></li>
               <li><Link href="/politika-konfidencialnosti">Политика конфиденциальности</Link></li>
@@ -66,8 +65,8 @@ export default function Footer() {
             Сервис публикует справочную информацию о тарифах сторонних провайдеров. Часть переходов
             к провайдерам партнёрские: если вы оформите услугу, мы получим вознаграждение, цена для
             вас при этом не меняется. Размер вознаграждения не влияет на подбор,{' '}
-            <Link href="/kak-my-zarabatyvaem" style={{ textDecoration: 'underline' }}>
-              как это устроено
+            <Link href="/metodologiya" style={{ textDecoration: 'underline' }}>
+              формула открыта
             </Link>
           </span>
         </div>

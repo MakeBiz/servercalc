@@ -98,8 +98,8 @@ export default function AboutPage() {
               смотрите <Link href="/metodologiya">методологию</Link>
             </div>
             <div className="notice">
-              <strong>Хотите понять экономику.</strong> Мы раскрываем, на чём зарабатываем и с кем у
-              нас партнёрство, <Link href="/kak-my-zarabatyvaem">на отдельной странице</Link>
+              <strong>Хотите понять, с кем у нас партнёрство.</strong> Это указано в каждом обзоре
+              провайдера, <Link href="/provajdery">список целиком</Link>
             </div>
           </div>
 

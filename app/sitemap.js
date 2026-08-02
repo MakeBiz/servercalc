@@ -20,7 +20,6 @@ export default function sitemap() {
     { url: absUrl('/vps'), priority: 0.8, changeFrequency: 'weekly' },
     { url: absUrl('/novosti'), priority: 0.7, changeFrequency: 'weekly' },
     { url: absUrl('/metodologiya'), priority: 0.6, changeFrequency: 'monthly' },
-    { url: absUrl('/kak-my-zarabatyvaem'), priority: 0.6, changeFrequency: 'monthly' },
     { url: absUrl('/o-proekte'), priority: 0.5, changeFrequency: 'monthly' },
     { url: absUrl('/politika-konfidencialnosti'), priority: 0.3, changeFrequency: 'yearly' },
     { url: absUrl('/cookie'), priority: 0.3, changeFrequency: 'yearly' },

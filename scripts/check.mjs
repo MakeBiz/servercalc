@@ -15,11 +15,13 @@ const BASE = process.argv[2] || 'http://localhost:3000';
 
 const PAGES = [
   '/', '/catalog', '/provajdery', '/vps-dlya', '/vps', '/novosti',
-  '/metodologiya', '/kak-my-zarabatyvaem', '/o-proekte',
+  '/metodologiya', '/o-proekte',
   '/politika-konfidencialnosti', '/cookie',
   '/provajdery/timeweb', '/provajdery/ultahost', '/provajdery/regru',
   '/vps-dlya/1c-bitrix', '/vps-dlya/n8n', '/vps/rossiya', '/vps/evropa',
   '/novosti/nvme-protiv-ssd-kogda-raznica-zametna',
+  '/novosti/timeweb-cloud-vtoroe-mesto-reyting-partnerskih-programm',
+  '/novosti/adminvps-desyat-let-i-tridcat-tysyach-klientov',
 ];
 
 const FORBIDDEN = [
@@ -142,6 +144,25 @@ if (isDemo) {
 }
 if ((pages.get('/catalog') || '').includes('Проверено')) console.log('  в каталоге есть колонка с датой проверки');
 else fail('в каталоге нет колонки с датой проверки');
+
+// 9. битые внутренние ссылки
+// Проверка появилась после удаления раздела «Как мы зарабатываем»: страницу снесли,
+// а ссылки на неё могли остаться в футере, в калькуляторе и в текстах материалов
+console.log('\n6. Внутренние ссылки');
+const internal = new Set();
+for (const html of pages.values()) {
+  for (const [, href] of html.matchAll(/href="(\/[^"#?]*)"/g)) {
+    if (!href.startsWith('/_next/') && !/\.(css|js|png|svg|ico|xml|txt|webmanifest)$/.test(href)) {
+      internal.add(href === '' ? '/' : href);
+    }
+  }
+}
+let dead = 0;
+for (const href of internal) {
+  const res = await fetch(BASE + href, { redirect: 'follow' });
+  if (!res.ok) { dead += 1; fail(`битая внутренняя ссылка ${href}: ${res.status}`); }
+}
+if (!dead) console.log(`  проверено адресов: ${internal.size}, все отвечают`);
 
 console.log(`\nИтог: ошибок ${errors}, предупреждений ${warnings}`);
 process.exit(errors ? 1 : 0);

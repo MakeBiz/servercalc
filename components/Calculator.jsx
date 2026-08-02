@@ -306,7 +306,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
           <p className="disclosure" style={{ marginTop: 18 }}>
             Часть переходов партнёрские: при оформлении услуги мы получаем вознаграждение, цена для
             вас не меняется. На порядок в списке это не влияет,{' '}
-            <Link href="/kak-my-zarabatyvaem">как устроен наш доход</Link>
+            <Link href="/metodologiya">формула подбора открыта</Link>
           </p>
         )}
       </div>

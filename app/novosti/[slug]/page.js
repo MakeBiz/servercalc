@@ -2,8 +2,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import PageHead from '@/components/PageHead';
 import JsonLd from '@/components/JsonLd';
+import OutLink from '@/components/OutLink';
 import { allPosts, getPost, rubricName } from '@/lib/news';
-import { ruDate } from '@/lib/format';
+import { getProvider, minPriceOf } from '@/lib/data';
+import { CAMPAIGN } from '@/lib/utm';
+import { ruDate, price } from '@/lib/format';
 import { absUrl, SITE_NAME } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -34,6 +37,12 @@ export default async function PostPage({ params }) {
   if (!post) notFound();
 
   const others = allPosts().filter((p) => p.slug !== slug).slice(0, 2);
+
+  // Материал может быть привязан к провайдеру полем provider во фронтматтере.
+  // Тогда внизу появляется переход на его сайт: партнёрский с меткой, если
+  // партнёрка подключена, и обычный, если у нас с провайдером ничего нет
+  const provider = post.provider ? getProvider(post.provider) : null;
+  const providerMin = provider ? minPriceOf(provider.slug) : null;
 
   return (
     <>
@@ -76,14 +85,53 @@ export default async function PostPage({ params }) {
 
           <hr style={{ border: 0, borderTop: '1px solid var(--line)', margin: '44px 0 26px' }} />
 
-          <div className="row">
-            <Link href="/#podbor" className="btn btn-brass">
-              Подобрать сервер
-            </Link>
-            <Link href="/catalog" className="btn btn-ghost">
-              Каталог тарифов
-            </Link>
-          </div>
+          {provider ? (
+            <>
+              <div className="eyebrow">
+                <span className="label label-brass">Провайдер из этого материала</span>
+              </div>
+              <div className="between mb">
+                <div>
+                  <h3 style={{ margin: 0 }}>{provider.name}</h3>
+                  {providerMin && (
+                    <p className="faint" style={{ margin: '6px 0 0' }}>
+                      тарифы в нашей базе от {price(providerMin)} в месяц
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="row">
+                <OutLink
+                  provider={provider}
+                  campaign={CAMPAIGN.news}
+                  content={slug}
+                  className="btn btn-brass"
+                >
+                  Перейти на сайт {provider.name}
+                </OutLink>
+                <Link href={`/provajdery/${provider.slug}`} className="btn btn-ghost">
+                  Обзор и тарифы
+                </Link>
+                <Link href="/#podbor" className="btn btn-ghost">
+                  Подобрать сервер
+                </Link>
+              </div>
+              <p className="disclosure">
+                {provider.affiliateStatus === 'active'
+                  ? 'Переход партнёрский: если вы оформите услугу, мы получим вознаграждение. Цена для вас при этом не меняется, а на позицию провайдера в подборе это не влияет'
+                  : 'Обычная ссылка на сайт провайдера, партнёрских отношений с ним у нас нет'}
+              </p>
+            </>
+          ) : (
+            <div className="row">
+              <Link href="/#podbor" className="btn btn-brass">
+                Подобрать сервер
+              </Link>
+              <Link href="/catalog" className="btn btn-ghost">
+                Каталог тарифов
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 

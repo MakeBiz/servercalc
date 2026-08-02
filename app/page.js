@@ -171,8 +171,8 @@ export default function HomePage() {
                 оформлены одинаково, в обзорах есть раздел с ограничениями
               </p>
               <div className="card-foot">
-                <Link href="/kak-my-zarabatyvaem" className="link-arrow">
-                  Как мы зарабатываем
+                <Link href="/provajdery" className="link-arrow">
+                  Обзоры провайдеров
                 </Link>
               </div>
             </div>
