@@ -1,0 +1,27 @@
+{
+  "name": "servercalc",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ServerCalc, справочный каталог виртуальных серверов с подбором под задачу",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build && node scripts/postbuild.mjs",
+    "start": "npx --yes serve out -l ${PORT:-3000}",
+    "start:server": "SERVERCALC_SERVER=1 next start -p ${PORT:-3000} -H 0.0.0.0",
+    "check": "node scripts/check.mjs http://localhost:3000",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/manrope": "^5.3.0",
+    "gray-matter": "^4.0.3",
+    "marked": "^18.0.7",
+    "next": "^16.2.12",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

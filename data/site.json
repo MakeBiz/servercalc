@@ -1,0 +1,12 @@
+{
+  "name": "ServerCalc",
+  "tagline": "Подбор виртуальных серверов по задаче",
+  "domain": "servercalc.ru",
+  "url": "https://servercalc.ru",
+  "utmSource": "servercalc",
+  "metrikaId": 111249191,
+  "staleAfterDays": 7,
+  "operator": "ИП, реквизиты добавить после регистрации",
+  "contactEmail": "",
+  "note": "Единственное место, где задаётся имя и домен проекта. При смене домена поменять url и domain, остальное подтянется"
+}

@@ -1,0 +1,57 @@
+# Сборка и публикация статики на GitHub Pages.
+#
+# Лежит здесь на случай, если Pages понадобится под стенд или превью.
+# Как основной хостинг под этот проект он не рекомендуется, причины в DEPLOY.md
+# раздел 5: с мая 2026 доступ к GitHub из России деградирует, а весь трафик
+# проекта планируется органический из Яндекса
+#
+# Включается в Settings → Pages → Source: GitHub Actions
+name: Публикация на GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [pages]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      # Pages не должен пытаться прогнать вывод через Jekyll
+      - run: touch out/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
