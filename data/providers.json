@@ -163,7 +163,8 @@
   "geos": [
    "eu",
    "us",
-   "global"
+   "global",
+   "ae"
   ],
   "tasks": [
    "sajt",
