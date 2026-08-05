@@ -55,6 +55,11 @@ export default function Footer() {
               <li><Link href="/novosti">Новости и обзоры</Link></li>
               <li><Link href="/politika-konfidencialnosti">Политика конфиденциальности</Link></li>
               <li><Link href="/cookie">Использование cookie</Link></li>
+              {SITE.contactEmail && (
+                <li>
+                  <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>
+                </li>
+              )}
             </ul>
           </div>
         </div>
