@@ -17,7 +17,7 @@ const PAGES = [
   '/', '/catalog', '/provajdery', '/vps-dlya', '/vps', '/novosti', '/akcii',
   '/metodologiya', '/o-proekte',
   '/politika-konfidencialnosti', '/cookie',
-  '/provajdery/timeweb', '/provajdery/ultahost', '/provajdery/regru',
+  '/provajdery/timeweb', '/provajdery/ultahost', '/provajdery/regru', '/provajdery/vdsina',
   '/vps-dlya/1c-bitrix', '/vps-dlya/n8n', '/vps/rossiya', '/vps/evropa',
   '/novosti/nvme-protiv-ssd-kogda-raznica-zametna',
   '/novosti/timeweb-cloud-vtoroe-mesto-reyting-partnerskih-programm',
@@ -95,12 +95,21 @@ const campaigns = new Set(
 );
 console.log(`  разрезы utm_campaign: ${[...campaigns].join(', ') || 'нет'}`);
 
-// 5. непартнёрские провайдеры не должны получать метку
-const regru = pages.get('/provajdery/regru') || '';
-if (/reg\.ru[^"']*utm_source=servercalc/.test(regru)) {
-  fail('Reg.ru без партнёрства, а ссылка помечена как партнёрская');
+// 5. непартнёрские провайдеры не должны получать метку.
+// Контрольный провайдер VDSina: единственный, у кого партнёрка ещё не подтверждена.
+// Reg.ru из контрольных исключён 6 августа: партнёрская ссылка пришла из выгрузки владельца
+const vdsina = pages.get('/provajdery/vdsina') || '';
+if (/vdsina[^"']*utm_source=servercalc/.test(vdsina)) {
+  fail('VDSina без партнёрства, а ссылка помечена как партнёрская');
 } else {
   console.log('  провайдеры без партнёрства отдают обычную ссылку без метки');
+}
+// и обратная проверка: у подтверждённой партнёрки метка обязана быть
+const regru = pages.get('/provajdery/regru') || '';
+if (/reg\.ru[^"']*utm_source=servercalc/.test(regru)) {
+  console.log('  Reg.ru: партнёрская ссылка с меткой на месте');
+} else {
+  fail('Reg.ru: партнёрка подтверждена, а метки на ссылке нет');
 }
 
 // 6. счётчик
