@@ -11,6 +11,7 @@ import CookieBanner from '@/components/CookieBanner';
 import Metrika from '@/components/Metrika';
 import DemoStrip from '@/components/DemoStrip';
 import { SITE, SITE_URL, SITE_NAME } from '@/lib/site';
+import { HAS_PROMOS } from '@/lib/promos';
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -43,7 +44,7 @@ export default function RootLayout({ children }) {
     <html lang="ru">
       <body>
         <DemoStrip />
-        <Header />
+        <Header showPromos={HAS_PROMOS} />
         <main>{children}</main>
         <Footer />
         <CookieBanner />

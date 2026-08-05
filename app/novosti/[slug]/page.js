@@ -5,7 +5,6 @@ import JsonLd from '@/components/JsonLd';
 import OutLink from '@/components/OutLink';
 import { allPosts, getPost, rubricName } from '@/lib/news';
 import { getProvider, minPriceOf } from '@/lib/data';
-import { CAMPAIGN } from '@/lib/utm';
 import { ruDate, price } from '@/lib/format';
 import { absUrl, SITE_NAME } from '@/lib/site';
 
@@ -103,7 +102,10 @@ export default async function PostPage({ params }) {
               <div className="row">
                 <OutLink
                   provider={provider}
-                  campaign={CAMPAIGN.news}
+                  // формат метки принят владельцем: раздел_провайдер, например news_timeweb.
+                  // Дополнительно передаём адрес материала в utm_content, чтобы в кабинете
+                  // партнёрки было видно, какая именно статья привела переход
+                  campaign={`news_${provider.slug}`}
                   content={slug}
                   className="btn btn-brass"
                 >

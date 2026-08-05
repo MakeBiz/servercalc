@@ -14,7 +14,7 @@
 const BASE = process.argv[2] || 'http://localhost:3000';
 
 const PAGES = [
-  '/', '/catalog', '/provajdery', '/vps-dlya', '/vps', '/novosti',
+  '/', '/catalog', '/provajdery', '/vps-dlya', '/vps', '/novosti', '/akcii',
   '/metodologiya', '/o-proekte',
   '/politika-konfidencialnosti', '/cookie',
   '/provajdery/timeweb', '/provajdery/ultahost', '/provajdery/regru',

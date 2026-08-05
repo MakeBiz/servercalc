@@ -11,11 +11,14 @@ const NAV = [
   { href: '/provajdery', label: 'Провайдеры' },
   { href: '/vps-dlya', label: 'Задачи' },
   { href: '/vps', label: 'География' },
+  // пункт «Акции» подставляется из layout только когда в базе есть живые акции:
+  // пустой раздел в меню хуже, чем его отсутствие
+  { href: '/akcii', label: 'Акции', optional: true },
   { href: '/novosti', label: 'Новости' },
   { href: '/metodologiya', label: 'Методология' },
 ];
 
-export default function Header() {
+export default function Header({ showPromos = false }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || '/';
 
@@ -32,7 +35,7 @@ export default function Header() {
         </Link>
 
         <nav className={open ? 'nav nav-open' : 'nav'}>
-          {NAV.map((item) => (
+          {NAV.filter((item) => !item.optional || showPromos).map((item) => (
             <Link
               key={item.href}
               href={item.href}

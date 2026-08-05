@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Logo from './Logo';
 import { SITE, SITE_NAME } from '@/lib/site';
 import { STATS } from '@/lib/data';
+import { HAS_PROMOS } from '@/lib/promos';
 import { ruDate } from '@/lib/format';
 
 export default function Footer() {
@@ -32,6 +33,7 @@ export default function Footer() {
               <li><Link href="/catalog">Каталог тарифов</Link></li>
               <li><Link href="/vps-dlya">Подбор под задачу</Link></li>
               <li><Link href="/vps">Подбор по географии</Link></li>
+              {HAS_PROMOS && <li><Link href="/akcii">Акции и промокоды</Link></li>}
             </ul>
           </div>
 

@@ -1,5 +1,6 @@
 import { PROVIDERS, TASKS, GEOS, STATS } from '@/lib/data';
 import { allPosts } from '@/lib/news';
+import { HAS_PROMOS } from '@/lib/promos';
 import { absUrl } from '@/lib/site';
 
 /**
@@ -19,6 +20,8 @@ export default function sitemap() {
     { url: absUrl('/vps-dlya'), priority: 0.8, changeFrequency: 'weekly' },
     { url: absUrl('/vps'), priority: 0.8, changeFrequency: 'weekly' },
     { url: absUrl('/novosti'), priority: 0.7, changeFrequency: 'weekly' },
+    // раздел акций попадает в карту, только когда в нём есть проверенные акции
+    ...(HAS_PROMOS ? [{ url: absUrl('/akcii'), priority: 0.8, changeFrequency: 'daily' }] : []),
     { url: absUrl('/metodologiya'), priority: 0.6, changeFrequency: 'monthly' },
     { url: absUrl('/o-proekte'), priority: 0.5, changeFrequency: 'monthly' },
     { url: absUrl('/politika-konfidencialnosti'), priority: 0.3, changeFrequency: 'yearly' },
