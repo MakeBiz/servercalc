@@ -376,6 +376,14 @@ p:last-child { margin-bottom: 0; }
   .hero-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 48px; }
 }
 
+/* шапка героя без цифр: заголовок и подзаголовок в одной колонке,
+   ширина ограничена, чтобы строка не растягивалась на весь экран */
+.hero-head {
+  max-width: 760px;
+  margin-bottom: 34px;
+}
+.hero-head .lead { max-width: 60ch; }
+
 .hero h1 { margin-bottom: 18px; }
 .hero-note {
   border-left: 2px solid var(--brass);

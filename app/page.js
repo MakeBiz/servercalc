@@ -73,35 +73,19 @@ export default function HomePage() {
       {/* ---------- герой и калькулятор ---------- */}
       <section className="hero ink">
         <div className="wrap hero-in">
-          <div className="hero-grid">
-            <div>
-              <div className="eyebrow">
-                <span className="label label-brass">Справочный каталог серверов</span>
-              </div>
-              <h1 className="display">
-                Подберём сервер под
-                <br />
-                конкретную задачу
-              </h1>
-              <p className="lead">
-                Считаем по задаче, ресурсам, географии и требованиям. Показываем не витрину, а
-                объяснение: почему подошёл именно этот тариф и чего у провайдера нет
-              </p>
+          <div className="hero-head">
+            <div className="eyebrow">
+              <span className="label label-brass">Справочный каталог серверов</span>
             </div>
-            <div className="hero-stats">
-              <div className="hstat">
-                <div className="stat-v">{STATS.plans}</div>
-                <div className="stat-k">{plural(STATS.plans, 'тариф с проверенной ценой', 'тарифа с проверенной ценой', 'тарифов с проверенной ценой')}</div>
-              </div>
-              <div className="hstat">
-                <div className="stat-v">{STATS.staleDays} дн</div>
-                <div className="stat-k">срок, после которого цена скрывается</div>
-              </div>
-              <div className="hstat">
-                <div className="stat-v">0 ₽</div>
-                <div className="stat-k">подбор бесплатный, цена для вас не меняется</div>
-              </div>
-            </div>
+            <h1 className="display">
+              Подберём сервер под
+              <br />
+              конкретную задачу
+            </h1>
+            <p className="lead">
+              Считаем по задаче, ресурсам, географии и требованиям. Показываем не витрину, а
+              объяснение: почему подошёл именно этот тариф и чего у провайдера нет
+            </p>
           </div>
 
           <Calculator payload={payload} campaign={CAMPAIGN.calculator} split />
