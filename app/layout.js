@@ -1,9 +1,13 @@
 // Шрифты подключаются локально пакетами fontsource, а не с серверов Google.
 // Так у сайта нет внешних запросов при загрузке: это и скорость, и отсутствие
 // зависимости от доступности fonts.googleapis.com для читателей из России
-import '@fontsource-variable/manrope';
-import '@fontsource-variable/inter';
-import '@fontsource-variable/jetbrains-mono';
+// Шрифты подключаются локально пакетами fontsource, без запросов к Google.
+// Дизайн-система Claude Design: Rubik для текста и заголовков, IBM Plex Mono
+// для цифр, дат, кодов и надзаголовков
+import '@fontsource-variable/rubik';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '@fontsource/ibm-plex-mono/600.css';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
