@@ -52,9 +52,9 @@
   --shadow-card: 0 1px 2px rgba(23, 24, 29, 0.04), 0 18px 44px -26px rgba(23, 24, 29, 0.32);
   --shadow-pop: 0 24px 60px -20px rgba(10, 10, 13, 0.55);
 
-  --font-display: 'Rubik Variable', 'Rubik', system-ui, sans-serif;
-  --font-body: 'Rubik Variable', 'Rubik', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-display: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 }
 
 *,
@@ -113,21 +113,21 @@ button { font: inherit; }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  letter-spacing: -0.022em;
   line-height: 1.14;
   margin: 0 0 0.5em;
   text-wrap: balance;
 }
 
 .display {
-  font-weight: 600;
+  font-weight: 800;
   font-size: clamp(2.05rem, 3.8vw, 2.85rem);
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
 }
 
-h1, .h1 { font-size: clamp(2rem, 4vw, 2.85rem); letter-spacing: -0.015em; line-height: 1.1; }
+h1, .h1 { font-size: clamp(2rem, 4vw, 2.85rem); letter-spacing: -0.028em; line-height: 1.08; }
 h2, .h2 { font-size: clamp(1.55rem, 2.6vw, 2.1rem); line-height: 1.15; }
 h3, .h3 { font-size: 1.2rem; letter-spacing: -0.01em; }
 
@@ -1219,3 +1219,84 @@ table.tbl tbody tr:hover { background: var(--paper-sunk); }
   color: var(--on-ink-faint);
   text-transform: none;
 }
+
+/* ========================================================================
+   Обновление дизайна (Claude Design, 2-я итерация):
+   нумерованные заголовки разделов, списки принципов/порядка,
+   витринная карточка новости и тёмный CTA-блок провайдера
+   ======================================================================== */
+
+/* нумерованный заголовок раздела на страницах-документах */
+.sec-head { display: flex; align-items: baseline; gap: 16px; }
+.sec-num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--brass-deep);
+  flex: none;
+  line-height: 1.7;
+}
+.prose .sec-head { margin-top: 2.2em; }
+.prose .sec-head:first-child { margin-top: 0; }
+.prose .sec-head h2 { margin: 0; }
+
+/* список с римскими цифрами и разделителями (принципы) */
+.roman-list, .num-list { list-style: none; padding: 0; margin-top: 0.9em; }
+.roman-list li, .num-list li {
+  display: grid;
+  grid-template-columns: 2.2em 1fr;
+  gap: 10px;
+  align-items: baseline;
+}
+.roman-list li { padding-top: 1.05em; margin-top: 1.05em; border-top: 1px solid var(--line); }
+.roman-list li:first-child { padding-top: 0; margin-top: 0; border-top: 0; }
+.num-list li + li { margin-top: 0.7em; }
+.roman-list li::before, .num-list li::before {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--brass-deep);
+  letter-spacing: 0.03em;
+}
+.roman-list { counter-reset: rl; }
+.roman-list li::before { counter-increment: rl; content: counter(rl, upper-roman); }
+.num-list { counter-reset: nl; }
+.num-list li::before { counter-increment: nl; content: counter(nl, decimal-leading-zero); }
+
+/* витринная (первая) карточка в ленте новостей */
+.news-featured {
+  display: block;
+  background: var(--paper-card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: clamp(24px, 3vw, 40px);
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 16px;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+a.news-featured:hover { border-color: var(--brass); box-shadow: var(--shadow-card); transform: translateY(-2px); }
+.nf-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: clamp(20px, 2.6vw, 30px); }
+.nf-body { display: grid; grid-template-columns: 1fr; gap: 18px; align-items: start; }
+.nf-featitle { margin: 0; font-size: clamp(1.6rem, 2.7vw, 2.25rem); line-height: 1.12; }
+.nf-right { display: flex; flex-direction: column; gap: clamp(18px, 2.4vw, 30px); }
+.nf-right p { margin: 0; }
+@media (min-width: 900px) {
+  .nf-body { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(32px, 4vw, 64px); }
+}
+
+/* трёхколоночная сетка (рубрики новостей) */
+.grid-3 { display: grid; gap: 20px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* тёмный CTA-блок провайдера под статьёй */
+.cta-provider {
+  margin-top: 40px;
+  border-radius: var(--r-lg);
+  padding: clamp(26px, 3vw, 40px);
+  background: var(--ink-700);
+  border: 1px solid var(--ink-500);
+}
+.cta-provider .eyebrow { margin-bottom: 20px; }
+.cta-provider .disclosure { margin-top: 18px; }

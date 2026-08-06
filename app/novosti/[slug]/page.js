@@ -82,10 +82,8 @@ export default async function PostPage({ params }) {
         <div className="wrap-narrow">
           <article className="prose" dangerouslySetInnerHTML={{ __html: post.html }} />
 
-          <hr style={{ border: 0, borderTop: '1px solid var(--line)', margin: '44px 0 26px' }} />
-
           {provider ? (
-            <>
+            <div className="cta-provider ink">
               <div className="eyebrow">
                 <span className="label label-brass">Провайдер из этого материала</span>
               </div>
@@ -123,9 +121,9 @@ export default async function PostPage({ params }) {
                   ? 'Переход партнёрский: если вы оформите услугу, мы получим вознаграждение. Цена для вас при этом не меняется, а на позицию провайдера в подборе это не влияет'
                   : 'Обычная ссылка на сайт провайдера, партнёрских отношений с ним у нас нет'}
               </p>
-            </>
+            </div>
           ) : (
-            <div className="row">
+            <div className="row" style={{ marginTop: 40 }}>
               <Link href="/#podbor" className="btn btn-brass">
                 Подобрать сервер
               </Link>

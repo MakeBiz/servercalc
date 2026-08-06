@@ -53,8 +53,27 @@ export default function NewsPage() {
 
       <section className="section paper">
         <div className="wrap">
+          {posts.length > 0 && (
+            <Link href={`/novosti/${posts[0].slug}`} className="news-featured">
+              <div className="nf-top">
+                <span className="badge">{rubricName(posts[0].rubric)}</span>
+                <span className="faint mono">{ruDate(posts[0].date)}</span>
+              </div>
+              <div className="nf-body">
+                <h2 className="nf-featitle">{posts[0].title}</h2>
+                <div className="nf-right">
+                  <p className="dim">{posts[0].description}</p>
+                  <div className="between">
+                    <span className="faint">{posts[0].author}</span>
+                    <span className="faint mono">{posts[0].minutes} мин</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          )}
+
           <div className="cards cards-2">
-            {posts.map((post) => (
+            {posts.slice(1).map((post) => (
               <Link key={post.slug} href={`/novosti/${post.slug}`} className="card">
                 <div className="card-top">
                   <span className="badge">{rubricName(post.rubric)}</span>
@@ -76,7 +95,7 @@ export default function NewsPage() {
             </div>
           )}
 
-          <div className="grid-2 mt-lg">
+          <div className="grid-3 mt-lg">
             {RUBRICS.map((r) => (
               <div className="notice" key={r.slug}>
                 <strong>{r.name}.</strong> {r.note}

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
+import SecHead from '@/components/SecHead';
 import { STATS, PROVIDERS } from '@/lib/data';
 import { SITE, SITE_NAME } from '@/lib/site';
 import { ruDate, plural } from '@/lib/format';
@@ -31,7 +32,7 @@ export default function AboutPage() {
       <section className="section paper">
         <div className="wrap-narrow">
           <div className="prose">
-            <h2>Зачем это нужно</h2>
+            <SecHead n="01">Зачем это нужно</SecHead>
             <p>
               Рынок виртуальных серверов устроен неудобно для покупателя. Цены на витринах
               промо-акционные, реальная стоимость владения складывается из пяти статей, а сравнивать
@@ -44,7 +45,7 @@ export default function AboutPage() {
               проверки у каждой цены и открытую формулу, которую можно оспорить.
             </p>
 
-            <h2>Откуда данные</h2>
+            <SecHead n="02">Откуда данные</SecHead>
             <p>
               Характеристики и цены берутся из публичных прайсов провайдеров. На старте сверка
               ручная, дальше её выполняет парсер по расписанию. Каждый тариф несёт дату последней
@@ -58,8 +59,8 @@ export default function AboutPage() {
               партнёрской схеме.
             </p>
 
-            <h2>Принципы</h2>
-            <ul>
+            <SecHead n="03">Принципы</SecHead>
+            <ul className="roman-list">
               <li>Формула подбора публикуется целиком и меняется публично</li>
               <li>Размер партнёрского вознаграждения не влияет на результат подбора</li>
               <li>В каталоге есть провайдеры, на которых мы не зарабатываем</li>
@@ -68,7 +69,7 @@ export default function AboutPage() {
               <li>Мы не пишем «лучший» без опубликованного критерия сравнения</li>
             </ul>
 
-            <h2>Что будет дальше</h2>
+            <SecHead n="04">Что будет дальше</SecHead>
             <p>
               Ближайшие планы: перевод базы на автоматическое обновление цен, отдельное поле цены
               продления рядом с промо-ценой, учёт стоимости адреса IPv4 и панели в стоимости
@@ -77,7 +78,7 @@ export default function AboutPage() {
               методике. Таких данных на русском рынке сейчас практически нет.
             </p>
 
-            <h2>Кто ведёт проект</h2>
+            <SecHead n="05">Кто ведёт проект</SecHead>
             <p>
               {SITE.operator
                 ? `Оператор сервиса: ${SITE.operator}.`
