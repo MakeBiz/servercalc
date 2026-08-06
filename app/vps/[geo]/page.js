@@ -4,13 +4,13 @@ import PageHead from '@/components/PageHead';
 import Calculator from '@/components/Calculator';
 import ProviderCard from '@/components/ProviderCard';
 import JsonLd from '@/components/JsonLd';
-import { GEOS, getGeo, providersForGeo, plansForGeo, minPriceOf, calculatorPayload, STATS } from '@/lib/data';
+import { GEO_PAGES, getGeo, providersForGeo, plansForGeo, minPriceOf, calculatorPayload, STATS } from '@/lib/data';
 import { geoContent } from '@/lib/geo-content';
 import { CAMPAIGN } from '@/lib/utm';
 import { price, plural, ruDate } from '@/lib/format';
 
 export function generateStaticParams() {
-  return GEOS.map((g) => ({ geo: g.slug }));
+  return GEO_PAGES.map((g) => ({ geo: g.slug }));
 }
 
 export async function generateMetadata({ params }) {
@@ -224,7 +224,7 @@ export default async function GeoPage({ params }) {
             <span className="label">Другие направления</span>
           </div>
           <div className="chips">
-            {GEOS.filter((g) => g.slug !== slug).map((g) => (
+            {GEO_PAGES.filter((g) => g.slug !== slug).map((g) => (
               <Link key={g.slug} href={`/vps/${g.slug}`} className="chip chip-light">
                 {g.name}
               </Link>

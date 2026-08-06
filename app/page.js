@@ -4,7 +4,7 @@ import ProviderCard from '@/components/ProviderCard';
 import TaskIcon from '@/components/TaskIcon';
 import JsonLd from '@/components/JsonLd';
 import { FreshnessRule } from '@/components/Freshness';
-import { calculatorPayload, TASKS, GEOS, PROVIDERS, STATS, minPriceOf, plansOf } from '@/lib/data';
+import { calculatorPayload, TASKS, GEO_PAGES, PROVIDERS, STATS, minPriceOf, plansOf } from '@/lib/data';
 import { allPosts, rubricName } from '@/lib/news';
 import { price, plural, ruDate, num } from '@/lib/format';
 import { CAMPAIGN } from '@/lib/utm';
@@ -188,7 +188,7 @@ export default function HomePage() {
           </div>
           <h2>Где разместить сервер</h2>
           <div className="cards cards-4 mt">
-            {GEOS.map((geo) => (
+            {GEO_PAGES.map((geo) => (
               <Link key={geo.slug} href={`/vps/${geo.slug}`} className="card">
                 <h3 style={{ fontSize: '1.05rem' }}>{geo.name}</h3>
                 <p className="faint" style={{ margin: 0 }}>{geo.note}</p>

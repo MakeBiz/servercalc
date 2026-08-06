@@ -210,7 +210,11 @@ export default async function ProviderPage({ params }) {
                           {p.disk} ГБ <span className="faint">{p.diskType}</span>
                         </td>
                         <td>{GEOS.find((g) => g.code === p.geo)?.name || p.geo}</td>
-                        <td className="td-num">{p.ipv4 ? 'есть' : 'нет'}</td>
+                        {/* null означает «провайдер не пишет об этом на странице тарифа»,
+                            и это не то же самое, что «адреса нет» */}
+                        <td className="td-num">
+                          {p.ipv4 === true ? 'есть' : p.ipv4 === false ? 'нет' : <span className="faint">уточняется</span>}
+                        </td>
                         <td className="td-num faint">
                           {ruDate(p.verifiedAt)}
                           {p.source && (

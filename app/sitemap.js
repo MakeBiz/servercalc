@@ -1,4 +1,4 @@
-import { PROVIDERS, TASKS, GEOS, STATS } from '@/lib/data';
+import { PROVIDERS, TASKS, GEO_PAGES, STATS } from '@/lib/data';
 import { allPosts } from '@/lib/news';
 import { HAS_PROMOS } from '@/lib/promos';
 import { absUrl } from '@/lib/site';
@@ -51,7 +51,7 @@ export default function sitemap() {
     priority: 0.9,
   }));
 
-  const geos = GEOS.map((g) => ({
+  const geos = GEO_PAGES.map((g) => ({
     url: absUrl(`/vps/${g.slug}`),
     lastModified: updated,
     changeFrequency: 'weekly',

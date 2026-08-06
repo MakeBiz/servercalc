@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import JsonLd from '@/components/JsonLd';
-import { GEOS, providersForGeo, plansForGeo } from '@/lib/data';
+import { GEO_PAGES, providersForGeo, plansForGeo } from '@/lib/data';
 import { geoContent } from '@/lib/geo-content';
 import { price, plural } from '@/lib/format';
 import { absUrl } from '@/lib/site';
@@ -21,8 +21,8 @@ export default function GeosPage() {
           '@context': 'https://schema.org',
           '@type': 'ItemList',
           name: 'География размещения VPS',
-          numberOfItems: GEOS.length,
-          itemListElement: GEOS.map((g, i) => ({
+          numberOfItems: GEO_PAGES.length,
+          itemListElement: GEO_PAGES.map((g, i) => ({
             '@type': 'ListItem',
             position: i + 1,
             name: g.h1,
@@ -36,13 +36,13 @@ export default function GeosPage() {
         title="Где разместить сервер"
         lead="География влияет на три вещи: задержку до вашей аудитории, цену за одни и те же ресурсы и то, какие данные вы имеете право там держать. На каждой странице разобраны все три"
         crumbs={[{ href: '/vps', label: 'География' }]}
-        badges={<span className="badge badge-brass">{GEOS.length} направлений</span>}
+        badges={<span className="badge badge-brass">{GEO_PAGES.length} направлений</span>}
       />
 
       <section className="section paper">
         <div className="wrap">
           <div className="cards cards-2">
-            {GEOS.map((geo) => {
+            {GEO_PAGES.map((geo) => {
               const plans = plansForGeo(geo.code);
               const providers = providersForGeo(geo.code);
               const content = geoContent(geo.slug);
