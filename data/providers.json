@@ -538,8 +538,8 @@
     "name": "VDSina",
     "color": "#3b5bdb",
     "country": "RU",
-    "affiliateStatus": "pending",
-    "url": null,
+    "affiliateStatus": "active",
+    "url": "https://vdsina.ru/?partner=5xwp7v2732dp",
     "site": "https://vdsina.ru",
     "geos": [
       "ru",

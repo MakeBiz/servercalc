@@ -11,7 +11,10 @@
  *  6. счётчик Метрики на месте
  */
 
+import { readFileSync } from 'node:fs';
+
 const BASE = process.argv[2] || 'http://localhost:3000';
+const PROVIDERS = JSON.parse(readFileSync(new URL('../data/providers.json', import.meta.url), 'utf8'));
 
 const PAGES = [
   '/', '/catalog', '/provajdery', '/vps-dlya', '/vps', '/novosti', '/akcii',
@@ -96,13 +99,20 @@ const campaigns = new Set(
 console.log(`  разрезы utm_campaign: ${[...campaigns].join(', ') || 'нет'}`);
 
 // 5. непартнёрские провайдеры не должны получать метку.
-// Контрольный провайдер VDSina: единственный, у кого партнёрка ещё не подтверждена.
-// Reg.ru из контрольных исключён 6 августа: партнёрская ссылка пришла из выгрузки владельца
-const vdsina = pages.get('/provajdery/vdsina') || '';
-if (/vdsina[^"']*utm_source=servercalc/.test(vdsina)) {
-  fail('VDSina без партнёрства, а ссылка помечена как партнёрская');
+// Список берём из данных, а не хардкодом: как только провайдер становится
+// партнёром, проверка сама снимает его с контроля
+const nonPartners = PROVIDERS.filter((p) => p.affiliateStatus !== 'active');
+if (nonPartners.length === 0) {
+  console.log('  все провайдеры сейчас партнёрские — контроль непартнёрской ссылки не требуется');
 } else {
-  console.log('  провайдеры без партнёрства отдают обычную ссылку без метки');
+  let leak = null;
+  for (const p of nonPartners) {
+    const path = `/provajdery/${p.slug}`;
+    const html = pages.get(path) || (await fetch(BASE + path).then((r) => (r.ok ? r.text() : '')));
+    if (new RegExp(`${p.slug}[^"']*utm_source=servercalc`).test(html)) { leak = p.slug; break; }
+  }
+  if (leak) fail(`${leak} без партнёрства, а ссылка помечена как партнёрская`);
+  else console.log(`  провайдеры без партнёрства (${nonPartners.map((p) => p.slug).join(', ')}) отдают обычную ссылку без метки`);
 }
 // и обратная проверка: у подтверждённой партнёрки метка обязана быть
 const regru = pages.get('/provajdery/regru') || '';

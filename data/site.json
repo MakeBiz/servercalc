@@ -4,6 +4,7 @@
   "domain": "servercalc.ru",
   "url": "https://servercalc.ru",
   "utmSource": "servercalc",
+  "utmMedium": "russia",
   "metrikaId": 111249191,
   "staleAfterDays": 7,
   "operator": "ИП, реквизиты добавить после регистрации",
