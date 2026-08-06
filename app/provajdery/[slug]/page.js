@@ -211,7 +211,23 @@ export default async function ProviderPage({ params }) {
                         </td>
                         <td>{GEOS.find((g) => g.code === p.geo)?.name || p.geo}</td>
                         <td className="td-num">{p.ipv4 ? 'есть' : 'нет'}</td>
-                        <td className="td-num faint">{ruDate(p.verifiedAt)}</td>
+                        <td className="td-num faint">
+                          {ruDate(p.verifiedAt)}
+                          {p.source && (
+                            <>
+                              {' '}
+                              <a
+                                href={p.source}
+                                target="_blank"
+                                rel="nofollow noopener"
+                                className="link-brass"
+                                title="Страница прайса, с которой сверялась цена"
+                              >
+                                прайс
+                              </a>
+                            </>
+                          )}
+                        </td>
                         <td className="td-price" style={{ textAlign: 'right' }}>{price(p.priceRub)}</td>
                         <td style={{ textAlign: 'right' }}>
                           <OutLink

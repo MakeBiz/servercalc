@@ -3,6 +3,9 @@ import Link from 'next/link';
 export const metadata = {
   title: 'Страница не найдена',
   robots: { index: false, follow: true },
+  // Канонический адрес наследуется из корневого layout, но ошибочная страница
+  // не должна объявлять главную своим эквивалентом: null убирает наследование
+  alternates: { canonical: null },
 };
 
 export default function NotFound() {

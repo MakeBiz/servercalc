@@ -21,6 +21,9 @@ export default function CatalogPage() {
     name: p.name,
     affiliateStatus: p.affiliateStatus,
     url: p.url,
+    // без этого признака каталог соберёт ссылку с метками там,
+    // где партнёрская программа их не переносит
+    noUtm: p.noUtm || false,
     site: p.site,
   }));
 
@@ -63,7 +66,6 @@ export default function CatalogPage() {
             <span className="badge badge-brass">
               {STATS.plans} {plural(STATS.plans, 'тариф', 'тарифа', 'тарифов')}
             </span>
-            <span className="badge">{STATS.providers} провайдеров</span>
             <span className="badge">база проверена {ruDate(STATS.verifiedAt)}</span>
             {cheapest && <span className="badge">минимальная цена {price(cheapest.priceRub)}</span>}
           </>
@@ -76,12 +78,21 @@ export default function CatalogPage() {
 
           <p className="faint mt">{META.rateNote}</p>
 
-          <div className="grid-2 mt-lg">
+          <div className="grid-3 mt-lg">
             <div className="notice">
               <strong>Что значит «проверено».</strong> Это дата, когда цена сверялась с прайсом
               провайдера. Тариф, который не проверялся дольше {STATS.staleDays} дней, из таблицы
-              уходит автоматически. Сейчас в базе {STATS.plansTotal}{' '}
-              {plural(STATS.plansTotal, 'тариф', 'тарифа', 'тарифов')}, скрыто {STATS.hidden}
+              уходит автоматически:{' '}
+              <Link href="/novosti/pochemu-my-skryvaem-ustarevshie-tarify">
+                как устроено правило свежести
+              </Link>
+            </div>
+            <div className="notice">
+              <strong>Витринная цена это не вся цена.</strong> К тарифу обычно добавляются адрес
+              IPv4, панель, бэкапы и трафик сверх лимита:{' '}
+              <Link href="/novosti/skolko-na-samom-dele-stoit-server">
+                что не входит в цену тарифа
+              </Link>
             </div>
             <div className="notice">
               <strong>Чего в таблице нет.</strong> Платных мест и закреплённых строк. Порядок задаёт

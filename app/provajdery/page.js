@@ -38,12 +38,11 @@ export default function ProvidersPage() {
       <PageHead
         eyebrow="Провайдеры"
         title="Провайдеры в сравнении"
-        lead={`Каталог намеренно включает провайдеров, с которыми у нас нет партнёрских отношений: без них сравнение было бы неполным, а подбор нечестным. Таких сейчас ${STATS.providers - STATS.partners} из ${STATS.providers}`}
+        lead="Каталог намеренно включает провайдеров, с которыми у нас нет партнёрских отношений: без них сравнение было бы неполным, а подбор нечестным"
         crumbs={[{ href: '/provajdery', label: 'Провайдеры' }]}
         badges={
           <>
-            <span className="badge badge-brass">{STATS.providers} провайдеров</span>
-            <span className="badge">{STATS.plans} {plural(STATS.plans, 'тариф', 'тарифа', 'тарифов')}</span>
+            <span className="badge badge-brass">{STATS.plans} {plural(STATS.plans, 'тариф с проверенной ценой', 'тарифа с проверенной ценой', 'тарифов с проверенной ценой')}</span>
             <span className="badge">проверено {ruDate(STATS.verifiedAt)}</span>
           </>
         }

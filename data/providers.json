@@ -1,781 +1,776 @@
 [
- {
-  "slug": "timeweb",
-  "name": "Timeweb Cloud",
-  "color": "#1a5fd0",
-  "country": "RU",
-  "affiliateStatus": "active",
-  "url": "https://timeweb.cloud/?i=143675",
-  "site": "https://timeweb.cloud",
-  "geos": [
-   "ru",
-   "eu"
-  ],
-  "tasks": [
-   "sajt",
-   "magazin",
-   "1c-bitrix",
-   "telegram-bot",
-   "baza-dannyh",
-   "dev",
-   "n8n"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": true,
-   "testPeriod": false
+  {
+    "slug": "timeweb",
+    "name": "Timeweb Cloud",
+    "color": "#1a5fd0",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://timeweb.cloud/?i=143675",
+    "site": "https://timeweb.cloud",
+    "geos": [
+      "ru",
+      "eu"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "1c-bitrix",
+      "telegram-bot",
+      "baza-dannyh",
+      "dev",
+      "n8n"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": false
+    },
+    "description": "Российское облако с дата-центрами в Москве и Петербурге. Понятная панель, почасовая тарификация, снапшоты и приватные сети. Один из самых предсказуемых вариантов под сайты, 1С и Битрикс",
+    "pros": [
+      "Дата-центры в России, низкий пинг из Москвы и Петербурга",
+      "Закрывающие документы и договор для юрлиц",
+      "Почасовая тарификация, снапшоты и бэкапы из коробки"
+    ],
+    "cons": [
+      "Зарубежных локаций мало",
+      "Цена выше самых бюджетных российских провайдеров"
+    ],
+    "affiliate": {
+      "rate": "20% на облако, до 40% на хостинг",
+      "term": "recurring со всех платежей",
+      "cookie": "не раскрыт",
+      "note": "Запрещена контекстная реклама по бренду (п. 3.7 регламента)",
+      "payoutInternal": "от 390 ₽, банк или ЮMoney"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "description": "Российское облако с дата-центрами в Москве и Петербурге. Понятная панель, почасовая тарификация, снапшоты и приватные сети. Один из самых предсказуемых вариантов под сайты, 1С и Битрикс",
-  "pros": [
-   "Дата-центры в России, низкий пинг из Москвы и Петербурга",
-   "Закрывающие документы и договор для юрлиц",
-   "Почасовая тарификация, снапшоты и бэкапы из коробки"
-  ],
-  "cons": [
-   "Зарубежных локаций мало",
-   "Цена выше самых бюджетных российских провайдеров"
-  ],
-  "affiliate": {
-   "rate": "20% на облако, до 40% на хостинг",
-   "term": "recurring со всех платежей",
-   "cookie": "не раскрыт",
-   "note": "Запрещена контекстная реклама по бренду (п. 3.7 регламента)",
-   "payoutInternal": "от 390 ₽, банк или ЮMoney"
+  {
+    "slug": "adminvps",
+    "name": "AdminVPS",
+    "color": "#0e7490",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://my.adminvps.ru/aff.php?aff=29622",
+    "site": "https://adminvps.ru",
+    "geos": [
+      "ru",
+      "eu",
+      "kz"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "1c-bitrix",
+      "telegram-bot",
+      "baza-dannyh",
+      "dev",
+      "n8n"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": true
+    },
+    "description": "Бюджетный VPS с быстрым стартом и локациями в России, Европе и Казахстане. Один из самых низких порогов входа среди российских провайдеров",
+    "pros": [
+      "Очень низкая стартовая цена",
+      "Локации в России и Европе в одном кабинете",
+      "Круглосуточная поддержка на русском"
+    ],
+    "cons": [
+      "Интерфейс проще, чем у крупных облаков",
+      "Ресурсы младших тарифов ограничены"
+    ],
+    "affiliate": {
+      "rate": "30% на VPS и хостинг, выделенные 500 ₽ фикс",
+      "term": "все платежи, холд 40 дней",
+      "cookie": "120 дней",
+      "note": "Самозанятым не платят, нужен ИП, юрлицо или договор ГПХ",
+      "payoutInternal": "от 5 000 ₽"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "adminvps",
-  "name": "AdminVPS",
-  "color": "#0e7490",
-  "country": "RU",
-  "affiliateStatus": "active",
-  "url": "https://my.adminvps.ru/aff.php?aff=29622",
-  "site": "https://adminvps.ru",
-  "geos": [
-   "ru",
-   "eu",
-   "kz"
-  ],
-  "tasks": [
-   "sajt",
-   "magazin",
-   "1c-bitrix",
-   "telegram-bot",
-   "baza-dannyh",
-   "dev",
-   "vydelennyj",
-   "n8n"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": false,
-   "testPeriod": true
+  {
+    "slug": "hostman",
+    "name": "Hostman",
+    "color": "#074EE8",
+    "country": "INT",
+    "affiliateStatus": "active",
+    "url": "https://hostman.com/r/pb752795",
+    "site": "https://hostman.com",
+    "geos": [
+      "eu",
+      "us",
+      "global"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "telegram-bot",
+      "baza-dannyh",
+      "ai",
+      "dev",
+      "n8n"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": false
+    },
+    "description": "Управляемое облако с деплоем приложений из репозитория в несколько кликов. Подходит командам без выделенного DevOps: обновления, мониторинг и балансировка берутся на себя платформой.",
+    "pros": [
+      "Деплой приложений прямо из GitHub",
+      "Управляемые базы данных и Kubernetes",
+      "Хорошая документация"
+    ],
+    "cons": [
+      "Дороже чистого unmanaged VPS при тех же ресурсах",
+      "Меньше контроля над окружением, часть настроек скрыта платформой"
+    ],
+    "affiliate": {
+      "rate": "по договору",
+      "term": "уточняется",
+      "cookie": "уточняется",
+      "note": "Условия сверить в кабинете партнёра",
+      "payoutInternal": "уточняется"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "description": "Бюджетный VPS с быстрым стартом и локациями в России, Европе и Казахстане. Один из самых низких порогов входа среди российских провайдеров",
-  "pros": [
-   "Очень низкая стартовая цена",
-   "Локации в России и Европе в одном кабинете",
-   "Круглосуточная поддержка на русском"
-  ],
-  "cons": [
-   "Интерфейс проще, чем у крупных облаков",
-   "Ресурсы младших тарифов ограничены"
-  ],
-  "affiliate": {
-   "rate": "30% на VPS и хостинг, выделенные 500 ₽ фикс",
-   "term": "все платежи, холд 40 дней",
-   "cookie": "120 дней",
-   "note": "Самозанятым не платят, нужен ИП, юрлицо или договор ГПХ",
-   "payoutInternal": "от 5 000 ₽"
+  {
+    "slug": "ishosting",
+    "name": "is*hosting",
+    "color": "#5b3fd0",
+    "country": "INT",
+    "affiliateStatus": "active",
+    "url": "https://ishosting.io/affiliate/NzI2MSM4",
+    "site": "https://ishosting.com",
+    "geos": [
+      "eu",
+      "us",
+      "global",
+      "uae"
+    ],
+    "tasks": [
+      "sajt",
+      "telegram-bot",
+      "baza-dannyh",
+      "game",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Очень широкая география: более сорока локаций для VPS и отдельная линейка выделенных серверов. Удобен, когда нужна конкретная страна размещения, а не абстрактная «Европа»",
+    "pros": [
+      "Более сорока локаций по миру",
+      "Есть выделенные серверы и storage-линейка",
+      "Гибкий выбор страны под требования проекта"
+    ],
+    "cons": [
+      "Российских локаций нет",
+      "Поддержка отвечает не мгновенно"
+    ],
+    "affiliate": {
+      "rate": "до 50% с первой покупки, затем 3-20% lifetime",
+      "term": "lifetime",
+      "cookie": "не раскрыт",
+      "note": "Ставка зависит от объёма",
+      "payoutInternal": "от $20, крипта или карта"
+    },
+    "verifiedAt": "2026-08-02",
+    "noUtm": true
   },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "hostman",
-  "name": "Hostman",
-  "color": "#074EE8",
-  "country": "INT",
-  "affiliateStatus": "active",
-  "url": "https://hostman.com/r/pb752795",
-  "site": "https://hostman.com",
-  "geos": [
-   "eu",
-   "us",
-   "global"
-  ],
-  "tasks": [
-   "sajt",
-   "magazin",
-   "telegram-bot",
-   "baza-dannyh",
-   "ai",
-   "dev",
-   "n8n"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": true,
-   "testPeriod": false
+  {
+    "slug": "aeserver",
+    "name": "AEserver",
+    "color": "#0a7d52",
+    "country": "AE",
+    "affiliateStatus": "active",
+    "url": "https://my.aeserver.com/aff.php?aff=1245",
+    "site": "https://www.aeserver.com",
+    "geos": [
+      "uae"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "telegram-bot",
+      "baza-dannyh",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Локальный эмиратский провайдер с дата-центром в Дубае. Основной сценарий: проект с аудиторией в ОАЭ и странах Персидского залива, где важен минимальный пинг и местное присутствие",
+    "pros": [
+      "Реальная локация в ОАЭ",
+      "Местное юрлицо и поддержка в регионе",
+      "Низкий пинг по Ближнему Востоку"
+    ],
+    "cons": [
+      "Только одна география",
+      "Цены выше европейских при тех же ресурсах"
+    ],
+    "affiliate": {
+      "rate": "10-70% от инвойса",
+      "term": "lifetime заявлен",
+      "cookie": "90 дней",
+      "note": "Публичный FAQ описывает shared hosting, серверные условия сверить с менеджером",
+      "payoutInternal": "уточняется"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "description": "Управляемое облако с деплоем приложений из репозитория в несколько кликов. Подходит командам без выделенного DevOps: обновления, мониторинг и балансировка берутся на себя платформой.",
-  "pros": [
-   "Деплой приложений прямо из GitHub",
-   "Управляемые базы данных и Kubernetes",
-   "Хорошая документация"
-  ],
-  "cons": [
-   "Дороже чистого unmanaged VPS при тех же ресурсах",
-   "Меньше контроля над окружением, часть настроек скрыта платформой"
-  ],
-  "affiliate": {
-   "rate": "по договору",
-   "term": "уточняется",
-   "cookie": "уточняется",
-   "note": "Условия сверить в кабинете партнёра",
-   "payoutInternal": "уточняется"
+  {
+    "slug": "datapacket",
+    "name": "DataPacket",
+    "color": "#03235F",
+    "country": "US",
+    "affiliateStatus": "active",
+    "url": "https://portal.datapacket.net/aff.php?aff=189",
+    "site": "https://datapacket.net",
+    "geos": [
+      "us",
+      "global"
+    ],
+    "tasks": [
+      "baza-dannyh",
+      "ai",
+      "game",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": false,
+      "ddos": true,
+      "backup": false,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Акцент на производительности и выделенных серверах для продакшна. Вариант под тяжёлые нагрузки, когда важнее стабильный ресурс, а не низкая цена.",
+    "pros": [
+      "Сильное железо и сеть",
+      "Есть выделенные серверы",
+      "Долгая история на рынке"
+    ],
+    "cons": [
+      "Нет российских локаций",
+      "Интерфейс рассчитан на технического пользователя"
+    ],
+    "affiliate": {
+      "rate": "30% recurring",
+      "term": "recurring",
+      "cookie": "не раскрыт",
+      "note": "Не путать с DataPacket.com, это разные компании",
+      "payoutInternal": "от $5, холд 30 дней"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "ishosting",
-  "name": "is*hosting",
-  "color": "#5b3fd0",
-  "country": "INT",
-  "affiliateStatus": "active",
-  "url": "https://ishosting.io/affiliate/NzI2MSM2",
-  "site": "https://ishosting.com",
-  "geos": [
-   "eu",
-   "us",
-   "global",
-   "ae"
-  ],
-  "tasks": [
-   "sajt",
-   "telegram-bot",
-   "baza-dannyh",
-   "game",
-   "dev",
-   "vydelennyj"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": false,
-   "testPeriod": false
+  {
+    "slug": "truehost",
+    "name": "Truehost",
+    "color": "#c47f0a",
+    "country": "INT",
+    "affiliateStatus": "active",
+    "url": "https://truehost.cloud/cloud/aff.php?aff=225",
+    "site": "https://truehost.cloud",
+    "geos": [
+      "eu",
+      "global"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "telegram-bot",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": false,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Недорогое облако с простым входом и глобальным присутствием. Разумный вариант для старта небольшого проекта, когда нужен дешёвый сервер без изысков.",
+    "pros": [
+      "Низкая цена входа",
+      "Простая панель",
+      "Несколько регионов на выбор"
+    ],
+    "cons": [
+      "Скромные ресурсы на младших тарифах",
+      "Нет российских локаций"
+    ],
+    "affiliate": {
+      "rate": "25% на VPS",
+      "term": "recurring, срок уточняется",
+      "cookie": "90 дней",
+      "note": "Выплаты в местной валюте, сверить метод",
+      "payoutInternal": "около $30"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "description": "Очень широкая география: более сорока локаций для VPS и отдельная линейка выделенных серверов. Удобен, когда нужна конкретная страна размещения, а не абстрактная «Европа»",
-  "pros": [
-   "Более сорока локаций по миру",
-   "Есть выделенные серверы и storage-линейка",
-   "Гибкий выбор страны под требования проекта"
-  ],
-  "cons": [
-   "Российских локаций нет",
-   "Поддержка отвечает не мгновенно"
-  ],
-  "affiliate": {
-   "rate": "до 50% с первой покупки, затем 3-20% lifetime",
-   "term": "lifetime",
-   "cookie": "не раскрыт",
-   "note": "Ставка зависит от объёма",
-   "payoutInternal": "от $20, крипта или карта"
+  {
+    "slug": "ultahost",
+    "name": "UltaHost",
+    "color": "#7a1fb8",
+    "country": "INT",
+    "affiliateStatus": "active",
+    "url": "https://ultahost.com/#MakeBiz",
+    "site": "https://ultahost.com",
+    "geos": [
+      "us",
+      "eu",
+      "global"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "telegram-bot",
+      "baza-dannyh",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Управляемый хостинг на NVMe с упором на скорость сайтов и WordPress. Берут на себя часть администрирования, что удобно, если нет своего системного администратора.",
+    "pros": [
+      "NVMe во всех тарифах",
+      "Управляемые опции и миграция сайта",
+      "Много локаций"
+    ],
+    "cons": [
+      "Агрессивная подача цен, обязательно смотреть цену продления",
+      "Российских локаций нет"
+    ],
+    "affiliate": {
+      "rate": "высокий процент с первой продажи",
+      "term": "по договору",
+      "cookie": "уточняется",
+      "note": "Публичная модель не recurring, для revshare нужен индивидуальный договор",
+      "payoutInternal": "уточняется"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "aeserver",
-  "name": "AEserver",
-  "color": "#0a7d52",
-  "country": "AE",
-  "affiliateStatus": "active",
-  "url": "https://my.aeserver.com/aff.php?aff=1245",
-  "site": "https://www.aeserver.com",
-  "geos": [
-   "uae"
-  ],
-  "tasks": [
-   "sajt",
-   "magazin",
-   "telegram-bot",
-   "baza-dannyh",
-   "dev"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": false,
-   "testPeriod": false
+  {
+    "slug": "vpsorg",
+    "name": "VPS.org",
+    "color": "#b8341f",
+    "country": "INT",
+    "affiliateStatus": "active",
+    "url": "https://vps.org/?ref=G2EMGEI2",
+    "site": "https://vps.org",
+    "geos": [
+      "us",
+      "eu",
+      "global"
+    ],
+    "tasks": [
+      "sajt",
+      "telegram-bot",
+      "baza-dannyh",
+      "game",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Универсальный провайдер среднего сегмента с гибкими конфигурациями. Подходит, когда нужен предсказуемый сервер под типовые задачи без привязки к конкретной стране.",
+    "pros": [
+      "Гибкая настройка конфигурации",
+      "Понятные тарифы",
+      "Быстрая выдача сервера"
+    ],
+    "cons": [
+      "Бренд менее известен",
+      "Нет российских локаций"
+    ],
+    "affiliate": {
+      "rate": "20% lifetime плюс бонусы",
+      "term": "lifetime",
+      "cookie": "90 дней",
+      "note": "Щедрые условия, обязательна тестовая покупка и первая выплата",
+      "payoutInternal": "от $10, Stripe или PayPal"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "description": "Локальный эмиратский провайдер с дата-центром в Дубае. Основной сценарий: проект с аудиторией в ОАЭ и странах Персидского залива, где важен минимальный пинг и местное присутствие",
-  "pros": [
-   "Реальная локация в ОАЭ",
-   "Местное юрлицо и поддержка в регионе",
-   "Низкий пинг по Ближнему Востоку"
-  ],
-  "cons": [
-   "Только одна география",
-   "Цены выше европейских при тех же ресурсах"
-  ],
-  "affiliate": {
-   "rate": "10-70% от инвойса",
-   "term": "lifetime заявлен",
-   "cookie": "90 дней",
-   "note": "Публичный FAQ описывает shared hosting, серверные условия сверить с менеджером",
-   "payoutInternal": "уточняется"
+  {
+    "slug": "regru",
+    "name": "Reg.ru",
+    "color": "#1f6fb2",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://www.reg.ru/?rlink=reflink-31242589",
+    "site": "https://www.reg.ru",
+    "geos": [
+      "ru"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "1c-bitrix",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Крупный российский регистратор и хостер. Удобен, когда домен, хостинг и сервер нужны в одном кабинете, с закрывающими документами",
+    "pros": [
+      "Домены, хостинг и серверы в одном кабинете",
+      "Документы и договор для юрлиц",
+      "Известный бренд с долгой историей"
+    ],
+    "cons": [
+      "Цены выше нишевых провайдеров",
+      "Интерфейс перегружен"
+    ],
+    "affiliate": {
+      "rate": "40% хостинг, 15% облако, 3,5% домены",
+      "term": "recurring на продления",
+      "cookie": "14 дней",
+      "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
+      "payoutInternal": "от 200 ₽, только рублёвый счёт банка РФ"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "datapacket",
-  "name": "DataPacket",
-  "color": "#03235F",
-  "country": "US",
-  "affiliateStatus": "active",
-  "url": "https://portal.datapacket.net/aff.php?aff=189",
-  "site": "https://datapacket.net",
-  "geos": [
-   "us",
-   "global"
-  ],
-  "tasks": [
-   "baza-dannyh",
-   "ai",
-   "game",
-   "dev",
-   "vydelennyj"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": false,
-   "ddos": true,
-   "backup": false,
-   "hourly": false,
-   "testPeriod": false
+  {
+    "slug": "fornex",
+    "name": "Fornex",
+    "color": "#2b7a78",
+    "country": "INT",
+    "affiliateStatus": "active",
+    "url": "https://fornex.com/code/g6j9tn/",
+    "site": "https://ru.fornex.com",
+    "geos": [
+      "eu",
+      "global"
+    ],
+    "tasks": [
+      "sajt",
+      "telegram-bot",
+      "baza-dannyh",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Провайдер с русскоязычной поддержкой и европейскими локациями. Линейка от простого VPS до выделенных серверов.",
+    "pros": [
+      "Русскоязычная поддержка при зарубежных локациях",
+      "Широкая линейка услуг"
+    ],
+    "cons": [
+      "Расчёты в валюте, курсовой риск",
+      "Российских локаций нет"
+    ],
+    "affiliate": {
+      "rate": "15-25% на VPS",
+      "term": "lifetime",
+      "cookie": "60 дней",
+      "note": "Партнёрка подтверждена, по ссылке применяется скидка 15% на VPS",
+      "payoutInternal": "баланс или USDT"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "description": "Акцент на производительности и выделенных серверах для продакшна. Вариант под тяжёлые нагрузки, когда важнее стабильный ресурс, а не низкая цена.",
-  "pros": [
-   "Сильное железо и сеть",
-   "Есть выделенные серверы",
-   "Долгая история на рынке"
-  ],
-  "cons": [
-   "Нет российских локаций",
-   "Интерфейс рассчитан на технического пользователя"
-  ],
-  "affiliate": {
-   "rate": "30% recurring",
-   "term": "recurring",
-   "cookie": "не раскрыт",
-   "note": "Не путать с DataPacket.com, это разные компании",
-   "payoutInternal": "от $5, холд 30 дней"
+  {
+    "slug": "vdsina",
+    "name": "VDSina",
+    "color": "#3b5bdb",
+    "country": "RU",
+    "affiliateStatus": "pending",
+    "url": null,
+    "site": "https://vdsina.ru",
+    "geos": [
+      "ru",
+      "eu",
+      "global"
+    ],
+    "tasks": [
+      "sajt",
+      "telegram-bot",
+      "baza-dannyh",
+      "dev",
+      "game"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": false
+    },
+    "description": "Недорогой провайдер с почасовой оплатой и понятной линейкой тарифов. Часто выбирают под небольшие сервисы и тестовые стенды.",
+    "pros": [
+      "Почасовая оплата",
+      "Низкая цена входа",
+      "Несколько стран на выбор"
+    ],
+    "cons": [
+      "Поддержка только тикетами"
+    ],
+    "affiliate": {
+      "rate": "20%, шкала до 50%",
+      "term": "lifetime",
+      "cookie": "не раскрыт",
+      "note": "Подать заявку в первой волне",
+      "payoutInternal": "USDT от 5 000 ₽, нужно 5 активных клиентов за год"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "truehost",
-  "name": "Truehost",
-  "color": "#c47f0a",
-  "country": "INT",
-  "affiliateStatus": "active",
-  "url": "https://truehost.cloud/cloud/aff.php?aff=225",
-  "site": "https://truehost.cloud",
-  "geos": [
-   "eu",
-   "global"
-  ],
-  "tasks": [
-   "sajt",
-   "magazin",
-   "telegram-bot",
-   "dev"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": false,
-   "backup": true,
-   "hourly": false,
-   "testPeriod": false
+  {
+    "slug": "ruvds",
+    "name": "RUVDS",
+    "color": "#c2410c",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://ruvds.com/pr105060",
+    "site": "https://ruvds.com",
+    "geos": [
+      "ru",
+      "eu",
+      "global"
+    ],
+    "tasks": [
+      "1c-bitrix",
+      "baza-dannyh",
+      "ai",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": false
+    },
+    "description": "Провайдер с большим числом дата-центров и отдельными продуктами под 1С, трейдинг и GPU. Заметен в корпоративном сегменте.",
+    "pros": [
+      "Много дата-центров",
+      "Готовые решения под 1С и трейдинг",
+      "Есть GPU"
+    ],
+    "cons": [
+      "Цены выше бюджетного сегмента"
+    ],
+    "affiliate": {
+      "rate": "15% с ростом до 25%",
+      "term": "recurring",
+      "cookie": "не опубликован",
+      "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
+      "payoutInternal": "условия не опубликованы"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "description": "Недорогое облако с простым входом и глобальным присутствием. Разумный вариант для старта небольшого проекта, когда нужен дешёвый сервер без изысков.",
-  "pros": [
-   "Низкая цена входа",
-   "Простая панель",
-   "Несколько регионов на выбор"
-  ],
-  "cons": [
-   "Скромные ресурсы на младших тарифах",
-   "Нет российских локаций"
-  ],
-  "affiliate": {
-   "rate": "25% на VPS",
-   "term": "recurring, срок уточняется",
-   "cookie": "90 дней",
-   "note": "Выплаты в местной валюте, сверить метод",
-   "payoutInternal": "около $30"
+  {
+    "slug": "firstvds",
+    "name": "FirstVDS",
+    "color": "#0f766e",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://firstvds.ru/?from=1218803",
+    "site": "https://firstvds.ru",
+    "geos": [
+      "ru",
+      "eu",
+      "kz"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "1c-bitrix",
+      "baza-dannyh",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Один из старых российских провайдеров VDS с линейкой от бюджетных серверов до GPU и storage.",
+    "pros": [
+      "Долгая история на рынке",
+      "Есть GPU и storage-серверы",
+      "Локации в РФ, Нидерландах и Казахстане"
+    ],
+    "cons": [
+      "Базовая ставка партнёрки низкая"
+    ],
+    "affiliate": {
+      "rate": "10% всех расходов реферала",
+      "term": "recurring, last click",
+      "cookie": "без ограничения времени",
+      "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
+      "payoutInternal": "только ИП или юрлицо по договору"
+    },
+    "verifiedAt": "2026-08-02"
   },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "ultahost",
-  "name": "UltaHost",
-  "color": "#7a1fb8",
-  "country": "INT",
-  "affiliateStatus": "active",
-  "url": "https://ultahost.com/#MakeBiz",
-  "site": "https://ultahost.com",
-  "geos": [
-   "us",
-   "eu",
-   "global"
-  ],
-  "tasks": [
-   "sajt",
-   "magazin",
-   "telegram-bot",
-   "baza-dannyh",
-   "dev"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": false,
-   "testPeriod": false
+  {
+    "slug": "serverspace",
+    "name": "Serverspace",
+    "color": "#2563eb",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://serverspace.io/ref/907223",
+    "site": "https://serverspace.io",
+    "geos": [
+      "ru",
+      "eu",
+      "us",
+      "uae"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "telegram-bot",
+      "baza-dannyh",
+      "ai",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": false,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": false
+    },
+    "description": "Облачный провайдер с необычно широкой для российского рынка географией: локации в России, Европе, США и ОАЭ из одной панели. Поминутная тарификация и API делают его удобным для стендов и коротких задач",
+    "pros": [
+      "Локации в России, Европе, США и ОАЭ из одной панели",
+      "Поминутная тарификация: стенд на день не стоит как месяц",
+      "API и готовые образы под быстрые развёртывания"
+    ],
+    "cons": [
+      "Тарифы без выделенного администрирования, всё делаете сами",
+      "Цены сверяются, в каталоге их пока нет"
+    ],
+    "affiliate": {
+      "rate": "по программе serverspace.io",
+      "term": "уточняется",
+      "cookie": "не опубликован",
+      "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
+      "payoutInternal": "условия в кабинете"
+    }
   },
-  "description": "Управляемый хостинг на NVMe с упором на скорость сайтов и WordPress. Берут на себя часть администрирования, что удобно, если нет своего системного администратора.",
-  "pros": [
-   "NVMe во всех тарифах",
-   "Управляемые опции и миграция сайта",
-   "Много локаций"
-  ],
-  "cons": [
-   "Агрессивная подача цен, обязательно смотреть цену продления",
-   "Российских локаций нет"
-  ],
-  "affiliate": {
-   "rate": "высокий процент с первой продажи",
-   "term": "по договору",
-   "cookie": "уточняется",
-   "note": "Публичная модель не recurring, для revshare нужен индивидуальный договор",
-   "payoutInternal": "уточняется"
-  },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "vpsorg",
-  "name": "VPS.org",
-  "color": "#b8341f",
-  "country": "INT",
-  "affiliateStatus": "active",
-  "url": "https://vps.org/?ref=G2EMGEI2",
-  "site": "https://vps.org",
-  "geos": [
-   "us",
-   "eu",
-   "global"
-  ],
-  "tasks": [
-   "sajt",
-   "telegram-bot",
-   "baza-dannyh",
-   "game",
-   "dev"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": false,
-   "testPeriod": false
-  },
-  "description": "Универсальный провайдер среднего сегмента с гибкими конфигурациями. Подходит, когда нужен предсказуемый сервер под типовые задачи без привязки к конкретной стране.",
-  "pros": [
-   "Гибкая настройка конфигурации",
-   "Понятные тарифы",
-   "Быстрая выдача сервера"
-  ],
-  "cons": [
-   "Бренд менее известен",
-   "Нет российских локаций"
-  ],
-  "affiliate": {
-   "rate": "20% lifetime плюс бонусы",
-   "term": "lifetime",
-   "cookie": "90 дней",
-   "note": "Щедрые условия, обязательна тестовая покупка и первая выплата",
-   "payoutInternal": "от $10, Stripe или PayPal"
-  },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "regru",
-  "name": "Reg.ru",
-  "color": "#1f6fb2",
-  "country": "RU",
-  "affiliateStatus": "active",
-  "url": "https://www.reg.ru/?rlink=reflink-31242589",
-  "site": "https://www.reg.ru",
-  "geos": [
-   "ru"
-  ],
-  "tasks": [
-   "sajt",
-   "magazin",
-   "1c-bitrix",
-   "dev"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": false,
-   "testPeriod": false
-  },
-  "description": "Крупный российский регистратор и хостер. Удобен, когда домен, хостинг и сервер нужны в одном кабинете, с закрывающими документами",
-  "pros": [
-   "Домены, хостинг и серверы в одном кабинете",
-   "Документы и договор для юрлиц",
-   "Известный бренд с долгой историей"
-  ],
-  "cons": [
-   "Цены выше нишевых провайдеров",
-   "Интерфейс перегружен"
-  ],
-  "affiliate": {
-   "rate": "40% хостинг, 15% облако, 3,5% домены",
-   "term": "recurring на продления",
-   "cookie": "14 дней",
-   "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
-   "payoutInternal": "от 200 ₽, только рублёвый счёт банка РФ"
-  },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "fornex",
-  "name": "Fornex",
-  "color": "#2b7a78",
-  "country": "INT",
-  "affiliateStatus": "active",
-  "url": "https://fornex.com/code/g6j9tn/",
-  "site": "https://ru.fornex.com",
-  "geos": [
-   "eu",
-   "global"
-  ],
-  "tasks": [
-   "sajt",
-   "telegram-bot",
-   "baza-dannyh",
-   "dev",
-   "vydelennyj"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": false,
-   "testPeriod": false
-  },
-  "description": "Провайдер с русскоязычной поддержкой и европейскими локациями. Линейка от простого VPS до выделенных серверов.",
-  "pros": [
-   "Русскоязычная поддержка при зарубежных локациях",
-   "Широкая линейка услуг"
-  ],
-  "cons": [
-   "Расчёты в валюте, курсовой риск",
-   "Российских локаций нет"
-  ],
-  "affiliate": {
-   "rate": "15-25% на VPS",
-   "term": "lifetime",
-   "cookie": "60 дней",
-   "note": "Партнёрка подтверждена, по ссылке применяется скидка 15% на VPS",
-   "payoutInternal": "баланс или USDT"
-  },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "vdsina",
-  "name": "VDSina",
-  "color": "#3b5bdb",
-  "country": "RU",
-  "affiliateStatus": "pending",
-  "url": null,
-  "site": "https://vdsina.ru",
-  "geos": [
-   "ru",
-   "eu",
-   "global"
-  ],
-  "tasks": [
-   "sajt",
-   "telegram-bot",
-   "baza-dannyh",
-   "dev",
-   "game"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": true,
-   "testPeriod": false
-  },
-  "description": "Недорогой провайдер с почасовой оплатой и понятной линейкой тарифов. Часто выбирают под небольшие сервисы и тестовые стенды.",
-  "pros": [
-   "Почасовая оплата",
-   "Низкая цена входа",
-   "Несколько стран на выбор"
-  ],
-  "cons": [
-   "Поддержка только тикетами"
-  ],
-  "affiliate": {
-   "rate": "20%, шкала до 50%",
-   "term": "lifetime",
-   "cookie": "не раскрыт",
-   "note": "Подать заявку в первой волне",
-   "payoutInternal": "USDT от 5 000 ₽, нужно 5 активных клиентов за год"
-  },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "ruvds",
-  "name": "RUVDS",
-  "color": "#c2410c",
-  "country": "RU",
-  "affiliateStatus": "active",
-  "url": "https://ruvds.com/pr105060",
-  "site": "https://ruvds.com",
-  "geos": [
-   "ru",
-   "eu",
-   "global"
-  ],
-  "tasks": [
-   "1c-bitrix",
-   "baza-dannyh",
-   "ai",
-   "dev",
-   "vydelennyj"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": true,
-   "testPeriod": false
-  },
-  "description": "Провайдер с большим числом дата-центров и отдельными продуктами под 1С, трейдинг и GPU. Заметен в корпоративном сегменте.",
-  "pros": [
-   "Много дата-центров",
-   "Готовые решения под 1С и трейдинг",
-   "Есть GPU"
-  ],
-  "cons": [
-   "Цены выше бюджетного сегмента"
-  ],
-  "affiliate": {
-   "rate": "15% с ростом до 25%",
-   "term": "recurring",
-   "cookie": "не опубликован",
-   "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
-   "payoutInternal": "условия не опубликованы"
-  },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "firstvds",
-  "name": "FirstVDS",
-  "color": "#0f766e",
-  "country": "RU",
-  "affiliateStatus": "active",
-  "url": "https://firstvds.ru/?from=1218803",
-  "site": "https://firstvds.ru",
-  "geos": [
-   "ru",
-   "eu",
-   "kz"
-  ],
-  "tasks": [
-   "sajt",
-   "magazin",
-   "1c-bitrix",
-   "baza-dannyh",
-   "dev",
-   "vydelennyj"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": false,
-   "testPeriod": false
-  },
-  "description": "Один из старых российских провайдеров VDS с линейкой от бюджетных серверов до GPU и storage.",
-  "pros": [
-   "Долгая история на рынке",
-   "Есть GPU и storage-серверы",
-   "Локации в РФ, Нидерландах и Казахстане"
-  ],
-  "cons": [
-   "Базовая ставка партнёрки низкая"
-  ],
-  "affiliate": {
-   "rate": "10% всех расходов реферала",
-   "term": "recurring, last click",
-   "cookie": "без ограничения времени",
-   "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
-   "payoutInternal": "только ИП или юрлицо по договору"
-  },
-  "verifiedAt": "2026-08-02"
- },
- {
-  "slug": "serverspace",
-  "name": "Serverspace",
-  "color": "#2563eb",
-  "country": "RU",
-  "affiliateStatus": "active",
-  "url": "https://serverspace.io/ref/907223",
-  "site": "https://serverspace.io",
-  "geos": [
-   "ru",
-   "eu",
-   "us",
-   "ae"
-  ],
-  "tasks": [
-   "sajt",
-   "magazin",
-   "telegram-bot",
-   "baza-dannyh",
-   "ai",
-   "dev"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": false,
-   "backup": true,
-   "hourly": true,
-   "testPeriod": false
-  },
-  "description": "Облачный провайдер с необычно широкой для российского рынка географией: локации в России, Европе, США и ОАЭ из одной панели. Поминутная тарификация и API делают его удобным для стендов и коротких задач",
-  "pros": [
-   "Локации в России, Европе, США и ОАЭ из одной панели",
-   "Поминутная тарификация: стенд на день не стоит как месяц",
-   "API и готовые образы под быстрые развёртывания"
-  ],
-  "cons": [
-   "Тарифы без выделенного администрирования, всё делаете сами",
-   "Цены сверяются, в каталоге их пока нет"
-  ],
-  "affiliate": {
-   "rate": "по программе serverspace.io",
-   "term": "уточняется",
-   "cookie": "не опубликован",
-   "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
-   "payoutInternal": "условия в кабинете"
+  {
+    "slug": "cloud4box",
+    "name": "Cloud4Box",
+    "color": "#0e7490",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://cloud4box.com/?from=99102",
+    "site": "https://cloud4box.com",
+    "geos": [
+      "ru",
+      "eu"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "telegram-bot",
+      "baza-dannyh",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Российский провайдер со своим дата-центром в Москве и гибким конфигуратором: ресурсы собираются под задачу, а не выбираются из фиксированной сетки тарифов",
+    "pros": [
+      "Свой дата-центр в Москве",
+      "Гибкий конфигуратор вместо жёсткой тарифной сетки",
+      "Есть и зарубежные площадки под проекты на Европу"
+    ],
+    "cons": [
+      "Бренд менее известен, чем у крупных игроков",
+      "Цены сверяются, в каталоге их пока нет"
+    ],
+    "affiliate": {
+      "rate": "по программе cloud4box",
+      "term": "уточняется",
+      "cookie": "не опубликован",
+      "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
+      "payoutInternal": "условия в кабинете"
+    }
   }
- },
- {
-  "slug": "cloud4box",
-  "name": "Cloud4Box",
-  "color": "#0e7490",
-  "country": "RU",
-  "affiliateStatus": "active",
-  "url": "https://cloud4box.com/?from=99102",
-  "site": "https://cloud4box.com",
-  "geos": [
-   "ru",
-   "eu"
-  ],
-  "tasks": [
-   "sajt",
-   "magazin",
-   "telegram-bot",
-   "baza-dannyh",
-   "dev"
-  ],
-  "virtualization": [
-   "KVM"
-  ],
-  "features": {
-   "panel": true,
-   "ddos": true,
-   "backup": true,
-   "hourly": false,
-   "testPeriod": false
-  },
-  "description": "Российский провайдер со своим дата-центром в Москве и гибким конфигуратором: ресурсы собираются под задачу, а не выбираются из фиксированной сетки тарифов",
-  "pros": [
-   "Свой дата-центр в Москве",
-   "Гибкий конфигуратор вместо жёсткой тарифной сетки",
-   "Есть и зарубежные площадки под проекты на Европу"
-  ],
-  "cons": [
-   "Бренд менее известен, чем у крупных игроков",
-   "Цены сверяются, в каталоге их пока нет"
-  ],
-  "affiliate": {
-   "rate": "по программе cloud4box",
-   "term": "уточняется",
-   "cookie": "не опубликован",
-   "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
-   "payoutInternal": "условия в кабинете"
-  }
- }
 ]

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import OutLink from './OutLink';
 import TaskIcon from './TaskIcon';
@@ -8,6 +8,7 @@ import { runMatch } from '@/lib/score';
 import { price, plural, ruDate } from '@/lib/format';
 import { goal, GOALS } from '@/lib/metrika';
 import { CAMPAIGN } from '@/lib/utm';
+import { readParams, num, list, writeParams } from '@/lib/url-state';
 
 const RAM_STEPS = [1, 2, 4, 8, 16, 32, 64];
 const CPU_STEPS = [1, 2, 4, 6, 8, 12, 16];
@@ -35,6 +36,51 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   const [showAll, setShowAll] = useState(false);
   const resourcesTouched = useRef(Boolean(presetTask));
   const started = useRef(false);
+  const [copied, setCopied] = useState(false);
+  // до первого чтения адреса ничего в него не пишем, иначе на монтировании
+  // затрём параметры, с которыми человек пришёл по ссылке
+  const restored = useRef(false);
+
+  // восстановление подбора из адреса страницы
+  useEffect(() => {
+    const p = readParams();
+    if ([...p.keys()].some((k) => ['task', 'geo', 'ram', 'cpu', 'budget', 'req'].includes(k))) {
+      const t = p.get('task');
+      if (t && payload.tasks.some((x) => x.slug === t)) setTask(t);
+      const g = p.get('geo');
+      if (g && (g === 'any' || payload.geos.some((x) => x.slug === g))) setGeo(g);
+      const r = num(p, 'ram', null);
+      if (r && RAM_STEPS.includes(r)) { setRam(r); resourcesTouched.current = true; }
+      const c = num(p, 'cpu', null);
+      if (c && CPU_STEPS.includes(c)) { setCpu(c); resourcesTouched.current = true; }
+      const b = num(p, 'budget', null);
+      if (b && b >= BUDGET_MIN && b <= BUDGET_MAX) setBudget(b);
+      const reqs = list(p, 'req');
+      if (reqs) setRequirements(reqs.filter((code) => payload.requirements.some((x) => x.code === code)));
+    }
+    restored.current = true;
+  }, [payload]);
+
+  // запись текущего состояния в адрес: ссылку можно переслать
+  useEffect(() => {
+    if (!restored.current) return;
+    writeParams({
+      task: task || null,
+      geo: geo && geo !== 'any' ? geo : null,
+      ram: ram === 4 && !resourcesTouched.current ? null : ram,
+      cpu: cpu === 2 && !resourcesTouched.current ? null : cpu,
+      budget: budget === 2000 ? null : budget,
+      req: requirements.length ? requirements.join(',') : null,
+    });
+  }, [task, geo, ram, cpu, budget, requirements]);
+
+  function copyLink() {
+    if (typeof window === 'undefined') return;
+    const url = window.location.href;
+    const done = () => { setCopied(true); setTimeout(() => setCopied(false), 2000); };
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(url).then(done).catch(() => {});
+    else done();
+  }
 
   const track = useCallback((what, extra) => {
     if (!started.current) {
@@ -88,9 +134,8 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
         <div className="calc-head">
           <h2>Подбор сервера</h2>
           <span className="faint">
-            {payload.stats.plans} {plural(payload.stats.plans, 'тариф', 'тарифа', 'тарифов')} у{' '}
-            {payload.stats.providers} {plural(payload.stats.providers, 'провайдера', 'провайдеров', 'провайдеров')}
-            , база проверена {ruDate(payload.stats.verifiedAt)}
+            {payload.stats.plans} {plural(payload.stats.plans, 'тариф', 'тарифа', 'тарифов')} с
+            проверенной ценой, база проверена {ruDate(payload.stats.verifiedAt)}
           </span>
         </div>
 
@@ -258,9 +303,14 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             Комиссия провайдеров в формулу не входит.{' '}
             <Link href="/metodologiya" className="link-brass">Как считается процент</Link>
           </span>
-          <button type="button" className="btn btn-ghost btn-sm" onClick={reset}>
-            Сбросить
-          </button>
+          <div className="row">
+            <button type="button" className="btn btn-ghost btn-sm" onClick={copyLink}>
+              {copied ? 'Ссылка скопирована' : 'Скопировать подбор'}
+            </button>
+            <button type="button" className="btn btn-ghost btn-sm" onClick={reset}>
+              Сбросить
+            </button>
+          </div>
         </div>
       </div>
 
@@ -270,7 +320,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             Результат подбора
           </span>
           <span className="faint">
-            {results.length} {plural(results.length, 'провайдер', 'провайдера', 'провайдеров')} с подходящими тарифами
+            {results.length} {plural(results.length, 'подходящий тариф', 'подходящих тарифа', 'подходящих тарифов')}
           </span>
         </div>
 

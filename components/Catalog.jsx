@@ -1,11 +1,12 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import OutLink from './OutLink';
 import { price, plural, ruDateShort } from '@/lib/format';
 import { goal, GOALS } from '@/lib/metrika';
 import { CAMPAIGN } from '@/lib/utm';
+import { readParams, num, list, writeParams } from '@/lib/url-state';
 
 const RAM_STEPS = [0, 1, 2, 4, 8, 16, 32];
 const CPU_STEPS = [0, 1, 2, 4, 6, 8];
@@ -34,6 +35,38 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
     () => Object.fromEntries(providers.map((p) => [p.slug, p])),
     [providers]
   );
+
+  const restored = useRef(false);
+
+  // фильтры каталога восстанавливаются из адреса и переживают перезагрузку
+  useEffect(() => {
+    const p = readParams();
+    const g = p.get('geo');
+    if (g && geos.some((x) => x.code === g)) setGeo(g);
+    const r = num(p, 'ram', null);
+    if (r !== null && RAM_STEPS.includes(r)) setMinRam(r);
+    const c = num(p, 'cpu', null);
+    if (c !== null && CPU_STEPS.includes(c)) setMinCpu(c);
+    const pr = num(p, 'price', null);
+    if (pr !== null && pr > 0 && pr <= PRICE_MAX) setMaxPrice(pr);
+    const rq = list(p, 'req');
+    if (rq) setReqs(rq.filter((code) => requirements.some((x) => x.code === code)));
+    const s = p.get('sort');
+    if (s && SORTS.some((x) => x.code === s)) setSort(s);
+    restored.current = true;
+  }, [geos, requirements]);
+
+  useEffect(() => {
+    if (!restored.current) return;
+    writeParams({
+      geo: geo && geo !== presetGeo ? geo : null,
+      ram: minRam || null,
+      cpu: minCpu || null,
+      price: maxPrice < PRICE_MAX ? maxPrice : null,
+      req: reqs.length ? reqs.join(',') : null,
+      sort: sort !== 'price' ? sort : null,
+    });
+  }, [geo, minRam, minCpu, maxPrice, reqs, sort, presetGeo]);
 
   function touch(field, value) {
     goal(GOALS.catalogFilter, { field, value: String(value) });
@@ -70,13 +103,54 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
     setSort('price');
   }
 
+  /**
+   * Когда выдача пуста, человеку нужно знать не «ничего не найдено»,
+   * а какой именно фильтр всё отсёк. Поочерёдно снимаем каждый активный
+   * фильтр и смотрим, какой из них возвращает больше всего тарифов
+   */
+  const blocker = useMemo(() => {
+    if (filtered.length > 0) return null;
+    const pass = (r, skip) => {
+      if (skip !== 'geo' && geo && r.geo !== geo) return false;
+      if (skip !== 'ram' && r.ram < minRam) return false;
+      if (skip !== 'cpu' && r.cpu < minCpu) return false;
+      if (skip !== 'price' && maxPrice < PRICE_MAX && r.priceRub > maxPrice) return false;
+      for (const code of reqs) {
+        if (skip === `req:${code}`) continue;
+        if (code === 'nvme') {
+          if (r.diskType !== 'NVMe') return false;
+        } else if (!r.requirements.includes(code)) return false;
+      }
+      return true;
+    };
+    const candidates = [];
+    if (geo) candidates.push({ key: 'geo', label: `география: ${geos.find((g) => g.code === geo)?.name || geo}`, clear: () => setGeo(null) });
+    if (minRam > 0) candidates.push({ key: 'ram', label: `память от ${minRam} ГБ`, clear: () => setMinRam(0) });
+    if (minCpu > 0) candidates.push({ key: 'cpu', label: `ядер от ${minCpu}`, clear: () => setMinCpu(0) });
+    if (maxPrice < PRICE_MAX) candidates.push({ key: 'price', label: `цена до ${maxPrice} ₽`, clear: () => setMaxPrice(PRICE_MAX) });
+    reqs.forEach((code) => {
+      const name = requirements.find((r) => r.code === code)?.short || code;
+      candidates.push({ key: `req:${code}`, label: `требование «${name}»`, clear: () => toggleReq(code) });
+    });
+    const scored = candidates
+      .map((c) => ({ ...c, gain: rows.filter((r) => pass(r, c.key)).length }))
+      .filter((c) => c.gain > 0)
+      .sort((a, b) => b.gain - a.gain);
+    return scored[0] || null;
+  }, [filtered.length, rows, geo, minRam, minCpu, maxPrice, reqs, geos, requirements]);
+
   return (
     <div>
       <div className="filters">
         <div className="field">
           <span className="label">География</span>
           <div className="chips">
-            <button type="button" className={geo === null ? 'chip chip-light on' : 'chip chip-light'} onClick={() => { setGeo(null); touch('geo', 'all'); }}>
+            <button
+              type="button"
+              className={geo === null ? 'chip chip-light on' : 'chip chip-light'}
+              aria-pressed={geo === null}
+              onClick={() => { setGeo(null); touch('geo', 'all'); }}
+            >
               Все
             </button>
             {geos.map((g) => (
@@ -84,6 +158,7 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
                 key={g.code}
                 type="button"
                 className={geo === g.code ? 'chip chip-light on' : 'chip chip-light'}
+                aria-pressed={geo === g.code}
                 onClick={() => { setGeo(g.code); touch('geo', g.code); }}
               >
                 {g.name}
@@ -100,6 +175,7 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
                 key={r.code}
                 type="button"
                 className={reqs.includes(r.code) ? 'chip chip-light on' : 'chip chip-light'}
+                aria-pressed={reqs.includes(r.code)}
                 onClick={() => toggleReq(r.code)}
                 title={r.note}
               >
@@ -183,6 +259,7 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
               key={s.code}
               type="button"
               className={sort === s.code ? 'chip chip-light on' : 'chip chip-light'}
+              aria-pressed={sort === s.code}
               onClick={() => { setSort(s.code); touch('sort', s.code); }}
             >
               {s.label}
@@ -246,7 +323,30 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
               {filtered.length === 0 && (
                 <tr>
                   <td colSpan={10} className="dim" style={{ padding: 28, textAlign: 'center' }}>
-                    Под такие фильтры в базе ничего нет. Попробуйте ослабить требования
+                    {blocker ? (
+                      <>
+                        Под такие фильтры в базе ничего нет: всё отсекает {blocker.label}.{' '}
+                        {blocker.gain} {plural(blocker.gain, 'тариф найдётся', 'тарифа найдётся', 'тарифов найдётся')},
+                        если снять этот фильтр
+                        <div className="row" style={{ justifyContent: 'center', marginTop: 14 }}>
+                          <button type="button" className="btn btn-brass btn-sm" onClick={blocker.clear}>
+                            Снять этот фильтр
+                          </button>
+                          <button type="button" className="btn btn-ghost btn-sm" onClick={reset}>
+                            Сбросить все
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        Под такие фильтры в базе ничего нет, и снятие одного фильтра не помогает
+                        <div className="row" style={{ justifyContent: 'center', marginTop: 14 }}>
+                          <button type="button" className="btn btn-brass btn-sm" onClick={reset}>
+                            Сбросить все фильтры
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </td>
                 </tr>
               )}

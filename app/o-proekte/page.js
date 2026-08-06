@@ -22,8 +22,7 @@ export default function AboutPage() {
         crumbs={[{ href: '/o-proekte', label: 'О проекте' }]}
         badges={
           <>
-            <span className="badge badge-brass">{STATS.providers} провайдеров</span>
-            <span className="badge">{STATS.plans} {plural(STATS.plans, 'тариф', 'тарифа', 'тарифов')}</span>
+            <span className="badge badge-brass">{STATS.plans} {plural(STATS.plans, 'тариф с проверенной ценой', 'тарифа с проверенной ценой', 'тарифов с проверенной ценой')}</span>
             <span className="badge">база проверена {ruDate(STATS.verifiedAt)}</span>
           </>
         }
@@ -106,9 +105,8 @@ export default function AboutPage() {
 
           <div className="mt-lg">
             <p className="faint">
-              В каталоге сейчас {PROVIDERS.length} провайдеров, из них{' '}
-              {PROVIDERS.filter((p) => p.affiliateStatus !== 'active').length} без партнёрских
-              отношений с нами
+              В каталоге есть провайдеры, с которыми у нас нет партнёрских отношений: они участвуют
+              в подборе на равных, и на них мы не зарабатываем ничего
             </p>
           </div>
         </div>

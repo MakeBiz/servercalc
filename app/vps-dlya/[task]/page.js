@@ -7,6 +7,7 @@ import JsonLd from '@/components/JsonLd';
 import TaskIcon from '@/components/TaskIcon';
 import { TASKS, getTask, providersForTask, minPriceOf, calculatorPayload, VISIBLE_PLANS, STATS } from '@/lib/data';
 import { taskContent } from '@/lib/task-content';
+import { postsForTask, rubricName } from '@/lib/news';
 import { CAMPAIGN } from '@/lib/utm';
 import { price, plural, ruDate } from '@/lib/format';
 
@@ -32,6 +33,7 @@ export default async function TaskPage({ params }) {
 
   const content = taskContent(slug);
   const providers = providersForTask(slug);
+  const related = postsForTask(slug);
   const payload = calculatorPayload();
   const suited = VISIBLE_PLANS.filter(
     (p) => p.ram >= task.ram && p.cpu >= task.cpu && providers.some((x) => x.slug === p.providerSlug)
@@ -235,8 +237,32 @@ export default async function TaskPage({ params }) {
         </section>
       )}
 
+      {/* разборы по этой задаче */}
+      {related.length > 0 && (
+        <section className="section paper-alt">
+          <div className="wrap">
+            <div className="eyebrow">
+              <span className="label">Разборы по теме</span>
+            </div>
+            <h2 style={{ marginBottom: 26 }}>Что почитать перед выбором</h2>
+            <div className="cards cards-2">
+              {related.map((p) => (
+                <Link key={p.slug} href={`/novosti/${p.slug}`} className="card">
+                  <div className="card-top">
+                    <span className="badge">{rubricName(p.rubric)}</span>
+                    <span className="faint mono">{ruDate(p.date)}</span>
+                  </div>
+                  <h3 style={{ fontSize: '1.1rem' }}>{p.title}</h3>
+                  <p className="faint" style={{ margin: 0 }}>{p.description}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* другие задачи */}
-      <section className="section-tight paper-alt">
+      <section className="section-tight paper">
         <div className="wrap">
           <div className="eyebrow">
             <span className="label">Другие задачи</span>
