@@ -677,56 +677,6 @@
     "verifiedAt": "2026-08-02"
   },
   {
-    "slug": "serverspace",
-    "name": "Serverspace",
-    "color": "#2563eb",
-    "country": "RU",
-    "affiliateStatus": "active",
-    "url": "https://serverspace.io/ref/907223",
-    "site": "https://serverspace.io",
-    "geos": [
-      "ru",
-      "eu",
-      "us",
-      "uae"
-    ],
-    "tasks": [
-      "sajt",
-      "magazin",
-      "telegram-bot",
-      "baza-dannyh",
-      "ai",
-      "dev"
-    ],
-    "virtualization": [
-      "KVM"
-    ],
-    "features": {
-      "panel": true,
-      "ddos": false,
-      "backup": true,
-      "hourly": true,
-      "testPeriod": false
-    },
-    "description": "Облачный провайдер с необычно широкой для российского рынка географией: локации в России, Европе, США и ОАЭ из одной панели. Поминутная тарификация и API делают его удобным для стендов и коротких задач",
-    "pros": [
-      "Локации в России, Европе, США и ОАЭ из одной панели",
-      "Поминутная тарификация: стенд на день не стоит как месяц",
-      "API и готовые образы под быстрые развёртывания"
-    ],
-    "cons": [
-      "Тарифы без выделенного администрирования, всё делаете сами",
-      "Цены сверяются, в каталоге их пока нет"
-    ],
-    "affiliate": {
-      "rate": "по программе serverspace.io",
-      "term": "уточняется",
-      "cookie": "не опубликован",
-      "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
-      "payoutInternal": "условия в кабинете"
-    }
-  },
-  {
     "slug": "cloud4box",
     "name": "Cloud4Box",
     "color": "#0e7490",
