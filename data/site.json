@@ -1,12 +1,12 @@
 {
   "name": "ServerCalc",
   "tagline": "Подбор виртуальных серверов по задаче",
-  "domain": "servercalc.online",
-  "url": "https://www.servercalc.online",
+  "domain": "servercalc.ru",
+  "url": "https://servercalc.ru",
   "utmSource": "servercalc",
   "metrikaId": 111249191,
   "staleAfterDays": 7,
   "operator": "ИП, реквизиты добавить после регистрации",
-  "contactEmail": "info@servercalc.online",
-  "note": "Единственное место, где задаётся имя и домен проекта. url должен совпадать с тем адресом, который в Vercel помечен Production: сейчас это www. Если сделаете основным голый домен, поменяйте здесь и пересоберите"
+  "contactEmail": "info@servercalc.ru",
+  "note": "Единственное место, где задаётся домен проекта. url обязан совпадать с адресом, помеченным Production в Vercel: сейчас это голый домен servercalc.ru (без www). Если сделаете основным www, поменяйте здесь и пересоберите. utmSource НЕ трогать при смене домена: это метка источника в кабинетах партнёров, а не адрес сайта"
 }
