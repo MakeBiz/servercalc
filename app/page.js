@@ -79,47 +79,36 @@ export default function HomePage() {
                 <span className="label label-brass">Справочный каталог серверов</span>
               </div>
               <h1 className="display">
-                Подберём сервер
+                Подберём сервер под
                 <br />
-                под конкретную задачу
+                конкретную задачу
               </h1>
               <p className="lead">
                 Считаем по задаче, ресурсам, географии и требованиям. Показываем не витрину, а
                 объяснение: почему подошёл именно этот тариф и чего у провайдера нет
               </p>
             </div>
-            <div className="hero-note">
-              Размер партнёрского вознаграждения не входит в формулу подбора ни одним слагаемым.
-              Провайдеры, с которыми у нас нет партнёрства, участвуют в подборе наравне со всеми и
-              помечены отдельно
-              <div className="mt">
-                <Link href="/metodologiya" className="link-arrow">
-                  Формула целиком
-                </Link>
+            <div className="hero-stats">
+              <div className="hstat">
+                <div className="stat-v">{STATS.plans}</div>
+                <div className="stat-k">{plural(STATS.plans, 'тариф с проверенной ценой', 'тарифа с проверенной ценой', 'тарифов с проверенной ценой')}</div>
+              </div>
+              <div className="hstat">
+                <div className="stat-v">{STATS.providers}</div>
+                <div className="stat-k">провайдеров в сравнении</div>
+              </div>
+              <div className="hstat">
+                <div className="stat-v">{STATS.providers - STATS.partners}</div>
+                <div className="stat-k">из них без партнёрства с нами</div>
+              </div>
+              <div className="hstat">
+                <div className="stat-v">{STATS.staleDays} дн</div>
+                <div className="stat-k">срок, после которого цена скрывается</div>
               </div>
             </div>
           </div>
 
-          <div className="stat-row mb">
-            <div className="stat">
-              <div className="stat-v">{STATS.plans}</div>
-              <div className="stat-k">{plural(STATS.plans, 'тариф с проверенной ценой', 'тарифа с проверенной ценой', 'тарифов с проверенной ценой')}</div>
-            </div>
-            <div className="stat">
-              <div className="stat-v">{STATS.providers}</div>
-              <div className="stat-k">провайдеров в сравнении</div>
-            </div>
-            <div className="stat">
-              <div className="stat-v">{STATS.providers - STATS.partners}</div>
-              <div className="stat-k">из них без партнёрства с нами</div>
-            </div>
-            <div className="stat">
-              <div className="stat-v">{STATS.staleDays} дн</div>
-              <div className="stat-k">срок, после которого цена скрывается</div>
-            </div>
-          </div>
-
-          <Calculator payload={payload} campaign={CAMPAIGN.calculator} />
+          <Calculator payload={payload} campaign={CAMPAIGN.calculator} split />
 
           <div style={{ height: 72 }} />
         </div>

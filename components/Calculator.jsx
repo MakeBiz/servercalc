@@ -23,7 +23,7 @@ function nearestIndex(steps, value) {
   return best;
 }
 
-export default function Calculator({ payload, presetTask = null, presetGeo = 'any', campaign = CAMPAIGN.calculator, compact = false }) {
+export default function Calculator({ payload, presetTask = null, presetGeo = 'any', campaign = CAMPAIGN.calculator, compact = false, split = false }) {
   const presetTaskObj = payload.tasks.find((t) => t.slug === presetTask) || null;
 
   const [task, setTask] = useState(presetTask);
@@ -83,7 +83,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   }
 
   return (
-    <div id="podbor" className="anchor">
+    <div id="podbor" className={split ? 'anchor calc-split' : 'anchor'}>
       <div className="calc">
         <div className="calc-head">
           <h2>Подбор сервера</h2>
@@ -121,21 +121,45 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             <div className="field-head">
               <span className="label">02 · География</span>
             </div>
-            <div className="seg">
-              <button type="button" className={geo === 'any' ? 'on' : ''} onClick={() => { setGeo('any'); track('geo', { geo: 'any' }); }}>
-                Не важна
-              </button>
-              {payload.geos.map((g) => (
+            {split ? (
+              <div className="chips">
                 <button
-                  key={g.slug}
                   type="button"
-                  className={geo === g.slug ? 'on' : ''}
-                  onClick={() => { setGeo(g.slug); track('geo', { geo: g.slug }); }}
+                  className={geo === 'any' ? 'chip on' : 'chip'}
+                  aria-pressed={geo === 'any'}
+                  onClick={() => { setGeo('any'); track('geo', { geo: 'any' }); }}
                 >
-                  {g.name}
+                  Не важна
                 </button>
-              ))}
-            </div>
+                {payload.geos.map((g) => (
+                  <button
+                    key={g.slug}
+                    type="button"
+                    className={geo === g.slug ? 'chip on' : 'chip'}
+                    aria-pressed={geo === g.slug}
+                    onClick={() => { setGeo(g.slug); track('geo', { geo: g.slug }); }}
+                  >
+                    {g.name}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="seg">
+                <button type="button" className={geo === 'any' ? 'on' : ''} onClick={() => { setGeo('any'); track('geo', { geo: 'any' }); }}>
+                  Не важна
+                </button>
+                {payload.geos.map((g) => (
+                  <button
+                    key={g.slug}
+                    type="button"
+                    className={geo === g.slug ? 'on' : ''}
+                    onClick={() => { setGeo(g.slug); track('geo', { geo: g.slug }); }}
+                  >
+                    {g.name}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="field">
@@ -257,7 +281,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
         )}
 
         {visible.map((r, i) => (
-          <article className="rescard" key={r.provider.slug}>
+          <article className={split && i === 0 ? 'rescard rescard-top' : 'rescard'} key={r.provider.slug}>
             <div className="res-rank">{String(i + 1).padStart(2, '0')}</div>
             <div className="res-body">
               <div>
