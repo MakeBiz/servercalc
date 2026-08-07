@@ -26,6 +26,9 @@ export const metadata = {
     'Справочный каталог виртуальных серверов: подбор под задачу, сравнение тарифов по цене за ресурс и дата проверки цены у каждого тарифа',
   applicationName: SITE_NAME,
   robots: { index: true, follow: true },
+  // Подтверждение прав в Яндекс Вебмастере. Код привязан к домену и лежит
+  // в data/site.json: при смене домена меняется там же, а не в разметке
+  ...(SITE.yandexVerification ? { verification: { yandex: SITE.yandexVerification } } : {}),
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
