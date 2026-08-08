@@ -54,7 +54,9 @@
 
   --font-display: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
   --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* Моноширинный берём системный: цифры, даты и надзаголовки выглядят так же,
+     но 52 КБ шрифта не качаются. Для читателей с медленным каналом это заметно */
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', 'DejaVu Sans Mono', monospace;
 }
 
 *,

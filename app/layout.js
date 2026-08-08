@@ -2,11 +2,11 @@
 // Так у сайта нет внешних запросов при загрузке: это и скорость, и отсутствие
 // зависимости от доступности fonts.googleapis.com для читателей из России
 // Шрифты подключаются локально пакетами fontsource, без запросов к Google.
-// Дизайн-система Claude Design: Manrope для заголовков, Inter для текста,
-// JetBrains Mono для цифр, дат, кодов и надзаголовков
+// Дизайн-система Claude Design: Manrope для заголовков, Inter для текста.
+// Моноширинный (цифры, даты, надзаголовки) берём системный — см. --font-mono
+// в globals.css: это минус 52 КБ загрузки на каждом первом визите
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/inter';
-import '@fontsource-variable/jetbrains-mono';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
