@@ -18,6 +18,8 @@ ym(${METRIKA_ID}, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"da
 
   return (
     <>
+      {/* Сквозная аналитика: счётчик первопартийный, идёт через rewrite /px/* */}
+      <Script id="px-counter" src="/px/t.js" strategy="afterInteractive" data-site="servercalc-ru" />
       <Script id="ym-counter" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: code }} />
       <noscript>
         <div>
