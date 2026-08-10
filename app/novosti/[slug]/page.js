@@ -5,7 +5,7 @@ import JsonLd from '@/components/JsonLd';
 import OutLink from '@/components/OutLink';
 import { allPosts, getPost, rubricName } from '@/lib/news';
 import { getProvider, minPriceOf } from '@/lib/data';
-import { ruDate, price } from '@/lib/format';
+import { price } from '@/lib/format';
 import { absUrl, SITE_NAME } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -70,10 +70,12 @@ export default async function PostPage({ params }) {
         ]}
         badges={
           <>
-            <span className="badge badge-brass">{ruDate(post.date)}</span>
+            {/* Даты в интерфейсе не показываем по решению владельца: материал
+                не должен выглядеть протухшим. В разметке для поисковиков
+                datePublished остаётся — там она полезна и читателю не видна */}
+            {post.fresh && <span className="badge badge-brass">Новое</span>}
             <span className="badge">{post.author}</span>
             <span className="badge">{post.minutes} мин чтения</span>
-            {post.updated && <span className="badge">обновлено {ruDate(post.updated)}</span>}
           </>
         }
       />
@@ -146,7 +148,7 @@ export default async function PostPage({ params }) {
                 <Link key={p.slug} href={`/novosti/${p.slug}`} className="card">
                   <div className="card-top">
                     <span className="badge">{rubricName(p.rubric)}</span>
-                    <span className="faint mono">{ruDate(p.date)}</span>
+                    {p.fresh && <span className="badge badge-brass">Новое</span>}
                   </div>
                   <h3 style={{ fontSize: '1.1rem' }}>{p.title}</h3>
                   <p className="faint" style={{ margin: 0 }}>{p.description}</p>

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import JsonLd from '@/components/JsonLd';
 import { allPosts, RUBRICS, rubricName } from '@/lib/news';
-import { ruDate, plural } from '@/lib/format';
+import { plural } from '@/lib/format';
 import { absUrl } from '@/lib/site';
 
 export const metadata = {
@@ -57,7 +57,7 @@ export default function NewsPage() {
             <Link href={`/novosti/${posts[0].slug}`} className="news-featured">
               <div className="nf-top">
                 <span className="badge">{rubricName(posts[0].rubric)}</span>
-                <span className="faint mono">{ruDate(posts[0].date)}</span>
+                {posts[0].fresh && <span className="badge badge-brass">Новое</span>}
               </div>
               <div className="nf-body">
                 <h2 className="nf-featitle">{posts[0].title}</h2>
@@ -77,7 +77,7 @@ export default function NewsPage() {
               <Link key={post.slug} href={`/novosti/${post.slug}`} className="card">
                 <div className="card-top">
                   <span className="badge">{rubricName(post.rubric)}</span>
-                  <span className="faint mono">{ruDate(post.date)}</span>
+                  {post.fresh && <span className="badge badge-brass">Новое</span>}
                 </div>
                 <h3 style={{ fontSize: '1.15rem' }}>{post.title}</h3>
                 <p className="faint" style={{ margin: 0 }}>{post.description}</p>
