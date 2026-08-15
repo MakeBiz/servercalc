@@ -14,7 +14,7 @@
     "priceRub": 882,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -32,7 +32,7 @@
     "priceRub": 1062,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -50,7 +50,7 @@
     "priceRub": 1782,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -68,7 +68,7 @@
     "priceRub": 2772,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -86,7 +86,7 @@
     "priceRub": 1149,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -104,7 +104,7 @@
     "priceRub": 1599,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -122,7 +122,7 @@
     "priceRub": 1899,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -140,7 +140,7 @@
     "priceRub": 324,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -158,7 +158,7 @@
     "priceRub": 405,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -176,7 +176,7 @@
     "priceRub": 486,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -194,7 +194,7 @@
     "priceRub": 647,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -212,7 +212,7 @@
     "priceRub": 1376,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -230,7 +230,7 @@
     "priceRub": 2994,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -248,7 +248,7 @@
     "priceRub": 481,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -266,7 +266,7 @@
     "priceRub": 825,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -284,7 +284,7 @@
     "priceRub": 1719,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -302,7 +302,7 @@
     "priceRub": 2751,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -320,7 +320,7 @@
     "priceRub": 283,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -333,12 +333,12 @@
     "diskType": "SSD",
     "trafficTb": null,
     "geo": "global",
-    "price": 5.0,
+    "price": 5,
     "currency": "USD",
     "priceRub": 405,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -351,12 +351,12 @@
     "diskType": "SSD",
     "trafficTb": null,
     "geo": "global",
-    "price": 15.0,
+    "price": 15,
     "currency": "USD",
     "priceRub": 1214,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -369,12 +369,12 @@
     "diskType": "SSD",
     "trafficTb": null,
     "geo": "global",
-    "price": 20.0,
+    "price": 20,
     "currency": "USD",
     "priceRub": 1619,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -387,12 +387,12 @@
     "diskType": "SSD",
     "trafficTb": null,
     "geo": "global",
-    "price": 40.0,
+    "price": 40,
     "currency": "USD",
     "priceRub": 3237,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -410,7 +410,7 @@
     "priceRub": 2182,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -428,7 +428,7 @@
     "priceRub": 4297,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -446,7 +446,7 @@
     "priceRub": 7691,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -464,7 +464,7 @@
     "priceRub": 14103,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-03",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live"
   },
   {
@@ -482,7 +482,7 @@
     "priceRub": 299,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -501,7 +501,7 @@
     "priceRub": 429,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -520,7 +520,7 @@
     "priceRub": 799,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -539,7 +539,7 @@
     "priceRub": 1289,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -558,7 +558,7 @@
     "priceRub": 2149,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -577,7 +577,7 @@
     "priceRub": 3379,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -596,7 +596,7 @@
     "priceRub": 5349,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -615,7 +615,7 @@
     "priceRub": 390,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
@@ -634,7 +634,7 @@
     "priceRub": 980,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
@@ -653,7 +653,7 @@
     "priceRub": 1470,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
@@ -672,7 +672,7 @@
     "priceRub": 1960,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
@@ -691,7 +691,7 @@
     "priceRub": 2740,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
@@ -710,7 +710,7 @@
     "priceRub": 3520,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
@@ -729,7 +729,7 @@
     "priceRub": 299,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -748,7 +748,7 @@
     "priceRub": 339,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -767,7 +767,7 @@
     "priceRub": 519,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -786,7 +786,7 @@
     "priceRub": 599,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -805,7 +805,7 @@
     "priceRub": 919,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -824,7 +824,7 @@
     "priceRub": 1579,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -843,7 +843,7 @@
     "priceRub": 150,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://vdsina.ru/pricing/standard"
   },
@@ -862,7 +862,7 @@
     "priceRub": 600,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://vdsina.ru/pricing/standard"
   },
@@ -881,7 +881,7 @@
     "priceRub": 1200,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://vdsina.ru/pricing/standard"
   },
@@ -900,7 +900,7 @@
     "priceRub": 2400,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://vdsina.ru/pricing/standard"
   },
@@ -919,7 +919,7 @@
     "priceRub": 404,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://portal.datapacket.net/store/vps-hosting"
   },
@@ -938,7 +938,7 @@
     "priceRub": 808,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://portal.datapacket.net/store/vps-hosting"
   },
@@ -957,7 +957,7 @@
     "priceRub": 1213,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://portal.datapacket.net/store/vps-hosting"
   },
@@ -976,7 +976,7 @@
     "priceRub": 1618,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://portal.datapacket.net/store/vps-hosting"
   },
@@ -995,7 +995,7 @@
     "priceRub": 2022,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://portal.datapacket.net/store/vps-hosting"
   },
@@ -1014,7 +1014,7 @@
     "priceRub": 2832,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://portal.datapacket.net/store/vps-hosting"
   },
@@ -1033,7 +1033,7 @@
     "priceRub": 513,
     "billing": "month",
     "ipv4": null,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://fornex.com/virtual-private-servers/"
   },
@@ -1052,7 +1052,7 @@
     "priceRub": 699,
     "billing": "month",
     "ipv4": null,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://fornex.com/virtual-private-servers/"
   },
@@ -1066,12 +1066,12 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "eu",
-    "price": 15.0,
+    "price": 15,
     "currency": "EUR",
     "priceRub": 1398,
     "billing": "month",
     "ipv4": null,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://fornex.com/virtual-private-servers/"
   },
@@ -1085,12 +1085,12 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "eu",
-    "price": 26.0,
+    "price": 26,
     "currency": "EUR",
     "priceRub": 2423,
     "billing": "month",
     "ipv4": null,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://fornex.com/virtual-private-servers/"
   },
@@ -1104,12 +1104,12 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "eu",
-    "price": 34.0,
+    "price": 34,
     "currency": "EUR",
     "priceRub": 3168,
     "billing": "month",
     "ipv4": null,
-    "verifiedAt": "2026-08-06",
+    "verifiedAt": "2026-08-15",
     "dataStatus": "live",
     "source": "https://fornex.com/virtual-private-servers/"
   }
