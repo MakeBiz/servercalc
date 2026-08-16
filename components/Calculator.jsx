@@ -337,6 +337,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
               <div>
                 <div className="res-title">
                   <strong>{r.provider.name}</strong>
+                  {r.pinned && <span className="badge badge-brass">рекомендуем</span>}
                   {!r.provider.partner && <span className="badge badge-plain">без партнёрства</span>}
                   {r.provider.country === 'RU' && <span className="badge">Россия</span>}
                 </div>
