@@ -722,5 +722,485 @@
       "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
       "payoutInternal": "условия в кабинете"
     }
+  },
+  {
+    "slug": "aeza",
+    "name": "Aéza",
+    "color": "#2563eb",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://aeza.net/?ref=907642",
+    "site": "https://aeza.net",
+    "geos": [
+      "ru",
+      "eu",
+      "us"
+    ],
+    "tasks": [
+      "sajt",
+      "telegram-bot",
+      "dev",
+      "game",
+      "n8n"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": false
+    },
+    "description": "Быстрые NVMe-серверы с почасовой оплатой и большим выбором локаций в России, Европе и США. Популярен у разработчиков за скорость запуска.",
+    "pros": [
+      "NVMe и хорошие каналы",
+      "Много локаций в одном кабинете",
+      "Почасовая оплата"
+    ],
+    "cons": [
+      "Поддержка в основном в чате",
+      "Часть тарифов акционные, цена потом выше"
+    ],
+    "affiliate": {
+      "rate": "уточняется по программе провайдера",
+      "term": "recurring",
+      "cookie": "—",
+      "note": "Партнёрская ссылка активна; точные ставку и условия выплат уточнить в кабинете партнёрки",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-08-15"
+  },
+  {
+    "slug": "cherryservers",
+    "name": "Cherry Servers",
+    "color": "#b91c1c",
+    "country": "LT",
+    "affiliateStatus": "active",
+    "url": "https://www.cherryservers.com/?affiliate=9U0AA107",
+    "site": "https://www.cherryservers.com",
+    "geos": [
+      "asia",
+      "eu",
+      "us",
+      "global"
+    ],
+    "tasks": [
+      "dev",
+      "baza-dannyh",
+      "ai",
+      "game"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": false,
+      "hourly": true,
+      "testPeriod": false
+    },
+    "description": "Международный провайдер облачных и выделенных серверов с дата-центрами в Сингапуре, Токио, Европе и США. Ставка на производительность и сеть.",
+    "pros": [
+      "Локации в Азии: Сингапур и Токио",
+      "Cloud и выделенные серверы",
+      "Оплата в USD или EUR"
+    ],
+    "cons": [
+      "Нет российских локаций",
+      "Интерфейс на английском"
+    ],
+    "affiliate": {
+      "rate": "уточняется по программе провайдера",
+      "term": "recurring",
+      "cookie": "—",
+      "note": "Партнёрская ссылка активна; точные ставку и условия выплат уточнить в кабинете партнёрки",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-08-15"
+  },
+  {
+    "slug": "massivegrid",
+    "name": "MassiveGrid",
+    "color": "#0f766e",
+    "country": "GB",
+    "affiliateStatus": "active",
+    "url": "https://portal.massivegrid.com/aff.php?aff=770",
+    "site": "https://massivegrid.com",
+    "geos": [
+      "asia",
+      "eu",
+      "us",
+      "global"
+    ],
+    "tasks": [
+      "sajt",
+      "baza-dannyh",
+      "dev",
+      "ai"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Отказоустойчивый Cloud VPS на реплицированном NVMe-хранилище с локациями в Сингапуре, Нью-Йорке, Лондоне и Франкфурте.",
+    "pros": [
+      "Локация в Азии: Сингапур",
+      "Реплицированное NVMe-хранилище",
+      "Высокая доступность"
+    ],
+    "cons": [
+      "Нет российских локаций",
+      "Дороже бюджетных VPS на старших конфигурациях"
+    ],
+    "affiliate": {
+      "rate": "уточняется по программе провайдера",
+      "term": "recurring",
+      "cookie": "—",
+      "note": "Партнёрская ссылка активна; точные ставку и условия выплат уточнить в кабинете партнёрки",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-08-15"
+  },
+  {
+    "slug": "ethernetservers",
+    "name": "Ethernet Servers",
+    "color": "#4338ca",
+    "country": "US",
+    "affiliateStatus": "active",
+    "url": "https://www.ethernetservers.com/aff.php?aff=3108",
+    "site": "https://www.ethernetservers.com",
+    "geos": [
+      "us",
+      "eu"
+    ],
+    "tasks": [
+      "sajt",
+      "dev",
+      "telegram-bot",
+      "game"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Недорогие KVM VPS на чистом SSD с локациями в США, Великобритании и Германии. Много трафика в базовых тарифах.",
+    "pros": [
+      "Низкая стартовая цена",
+      "Щедрый трафик",
+      "Ежедневные бэкапы в цене"
+    ],
+    "cons": [
+      "Нет российских локаций",
+      "Небольшой провайдер"
+    ],
+    "affiliate": {
+      "rate": "уточняется по программе провайдера",
+      "term": "recurring",
+      "cookie": "—",
+      "note": "Партнёрская ссылка активна; точные ставку и условия выплат уточнить в кабинете партнёрки",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-08-15"
+  },
+  {
+    "slug": "vpsdime",
+    "name": "VPSDime",
+    "color": "#0891b2",
+    "country": "US",
+    "affiliateStatus": "active",
+    "url": "https://vpsdime.com/a/4794",
+    "site": "https://vpsdime.com",
+    "geos": [
+      "us",
+      "eu"
+    ],
+    "tasks": [
+      "baza-dannyh",
+      "dev",
+      "ai",
+      "game"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": false,
+      "ddos": false,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Много оперативной памяти за небольшие деньги: базовый тариф сразу с 6 ГБ RAM. Локации в США, Великобритании и Нидерландах.",
+    "pros": [
+      "Очень много RAM за цену",
+      "Оплата помесячно без контракта",
+      "10 Гбит порт"
+    ],
+    "cons": [
+      "Ядра общие на младших тарифах",
+      "Нет российских локаций"
+    ],
+    "affiliate": {
+      "rate": "уточняется по программе провайдера",
+      "term": "recurring",
+      "cookie": "—",
+      "note": "Партнёрская ссылка активна; точные ставку и условия выплат уточнить в кабинете партнёрки",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-08-15"
+  },
+  {
+    "slug": "profitserver",
+    "name": "ProfitServer",
+    "color": "#ca8a04",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://profitserver.ru/?partner_id=3415425",
+    "site": "https://profitserver.ru",
+    "geos": [
+      "ru",
+      "eu",
+      "us",
+      "asia",
+      "global"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "dev",
+      "telegram-bot",
+      "baza-dannyh"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": true
+    },
+    "description": "Широкая география: Россия, Европа, США, Гонконг и Сингапур в одном кабинете. Безлимитный трафик, низкий порог входа.",
+    "pros": [
+      "20+ локаций, включая Азию",
+      "Безлимитный трафик",
+      "Низкая стартовая цена"
+    ],
+    "cons": [
+      "SSD, а не NVMe на базовых",
+      "Ресурсы младших тарифов невелики"
+    ],
+    "affiliate": {
+      "rate": "уточняется по программе провайдера",
+      "term": "recurring",
+      "cookie": "—",
+      "note": "Партнёрская ссылка активна; точные ставку и условия выплат уточнить в кабинете партнёрки",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-08-15"
+  },
+  {
+    "slug": "selectel",
+    "name": "Selectel",
+    "color": "#e11d48",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://selectel.ru/?ref_code=70588a178e",
+    "site": "https://selectel.ru",
+    "geos": [
+      "ru"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "1c-bitrix",
+      "baza-dannyh",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": false
+    },
+    "description": "Крупное российское облако уровня энтерпрайз: дата-центры Tier III в Москве и Санкт-Петербурге, NVMe, защита от DDoS в базе.",
+    "pros": [
+      "Надёжность уровня энтерпрайз",
+      "NVMe и защита от DDoS в цене",
+      "Дата-центры Tier III в России"
+    ],
+    "cons": [
+      "Только российские локации",
+      "Конфигуратор сложнее для новичка"
+    ],
+    "affiliate": {
+      "rate": "уточняется по программе провайдера",
+      "term": "recurring",
+      "cookie": "—",
+      "note": "Партнёрская ссылка активна; точные ставку и условия выплат уточнить в кабинете партнёрки",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-08-15"
+  },
+  {
+    "slug": "hostwinds",
+    "name": "Hostwinds",
+    "color": "#1d4ed8",
+    "country": "US",
+    "affiliateStatus": "active",
+    "url": "https://clients.hostwinds.com/aff.php?aff=10451",
+    "site": "https://www.hostwinds.com",
+    "geos": [
+      "us",
+      "eu"
+    ],
+    "tasks": [
+      "sajt",
+      "dev",
+      "baza-dannyh",
+      "game"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": false,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": false
+    },
+    "description": "Известный американский хостер с unmanaged KVM VPS, полным root-доступом и локациями в США и Нидерландах.",
+    "pros": [
+      "Полный root и гибкие конфигурации",
+      "Круглосуточная поддержка",
+      "Локации в США и ЕС"
+    ],
+    "cons": [
+      "SSD, а не NVMe",
+      "Нет российских локаций"
+    ],
+    "affiliate": {
+      "rate": "уточняется по программе провайдера",
+      "term": "recurring",
+      "cookie": "—",
+      "note": "Партнёрская ссылка активна; точные ставку и условия выплат уточнить в кабинете партнёрки",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-08-15"
+  },
+  {
+    "slug": "alphavps",
+    "name": "AlphaVPS",
+    "color": "#7c3aed",
+    "country": "BG",
+    "affiliateStatus": "active",
+    "url": "https://alphavps.com/clients/aff.php?aff=1042",
+    "site": "https://alphavps.com",
+    "geos": [
+      "eu",
+      "us"
+    ],
+    "tasks": [
+      "sajt",
+      "dev",
+      "telegram-bot",
+      "game",
+      "n8n"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": false,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Европейский провайдер с очень выгодным соотношением цены и ресурсов: NVMe RAID-10, ECC-память, локации в Болгарии, Германии, Великобритании и США.",
+    "pros": [
+      "Отличная цена за NVMe и RAM",
+      "ECC-память и RAID-10",
+      "Локации в ЕС и США"
+    ],
+    "cons": [
+      "Нет российских локаций",
+      "Оплата в евро"
+    ],
+    "affiliate": {
+      "rate": "уточняется по программе провайдера",
+      "term": "recurring",
+      "cookie": "—",
+      "note": "Партнёрская ссылка активна; точные ставку и условия выплат уточнить в кабинете партнёрки",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-08-15"
+  },
+  {
+    "slug": "vpshouse",
+    "name": "VPS.house",
+    "color": "#475569",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://vps.house/p357",
+    "site": "https://vps.house",
+    "geos": [
+      "ru"
+    ],
+    "tasks": [
+      "sajt",
+      "1c-bitrix",
+      "dev",
+      "baza-dannyh"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": true
+    },
+    "description": "Российский провайдер с поресурсной оплатой: платишь ровно за vCPU, память и диск. Дата-центр Tier III в Москве, NVMe, аренда от одного дня.",
+    "pros": [
+      "Гибкая поресурсная оплата",
+      "NVMe и Tier III в Москве",
+      "Есть бесплатный тест"
+    ],
+    "cons": [
+      "Одна локация — Москва",
+      "Готовых пакетов нет, только конфигуратор"
+    ],
+    "affiliate": {
+      "rate": "уточняется по программе провайдера",
+      "term": "recurring",
+      "cookie": "—",
+      "note": "Партнёрская ссылка активна; точные ставку и условия выплат уточнить в кабинете партнёрки",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-08-15"
   }
 ]
