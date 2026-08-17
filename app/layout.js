@@ -28,7 +28,9 @@ export const metadata = {
   robots: { index: true, follow: true },
   // Подтверждение прав в Яндекс Вебмастере. Код привязан к домену и лежит
   // в data/site.json: при смене домена меняется там же, а не в разметке
-  ...(SITE.yandexVerification ? { verification: { yandex: SITE.yandexVerification } } : {}),
+  ...(SITE.yandexVerification
+    ? { verification: { yandex: [SITE.yandexVerification, SITE.yandexVerification2].filter(Boolean) } }
+    : {}),
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
