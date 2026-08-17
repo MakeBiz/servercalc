@@ -1202,5 +1202,107 @@
       "payoutInternal": "—"
     },
     "verifiedAt": "2026-08-15"
+  },
+  {
+    "slug": "cloudways",
+    "name": "Cloudways",
+    "color": "#2e3192",
+    "country": "MT",
+    "affiliateStatus": "active",
+    "url": "https://www.cloudways.com/en/?id=2184024",
+    "site": "https://www.cloudways.com",
+    "geos": [
+      "eu",
+      "us",
+      "global",
+      "asia"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "dev",
+      "n8n"
+    ],
+    "virtualization": [
+      "Cloud"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": true
+    },
+    "description": "Управляемый облачный хостинг поверх DigitalOcean, AWS, Google Cloud, Vultr и Linode. Платформа берёт на себя настройку сервера, кэш и обновления, вы платите за управляемость, а не за голый VPS.",
+    "pros": [
+      "Управление сервером, кэш и стек берёт на себя платформа",
+      "Выбор облака и дата-центра: DO, AWS, GCP, Vultr, Linode",
+      "Почасовая оплата и бесплатный пробный период"
+    ],
+    "cons": [
+      "Это управляемый хостинг, дороже обычного VPS",
+      "Оплата в валюте, нет российских локаций",
+      "Пожизненная комиссия партнёрки только на hybrid-плане"
+    ],
+    "affiliate": {
+      "rate": "До $350 CPA или $30 за продажу + 7-12% recurring",
+      "term": "Пожизненно на hybrid-плане",
+      "cookie": "90 дней",
+      "note": "Управляемый хостинг поверх DO/AWS/GCP; для пожизненной комиссии нужен hybrid-план",
+      "payoutInternal": "через партнёрскую платформу"
+    },
+    "noUtm": false,
+    "verifiedAt": "2026-08-17"
+  },
+  {
+    "slug": "firevps",
+    "name": "FireVPS",
+    "color": "#e8552d",
+    "country": "US",
+    "affiliateStatus": "active",
+    "url": "https://clients.firevps.net/aff.php?aff=104",
+    "site": "https://firevps.net",
+    "geos": [
+      "us",
+      "eu",
+      "asia",
+      "global"
+    ],
+    "tasks": [
+      "dev",
+      "game",
+      "n8n",
+      "sajt"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": false,
+      "ddos": true,
+      "backup": false,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Windows RDP и Linux VPS на AMD Ryzen с дата-центрами в 16 локациях по 10 странам. Уклон в RDP-доступ и быстрые SSD/NVMe-конфигурации.",
+    "pros": [
+      "Много локаций: США, Европа, Азия",
+      "Есть и Windows RDP, и Linux VPS на Ryzen",
+      "Тарифы с каналом до 10 Гбит/с"
+    ],
+    "cons": [
+      "Лучшая цена только на длинной подписке (1-2 года)",
+      "Нет российских локаций",
+      "Базовая панель управления"
+    ],
+    "affiliate": {
+      "rate": "20% recurring",
+      "term": "Пока клиент активен",
+      "cookie": "не раскрыт",
+      "note": "Линейки Windows RDP и Linux VPS (Ryzen); партнёрка на WHMCS",
+      "payoutInternal": "через партнёрскую платформу"
+    },
+    "noUtm": false,
+    "verifiedAt": "2026-08-17"
   }
 ]
