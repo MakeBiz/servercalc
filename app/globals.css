@@ -493,7 +493,10 @@ p:last-child { margin-bottom: 0; }
   font-variant-numeric: tabular-nums;
 }
 
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+/* Ровная сетка равных колонок вместо flex-переноса: кнопки одной ширины и
+   высоты, без рваных рядов. Приём переносим на все группы кнопок калькулятора */
+.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.chips .chip { width: 100%; min-height: 44px; justify-content: flex-start; }
 
 .chip {
   display: inline-flex;

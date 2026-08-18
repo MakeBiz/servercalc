@@ -176,7 +176,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                 >
                   Не важна
                 </button>
-                {payload.geos.map((g) => (
+                {payload.geos.filter((g) => !g.hideInCalc).map((g) => (
                   <button
                     key={g.slug}
                     type="button"
@@ -193,7 +193,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                 <button type="button" className={geo === 'any' ? 'on' : ''} onClick={() => { setGeo('any'); track('geo', { geo: 'any' }); }}>
                   Не важна
                 </button>
-                {payload.geos.map((g) => (
+                {payload.geos.filter((g) => !g.hideInCalc).map((g) => (
                   <button
                     key={g.slug}
                     type="button"
