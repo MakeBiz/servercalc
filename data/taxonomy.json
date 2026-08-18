@@ -79,7 +79,8 @@
       "h1": "VPS для n8n и автоматизации",
       "ram": 4,
       "cpu": 2,
-      "intent": "Self-hosted n8n, Coolify, автоматизация процессов"
+      "intent": "Self-hosted n8n, Coolify, автоматизация процессов",
+      "hideInCalc": true
     }
   ],
   "geos": [

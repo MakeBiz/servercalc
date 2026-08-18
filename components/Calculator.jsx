@@ -145,7 +145,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             {taskObj && <span className="field-val">рекомендуем {taskObj.cpu} × {taskObj.ram} ГБ</span>}
           </div>
           <div className="chips">
-            {payload.tasks.map((t) => (
+            {payload.tasks.filter((t) => !t.hideInCalc).map((t) => (
               <button
                 key={t.slug}
                 type="button"
