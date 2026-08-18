@@ -101,6 +101,7 @@ export default function PromosPage() {
                       provider={p.provider}
                       campaign={`akcii_${p.provider.slug}`}
                       content={p.id}
+                      funnel="promo"
                       className="btn btn-brass btn-sm"
                     >
                       Получить у {p.provider.name}
