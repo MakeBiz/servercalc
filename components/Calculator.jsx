@@ -363,7 +363,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                   </span>
                 </div>
                 <div className="res-price">{price(r.plan.priceRub)}<span className="faint"> в месяц</span></div>
-                <OutLink provider={r.provider} campaign={campaign} funnel="calc" className="btn btn-brass btn-sm btn-block">
+                <OutLink provider={r.provider} campaign={campaign} goalName="calc_click" className="btn btn-brass btn-sm btn-block">
                   {r.provider.partner ? 'Перейти' : 'На сайт'}
                 </OutLink>
               </div>

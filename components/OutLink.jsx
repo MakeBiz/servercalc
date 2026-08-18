@@ -12,10 +12,10 @@ export default function OutLink({
   provider,
   campaign,
   content,
+  goalName,
   children,
   className = 'btn btn-brass btn-sm',
   showDisclosure = false,
-  funnel,
 }) {
   const { href, rel, partner } = providerLink(provider, { campaign, content });
   if (!href) return null;
@@ -39,9 +39,15 @@ export default function OutLink({
           // строкой без сегментации по параметрам. Стандарт тот же,
           // что на ПодборVPS: go_timeweb, go_adminvps и так далее
           goal(`go_${provider.slug}`);
-          // низ конкретной воронки: calc_click из результатов калькулятора,
-          // promo_click со страницы акций (для вкладки «Воронки» в панели)
-          if (funnel) goal(`${funnel}_click`, { provider: provider.slug });
+          // доп-цель по месту клика (calc_click / promo_click / news_click), если передана.
+          // Общий provider_click остаётся денежной целью для всей воронки, это не замена.
+          if (goalName) {
+            goal(goalName, {
+              provider: provider.slug,
+              campaign: campaign || 'unknown',
+              partner: partner ? 1 : 0,
+            });
+          }
         }}
       >
         {children || (partner ? 'Перейти к провайдеру' : 'Открыть сайт')}
