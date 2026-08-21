@@ -8,7 +8,7 @@
   "metrikaId": 111249191,
   "yandexVerification": "8b8a2f9d0afdbef2",
   "yandexVerification2": "2a5ac0ddd6ae2398",
-  "staleAfterDays": 7,
+  "staleAfterDays": 35,
   "operator": "ИП, реквизиты добавить после регистрации",
   "contactEmail": "info@servercalc.ru",
   "note": "Единственное место, где задаётся домен проекта. url обязан совпадать с адресом, помеченным Production в Vercel: сейчас это голый домен servercalc.ru (без www). Если сделаете основным www, поменяйте здесь и пересоберите. utmSource НЕ трогать при смене домена: это метка источника в кабинетах партнёров, а не адрес сайта"
