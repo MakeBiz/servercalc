@@ -203,53 +203,6 @@
     "noUtm": true
   },
   {
-    "slug": "aeserver",
-    "name": "AEserver",
-    "color": "#0a7d52",
-    "country": "AE",
-    "affiliateStatus": "active",
-    "url": "https://my.aeserver.com/aff.php?aff=1245",
-    "site": "https://www.aeserver.com",
-    "geos": [
-      "uae"
-    ],
-    "tasks": [
-      "sajt",
-      "magazin",
-      "telegram-bot",
-      "baza-dannyh",
-      "dev"
-    ],
-    "virtualization": [
-      "KVM"
-    ],
-    "features": {
-      "panel": true,
-      "ddos": true,
-      "backup": true,
-      "hourly": false,
-      "testPeriod": false
-    },
-    "description": "Локальный эмиратский провайдер с дата-центром в Дубае. Основной сценарий: проект с аудиторией в ОАЭ и странах Персидского залива, где важен минимальный пинг и местное присутствие",
-    "pros": [
-      "Реальная локация в ОАЭ",
-      "Местное юрлицо и поддержка в регионе",
-      "Низкий пинг по Ближнему Востоку"
-    ],
-    "cons": [
-      "Только одна география",
-      "Цены выше европейских при тех же ресурсах"
-    ],
-    "affiliate": {
-      "rate": "10-70% от инвойса",
-      "term": "lifetime заявлен",
-      "cookie": "90 дней",
-      "note": "Публичный FAQ описывает shared hosting, серверные условия сверить с менеджером",
-      "payoutInternal": "уточняется"
-    },
-    "verifiedAt": "2026-08-02"
-  },
-  {
     "slug": "datapacket",
     "name": "DataPacket",
     "color": "#03235F",
@@ -340,55 +293,6 @@
       "cookie": "90 дней",
       "note": "Выплаты в местной валюте, сверить метод",
       "payoutInternal": "около $30"
-    },
-    "verifiedAt": "2026-08-02"
-  },
-  {
-    "slug": "ultahost",
-    "name": "UltaHost",
-    "color": "#7a1fb8",
-    "country": "INT",
-    "affiliateStatus": "active",
-    "url": "https://ultahost.com/#MakeBiz",
-    "site": "https://ultahost.com",
-    "geos": [
-      "us",
-      "eu",
-      "global"
-    ],
-    "tasks": [
-      "sajt",
-      "magazin",
-      "telegram-bot",
-      "baza-dannyh",
-      "dev"
-    ],
-    "virtualization": [
-      "KVM"
-    ],
-    "features": {
-      "panel": true,
-      "ddos": true,
-      "backup": true,
-      "hourly": false,
-      "testPeriod": false
-    },
-    "description": "Управляемый хостинг на NVMe с упором на скорость сайтов и WordPress. Берут на себя часть администрирования, что удобно, если нет своего системного администратора.",
-    "pros": [
-      "NVMe во всех тарифах",
-      "Управляемые опции и миграция сайта",
-      "Много локаций"
-    ],
-    "cons": [
-      "Агрессивная подача цен, обязательно смотреть цену продления",
-      "Российских локаций нет"
-    ],
-    "affiliate": {
-      "rate": "высокий процент с первой продажи",
-      "term": "по договору",
-      "cookie": "уточняется",
-      "note": "Публичная модель не recurring, для revshare нужен индивидуальный договор",
-      "payoutInternal": "уточняется"
     },
     "verifiedAt": "2026-08-02"
   },
@@ -1204,27 +1108,27 @@
     "verifiedAt": "2026-08-15"
   },
   {
-    "slug": "cloudways",
-    "name": "Cloudways",
-    "color": "#2e3192",
-    "country": "MT",
+    "slug": "beget",
+    "name": "Beget",
+    "color": "#f76707",
+    "country": "RU",
     "affiliateStatus": "active",
-    "url": "https://www.cloudways.com/en/?id=2184024",
-    "site": "https://www.cloudways.com",
+    "url": "https://beget.com/p2667489",
+    "site": "https://beget.com",
     "geos": [
-      "eu",
-      "us",
-      "global",
-      "asia"
+      "ru",
+      "kz"
     ],
     "tasks": [
       "sajt",
       "magazin",
+      "telegram-bot",
+      "baza-dannyh",
       "dev",
       "n8n"
     ],
     "virtualization": [
-      "Cloud"
+      "KVM"
     ],
     "features": {
       "panel": true,
@@ -1233,35 +1137,33 @@
       "hourly": true,
       "testPeriod": true
     },
-    "description": "Управляемый облачный хостинг поверх DigitalOcean, AWS, Google Cloud, Vultr и Linode. Платформа берёт на себя настройку сервера, кэш и обновления, вы платите за управляемость, а не за голый VPS.",
+    "description": "Известный российский хостер с удобной панелью, NVMe-дисками и почасовой тарификацией. Площадки в России и Казахстане",
     "pros": [
-      "Управление сервером, кэш и стек берёт на себя платформа",
-      "Выбор облака и дата-центра: DO, AWS, GCP, Vultr, Linode",
-      "Почасовая оплата и бесплатный пробный период"
+      "Удобная панель и быстрый старт",
+      "NVMe и посуточная тарификация",
+      "Есть площадка в Казахстане"
     ],
     "cons": [
-      "Это управляемый хостинг, дороже обычного VPS",
-      "Оплата в валюте, нет российских локаций",
-      "Пожизненная комиссия партнёрки только на hybrid-плане"
+      "Полный запрет поискового контекста по бренду",
+      "Зарубежных локаций мало"
     ],
     "affiliate": {
-      "rate": "До $350 CPA или $30 за продажу + 7-12% recurring",
-      "term": "Пожизненно на hybrid-плане",
-      "cookie": "90 дней",
-      "note": "Управляемый хостинг поверх DO/AWS/GCP; для пожизненной комиссии нужен hybrid-план",
-      "payoutInternal": "через партнёрскую платформу"
+      "rate": "по программе Beget",
+      "term": "пожизненно",
+      "cookie": "не раскрыт",
+      "note": "Полный запрет поискового контекста по бренду",
+      "payoutInternal": "условия в кабинете"
     },
-    "noUtm": false,
-    "verifiedAt": "2026-08-17"
+    "verifiedAt": "2026-08-16"
   },
   {
-    "slug": "firevps",
-    "name": "FireVPS",
-    "color": "#e8552d",
-    "country": "US",
+    "slug": "racknerd",
+    "name": "RackNerd",
+    "color": "#e8590c",
+    "country": "INT",
     "affiliateStatus": "active",
-    "url": "https://clients.firevps.net/aff.php?aff=104",
-    "site": "https://firevps.net",
+    "url": "https://my.racknerd.com/aff.php?aff=20937",
+    "site": "https://www.racknerd.com",
     "geos": [
       "us",
       "eu",
@@ -1269,40 +1171,85 @@
       "global"
     ],
     "tasks": [
+      "sajt",
+      "telegram-bot",
       "dev",
-      "game",
-      "n8n",
-      "sajt"
+      "game"
     ],
     "virtualization": [
       "KVM"
     ],
     "features": {
-      "panel": false,
+      "panel": true,
       "ddos": true,
       "backup": false,
       "hourly": false,
       "testPeriod": false
     },
-    "description": "Windows RDP и Linux VPS на AMD Ryzen с дата-центрами в 16 локациях по 10 странам. Уклон в RDP-доступ и быстрые SSD/NVMe-конфигурации.",
+    "description": "Очень дешёвый KVM VPS с большим числом площадок в США и точками в Европе и Азии. Оплата за год вперёд, отсюда низкая эффективная цена",
     "pros": [
-      "Много локаций: США, Европа, Азия",
-      "Есть и Windows RDP, и Linux VPS на Ryzen",
-      "Тарифы с каналом до 10 Гбит/с"
+      "Очень низкая цена в пересчёте на месяц",
+      "Много дата-центров в США",
+      "Есть Европа и Сингапур"
     ],
     "cons": [
-      "Лучшая цена только на длинной подписке (1-2 года)",
-      "Нет российских локаций",
-      "Базовая панель управления"
+      "Оплата только за год вперёд",
+      "Вывод партнёрских выплат только через PayPal"
     ],
     "affiliate": {
-      "rate": "20% recurring",
-      "term": "Пока клиент активен",
+      "rate": "15% recurring",
+      "term": "recurring",
       "cookie": "не раскрыт",
-      "note": "Линейки Windows RDP и Linux VPS (Ryzen); партнёрка на WHMCS",
-      "payoutInternal": "через партнёрскую платформу"
+      "note": "Очень дешёвый вход, хорош для контента и калькулятора",
+      "payoutInternal": "только PayPal"
     },
-    "noUtm": false,
-    "verifiedAt": "2026-08-17"
+    "verifiedAt": "2026-08-16"
+  },
+  {
+    "slug": "rosehosting",
+    "name": "RoseHosting",
+    "color": "#c2255c",
+    "country": "INT",
+    "affiliateStatus": "active",
+    "url": "https://secure.rosehosting.com/clientarea/?affid=2795",
+    "site": "https://www.rosehosting.com",
+    "geos": [
+      "us"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "baza-dannyh",
+      "dev"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": false,
+      "testPeriod": false
+    },
+    "description": "Управляемый VPS на NVMe с администрированием на стороне провайдера. Один дата-центр в США, зато берут на себя настройку и поддержку сервера",
+    "pros": [
+      "Полностью управляемый сервер",
+      "NVMe и ECC-память",
+      "Безлимитный трафик"
+    ],
+    "cons": [
+      "Дороже неуправляемых VPS",
+      "Один дата-центр в США",
+      "Вывод только PayPal, холд 65 дней"
+    ],
+    "affiliate": {
+      "rate": "разовая выплата плюс 10% пожизненно",
+      "term": "разово + recurring",
+      "cookie": "не раскрыт",
+      "note": "Управляемый хостинг, высокий чек",
+      "payoutInternal": "PayPal, холд 65 дней"
+    },
+    "verifiedAt": "2026-08-16"
   }
 ]

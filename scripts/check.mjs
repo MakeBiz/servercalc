@@ -20,7 +20,7 @@ const PAGES = [
   '/', '/catalog', '/provajdery', '/vps-dlya', '/vps', '/novosti', '/akcii',
   '/metodologiya', '/o-proekte',
   '/politika-konfidencialnosti', '/cookie',
-  '/provajdery/timeweb', '/provajdery/ultahost', '/provajdery/regru', '/provajdery/vdsina',
+  '/provajdery/timeweb', '/provajdery/regru', '/provajdery/vdsina',
   '/vps-dlya/1c-bitrix', '/vps-dlya/n8n', '/vps/rossiya', '/vps/evropa',
   '/novosti/nvme-protiv-ssd-kogda-raznica-zametna',
   '/novosti/timeweb-cloud-vtoroe-mesto-reyting-partnerskih-programm',
@@ -73,15 +73,6 @@ if (errors === 0) console.log('  чисто');
 
 // 4. партнёрские ссылки
 console.log('\n3. Партнёрские ссылки и метки');
-const ULTA = /https:\/\/ultahost\.com\/\?[^"']*#MakeBiz/;
-const ultaPage = pages.get('/provajdery/ultahost') || '';
-if (ULTA.test(ultaPage)) {
-  console.log('  UltaHost: метка стоит до якоря, реферальный идентификатор цел');
-} else if (/ultahost\.com\/#MakeBiz\?/.test(ultaPage)) {
-  fail('UltaHost: метка попала ПОСЛЕ якоря, реферальный идентификатор сломан');
-} else {
-  warn('UltaHost: ссылку в разметке найти не удалось, проверить вручную');
-}
 
 const allHtml = [...pages.values()].join('\n');
 const outLinks = [...allHtml.matchAll(/<a[^>]+href="(https?:\/\/[^"]+)"[^>]*>/g)];
