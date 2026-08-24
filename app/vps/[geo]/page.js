@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
   if (!geo) return {};
   return {
     title: geo.h1,
-    description: `${geo.note}. Провайдеры с локацией в этом регионе, тарифы с датой проверки цены и разбор, кому такое размещение подходит, а кому нет`,
+    description: `${geo.note}. Провайдеры с этой локацией и тарифы с проверенной ценой, кому подходит такое размещение`,
     alternates: { canonical: `/vps/${slug}` },
   };
 }

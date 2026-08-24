@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
   if (!task) return {};
   return {
     title: task.h1,
-    description: `${task.intent}. Рекомендуемая конфигурация с объяснением, почему именно столько ресурсов, что проверить у провайдера и подходящие тарифы с датой проверки цены`,
+    description: `${task.intent}. Рекомендованная конфигурация, что проверить у провайдера и подходящие тарифы с проверенной ценой`,
     alternates: { canonical: `/vps-dlya/${slug}` },
   };
 }
