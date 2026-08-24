@@ -26,6 +26,22 @@ const TRACKING = [
 
 export function GET() {
   const body = [
+    // Явный доступ AI-ботам для GEO/AI-видимости (цитирование в ChatGPT,
+    // Perplexity, Алисе, Google AI). Несколько User-agent подряд делят один блок.
+    'User-agent: GPTBot',
+    'User-agent: OAI-SearchBot',
+    'User-agent: ChatGPT-User',
+    'User-agent: PerplexityBot',
+    'User-agent: Perplexity-User',
+    'User-agent: Google-Extended',
+    'User-agent: ClaudeBot',
+    'User-agent: anthropic-ai',
+    'User-agent: Claude-User',
+    'User-agent: YandexAdditional',
+    'User-agent: Applebot-Extended',
+    'User-agent: CCBot',
+    'Allow: /',
+    '',
     'User-agent: *',
     'Allow: /',
     // Состояние фильтров каталога живёт в компоненте, а не в адресе, но
