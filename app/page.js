@@ -73,6 +73,20 @@ export default function HomePage() {
       <JsonLd
         data={{
           '@context': 'https://schema.org',
+          '@type': 'WebApplication',
+          name: `Калькулятор подбора VPS — ${SITE_NAME}`,
+          url: SITE_URL,
+          applicationCategory: 'BusinessApplication',
+          operatingSystem: 'Web',
+          inLanguage: 'ru-RU',
+          offers: { '@type': 'Offer', price: '0', priceCurrency: 'RUB' },
+          description:
+            'Подбор виртуального сервера по задаче, ресурсам, географии и бюджету с проверенными ценами провайдеров',
+        }}
+      />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
           '@type': 'FAQPage',
           mainEntity: FAQ.map((item) => ({
             '@type': 'Question',
