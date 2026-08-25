@@ -41,19 +41,6 @@
    ],
    "validUntil": null,
    "verifiedAt": "2026-08-05"
-  },
-  {
-   "id": "fornex-15",
-   "provider": "fornex",
-   "title": "Скидка 15% на VPS",
-   "benefit": "Промокод не нужен, скидка привязана к переходу",
-   "code": null,
-   "mechanics": "скидка применяется автоматически при регистрации по нашей ссылке",
-   "conditions": [
-    "действует на тарифы VPS"
-   ],
-   "validUntil": null,
-   "verifiedAt": "2026-08-05"
   }
  ]
 }
