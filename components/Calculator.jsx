@@ -347,7 +347,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                   {payload.geos.find((g) => g.code === r.plan.geo)?.name || r.plan.geo}
                 </div>
                 <div className="reasons">
-                  {r.reasons.map((reason) => (
+                  {r.reasons.filter((reason) => reason.ok).map((reason) => (
                     <span key={reason.code} className={reason.ok ? 'reason reason-ok' : 'reason reason-no'}>
                       {reason.ok ? '✓' : '✕'} {reason.text}
                     </span>
