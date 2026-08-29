@@ -67,21 +67,21 @@ export default function Header({ showPromos = false }) {
 
         <button
           type="button"
-          className="theme-toggle"
+          role="switch"
+          aria-checked={theme === 'light'}
+          className="theme-switch"
           onClick={toggleTheme}
-          aria-label={theme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему'}
-          title={theme === 'light' ? 'Тёмная тема' : 'Светлая тема'}
+          aria-label="Переключить светлую и тёмную тему"
+          title="Светлая / тёмная тема"
         >
-          {theme === 'light' ? (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-            </svg>
-          ) : (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.7" />
-              <path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-            </svg>
-          )}
+          <svg className="ts-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+          </svg>
+          <svg className="ts-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.8" />
+            <path d="M12 2.6v2.3M12 19.1v2.3M4.5 4.5l1.6 1.6M17.9 17.9l1.6 1.6M2.6 12h2.3M19.1 12h2.3M4.5 19.5l1.6-1.6M17.9 6.1l1.6-1.6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+          <span className="ts-knob" aria-hidden="true" />
         </button>
 
         <button

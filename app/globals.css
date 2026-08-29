@@ -1365,26 +1365,52 @@ html[data-theme='light'] .hero::before {
     radial-gradient(700px 340px at 12% -8%, rgba(7, 78, 232, 0.08), transparent 65%),
     radial-gradient(600px 300px at 88% 4%, rgba(1, 60, 164, 0.06), transparent 60%);
 }
-/* Тумблер темы в шапке */
-.theme-toggle {
+/* Тумблер темы: явный переключатель со скользящим кружком */
+.theme-switch {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  margin-left: 8px;
+  flex: none;
+  width: 62px;
+  height: 32px;
+  margin-left: 10px;
   padding: 0;
   border: 1px solid var(--ink-line-2);
-  border-radius: var(--r-md);
-  background: transparent;
-  color: var(--on-ink-dim);
+  border-radius: 999px;
+  background: var(--ink-600);
   cursor: pointer;
-  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
-.theme-toggle:hover {
-  color: var(--on-ink);
-  border-color: var(--brass);
+.theme-switch svg {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+  color: var(--on-ink-faint);
+  transition: color 0.2s ease;
 }
+.theme-switch .ts-moon { left: 8px; }
+.theme-switch .ts-sun { right: 8px; }
+.theme-switch .ts-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(10, 12, 20, 0.45);
+  transition: transform 0.2s ease;
+  z-index: 1;
+}
+.theme-switch[aria-checked='false'] .ts-sun { color: var(--brass-bright); }
+.theme-switch[aria-checked='true'] { background: var(--brass); border-color: var(--brass); }
+.theme-switch[aria-checked='true'] .ts-knob { transform: translateX(30px); }
+.theme-switch[aria-checked='true'] .ts-moon { color: rgba(255, 255, 255, 0.9); }
+.theme-switch[aria-checked='true'] .ts-sun { color: rgba(255, 255, 255, 0.35); }
+.theme-switch:hover { border-color: var(--brass); }
 /* Липкая шапка: в тёмной теме фон захардкожен, для светлой — белый полупрозрачный */
 html[data-theme='light'] .header { background: rgba(255, 255, 255, 0.9); }
 /* Красный чип-причина (если где-то показывается) читаем на светлом */
