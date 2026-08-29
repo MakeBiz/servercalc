@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
 import { SITE_NAME } from '@/lib/site';
+import { goal } from '@/lib/metrika';
 
 const NAV = [
   { href: '/catalog', label: 'Каталог' },
@@ -21,6 +22,19 @@ const NAV = [
 export default function Header({ showPromos = false }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || '/';
+
+  const [theme, setTheme] = useState('dark');
+  useEffect(() => {
+    setTheme(document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+  }, []);
+  const toggleTheme = () => {
+    const next = theme === 'light' ? 'dark' : 'light';
+    if (next === 'light') document.documentElement.dataset.theme = 'light';
+    else delete document.documentElement.dataset.theme;
+    try { localStorage.setItem('sc-theme', next); } catch {}
+    setTheme(next);
+    goal(next === 'light' ? 'theme_to_light' : 'theme_to_dark');
+  };
 
   // сравнение по сегментам: иначе /vps подсвечивался бы на /vps-dlya/...
   const isActive = (href) =>
@@ -50,6 +64,25 @@ export default function Header({ showPromos = false }) {
         <Link href="/#podbor" className="btn btn-brass btn-sm header-cta">
           Подобрать сервер
         </Link>
+
+        <button
+          type="button"
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={theme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему'}
+          title={theme === 'light' ? 'Тёмная тема' : 'Светлая тема'}
+        >
+          {theme === 'light' ? (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+            </svg>
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.7" />
+              <path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+            </svg>
+          )}
+        </button>
 
         <button
           className="burger"

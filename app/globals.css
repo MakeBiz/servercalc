@@ -1313,3 +1313,79 @@ a.news-featured:hover { border-color: var(--brass); box-shadow: var(--shadow-car
 }
 .cta-provider .eyebrow { margin-bottom: 20px; }
 .cta-provider .disclosure { margin-top: 18px; }
+
+/* ============================================================
+   Светлая тема (вариант «MakeBiz»): переопределяем те же токены.
+   Тёмное «ink»-шасси (шапка, герой, калькулятор, подвал) становится
+   белым, латунь — синей. По умолчанию сайт остаётся тёмным; тема
+   включается тумблером в шапке и запоминается (localStorage 'sc-theme').
+   ============================================================ */
+html[data-theme='light'] {
+  --ink-900: #ffffff;
+  --ink-800: #f5f7f9;
+  --ink-700: #ffffff;
+  --ink-600: #eef1f6;
+  --ink-500: #e2e7ef;
+  --ink-line: rgba(3, 35, 95, 0.10);
+  --ink-line-2: rgba(3, 35, 95, 0.16);
+  --on-ink: #03235f;
+  --on-ink-dim: #5a6b8c;
+  --on-ink-faint: #9ca6bc;
+
+  --paper: #f5f7f9;
+  --paper-card: #ffffff;
+  --paper-sunk: #eef1f6;
+  --line: #e7e7e7;
+  --line-2: #d8dee8;
+  --text: #03235f;
+  --text-dim: #5a6b8c;
+  --text-faint: #9ca6bc;
+
+  --brass: #074ee8;
+  --brass-bright: #2f6bff;
+  --brass-deep: #013ca4;
+  --brass-wash: rgba(7, 78, 232, 0.10);
+
+  --steel: #5b7a99;
+  --ok: #2e7d46;
+  --ok-wash: rgba(46, 125, 70, 0.12);
+  --warn: #a9702c;
+  --warn-wash: rgba(169, 112, 44, 0.12);
+  --danger: #c51929;
+
+  --shadow-card: 0 1px 2px rgba(72, 89, 102, 0.05), 0 8px 28px rgba(72, 89, 102, 0.10);
+  --shadow-pop: 0 24px 60px -20px rgba(72, 89, 102, 0.30);
+}
+/* На синих кнопках и активном сегменте текст белый (в тёмной теме там тёмный) */
+html[data-theme='light'] .btn-brass,
+html[data-theme='light'] .seg button.on { color: #fff; }
+/* Ореол героя из тёплого в мягкий синий */
+html[data-theme='light'] .hero::before {
+  background:
+    radial-gradient(700px 340px at 12% -8%, rgba(7, 78, 232, 0.08), transparent 65%),
+    radial-gradient(600px 300px at 88% 4%, rgba(1, 60, 164, 0.06), transparent 60%);
+}
+/* Тумблер темы в шапке */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin-left: 8px;
+  padding: 0;
+  border: 1px solid var(--ink-line-2);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--on-ink-dim);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.theme-toggle:hover {
+  color: var(--on-ink);
+  border-color: var(--brass);
+}
+/* Липкая шапка: в тёмной теме фон захардкожен, для светлой — белый полупрозрачный */
+html[data-theme='light'] .header { background: rgba(255, 255, 255, 0.9); }
+/* Красный чип-причина (если где-то показывается) читаем на светлом */
+html[data-theme='light'] .reason-no { color: var(--danger); border-color: rgba(197, 25, 41, 0.3); }

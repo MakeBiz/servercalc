@@ -51,6 +51,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ru">
       <body>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{if(localStorage.getItem('sc-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();",
+          }}
+        />
         <DemoStrip />
         <Header showPromos={HAS_PROMOS} />
         <main>{children}</main>
