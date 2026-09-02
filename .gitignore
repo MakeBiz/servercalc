@@ -6,3 +6,4 @@ out
 
 # статический экспорт
 out
+.tmp_block.txt

@@ -18,7 +18,9 @@
       "telegram-bot",
       "baza-dannyh",
       "dev",
-      "n8n"
+      "n8n",
+      "windows",
+      "gpu"
     ],
     "virtualization": [
       "KVM"
@@ -69,7 +71,9 @@
       "telegram-bot",
       "baza-dannyh",
       "dev",
-      "n8n"
+      "n8n",
+      "windows",
+      "gpu"
     ],
     "virtualization": [
       "KVM"
@@ -455,7 +459,8 @@
       "telegram-bot",
       "baza-dannyh",
       "dev",
-      "game"
+      "game",
+      "windows"
     ],
     "virtualization": [
       "KVM"
@@ -502,7 +507,8 @@
       "1c-bitrix",
       "baza-dannyh",
       "ai",
-      "dev"
+      "dev",
+      "windows"
     ],
     "virtualization": [
       "KVM"
@@ -550,7 +556,8 @@
       "magazin",
       "1c-bitrix",
       "baza-dannyh",
-      "dev"
+      "dev",
+      "windows"
     ],
     "virtualization": [
       "KVM"
@@ -935,7 +942,9 @@
       "magazin",
       "1c-bitrix",
       "baza-dannyh",
-      "dev"
+      "dev",
+      "windows",
+      "gpu"
     ],
     "virtualization": [
       "KVM"

@@ -81,6 +81,26 @@
       "cpu": 2,
       "intent": "Self-hosted n8n, Coolify, автоматизация процессов",
       "hideInCalc": true
+    },
+    {
+      "slug": "windows",
+      "icon": "🪟",
+      "name": "Windows",
+      "h1": "Аренда Windows VPS (ВПС): сервер под 1С и RDP",
+      "ram": 8,
+      "cpu": 4,
+      "intent": "Windows Server под 1С в клиент-серверном режиме, RDP для команды, .NET и отраслевой софт",
+      "hideInCalc": true
+    },
+    {
+      "slug": "gpu",
+      "icon": "🎮",
+      "name": "GPU и ИИ",
+      "h1": "Аренда сервера с GPU для ИИ, обучения и рендеринга",
+      "ram": 16,
+      "cpu": 8,
+      "intent": "Серверы с видеокартой NVIDIA под инференс и обучение нейросетей, рендеринг и вычисления",
+      "hideInCalc": true
     }
   ],
   "geos": [
