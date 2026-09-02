@@ -31,7 +31,7 @@ export async function generateMetadata({ params }) {
   if (!provider) return {};
   const min = minPriceOf(slug);
   return {
-    title: `${provider.name}: тарифы, характеристики и ограничения`,
+    title: `${provider.name}: тарифы и цены VPS (ВПС), характеристики`,
     description: `${provider.description.slice(0, 150)}${min ? ` Тарифы от ${price(min)} в месяц.` : ''} Что провайдер закрывает, а что нет, и под какие задачи подходит`,
     alternates: { canonical: `/provajdery/${slug}` },
   };
