@@ -62,6 +62,19 @@ export default function HomePage() {
       <JsonLd
         data={{
           '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: SITE_NAME,
+          url: SITE_URL,
+          email: 'info@servercalc.ru',
+          inLanguage: 'ru-RU',
+          description:
+            'Независимый справочный каталог виртуальных серверов (VPS/ВПС) с подбором под задачу по открытой формуле и проверенной ценой у каждого тарифа',
+          areaServed: 'RU',
+        }}
+      />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
           '@type': 'WebSite',
           name: SITE_NAME,
           url: SITE_URL,
