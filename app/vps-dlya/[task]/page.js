@@ -68,7 +68,7 @@ export default async function TaskPage({ params }) {
           <>
             <span className="badge badge-brass">рекомендуем {task.cpu} × {task.ram} ГБ</span>
             <span className="badge">{providers.length} подходящих провайдеров</span>
-            {cheapest && <span className="badge">от {price(cheapest.priceRub)} в месяц</span>}
+            {!task.noTariffs && cheapest && <span className="badge">от {price(cheapest.priceRub)} в месяц</span>}
             <span className="badge">проверено {ruDate(STATS.verifiedAt)}</span>
           </>
         }
@@ -142,18 +142,32 @@ export default async function TaskPage({ params }) {
               <div className="eyebrow">
                 <span className="label">Тарифы</span>
               </div>
-              <h2>Подходящие тарифы из базы</h2>
-              <p className="lead">
-                Отобраны те, что перекрывают рекомендуемую конфигурацию: не меньше {task.cpu}{' '}
-                {plural(task.cpu, 'ядра', 'ядер', 'ядер')} и {task.ram} ГБ памяти
-              </p>
+              <h2>{task.noTariffs ? 'Сервер с GPU: цену считают отдельно' : 'Подходящие тарифы из базы'}</h2>
+              {task.noTariffs ? (
+                <p className="lead">
+                  Цена сервера с видеокартой зависит от модели GPU и объёма видеопамяти и считается
+                  отдельно от обычных VPS. Ниже провайдеры, у которых есть GPU-серверы
+                </p>
+              ) : (
+                <p className="lead">
+                  Отобраны те, что перекрывают рекомендуемую конфигурацию: не меньше {task.cpu}{' '}
+                  {plural(task.cpu, 'ядра', 'ядер', 'ядер')} и {task.ram} ГБ памяти
+                </p>
+              )}
             </div>
             <Link href="/catalog" className="btn btn-ghost">
               Весь каталог
             </Link>
           </div>
 
-          {suited.length === 0 ? (
+          {task.noTariffs ? (
+            <div className="notice">
+              <strong>Почему здесь нет таблицы цен.</strong> Тарифы с GPU провайдеры выносят отдельно
+              от обычных VPS, а цена зависит от модели видеокарты и объёма видеопамяти. В нашей базе
+              цена за ресурс считается для обычных серверов, поэтому цену за GPU мы тут не показываем,
+              чтобы не вводить в заблуждение: актуальную конфигурацию и цену смотрите у провайдера
+            </div>
+          ) : suited.length === 0 ? (
             <div className="notice notice-warn">
               <strong>Пока пусто.</strong> В базе нет тарифов с проверенной ценой, которые
               перекрывают эту конфигурацию. Как только парсер обновит цены, список появится
@@ -211,7 +225,7 @@ export default async function TaskPage({ params }) {
           <h2 style={{ marginBottom: 24 }}>Кто заявляет эту задачу</h2>
           <div className="cards cards-2">
             {providers.map((p) => (
-              <ProviderCard key={p.slug} provider={p} minPrice={minPriceOf(p.slug)} campaign={CAMPAIGN.task(slug)} />
+              <ProviderCard key={p.slug} provider={p} minPrice={task.noTariffs ? null : minPriceOf(p.slug)} campaign={CAMPAIGN.task(slug)} />
             ))}
           </div>
         </div>
