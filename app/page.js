@@ -4,7 +4,7 @@ import ProviderCard from '@/components/ProviderCard';
 import TaskIcon from '@/components/TaskIcon';
 import JsonLd from '@/components/JsonLd';
 import { FreshnessRule } from '@/components/Freshness';
-import { calculatorPayload, TASKS, GEO_PAGES, PROVIDERS, STATS, minPriceOf, plansOf } from '@/lib/data';
+import { calculatorPayload, TASKS, GEO_PAGES, PROVIDERS, STATS, minPriceOf, plansOf, sortProvidersByPriority } from '@/lib/data';
 import { allPosts, rubricName } from '@/lib/news';
 import { price, plural, ruDate, num } from '@/lib/format';
 import { CAMPAIGN } from '@/lib/utm';
@@ -51,11 +51,7 @@ const FAQ = [
 export default function HomePage() {
   const payload = calculatorPayload();
   const posts = allPosts().slice(0, 3);
-  const providers = [...PROVIDERS].sort((a, b) => {
-    const pa = minPriceOf(a.slug) ?? Infinity;
-    const pb = minPriceOf(b.slug) ?? Infinity;
-    return pa - pb;
-  });
+  const providers = sortProvidersByPriority(PROVIDERS);
 
   return (
     <>
@@ -252,8 +248,9 @@ export default function HomePage() {
               </div>
               <h2>Кто участвует в сравнении</h2>
               <p className="lead">
-                Отсортированы по минимальной цене в базе. В сравнение включены и провайдеры без
-                партнёрских отношений с нами: каталог без них был бы неполным
+                Наверху провайдеры, которых мы рекомендуем в первую очередь, дальше остальные по
+                минимальной цене. В сравнение включены и провайдеры без партнёрских отношений с
+                нами: каталог без них был бы неполным
               </p>
             </div>
             <Link href="/provajdery" className="btn btn-ghost">
