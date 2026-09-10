@@ -21,6 +21,7 @@ export default function ProvidersPage() {
   // затем остальные по цене. Единый источник приоритета — PRIORITY_BONUS из lib/score.
   const priorityOf = (p) => PRIORITY_BONUS[p.slug] || 0;
   const sortByPrice = (a, b) =>
+    (b.slug === 'timeweb') - (a.slug === 'timeweb') ||
     priorityOf(b) - priorityOf(a) ||
     (minPriceOf(a.slug) ?? Infinity) - (minPriceOf(b.slug) ?? Infinity);
 
