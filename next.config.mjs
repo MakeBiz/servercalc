@@ -13,7 +13,12 @@ const nextConfig = {
   output: asServer ? undefined : 'export',
   reactStrictMode: true,
   poweredByHeader: false,
-  trailingSlash: false,
+  // Адреса страниц со слешем на конце (17.10.2026). Хостинг отдаёт страницы
+  // папками и переводит /catalog на /catalog/, поэтому ссылки, canonical и
+  // карта сайта должны сразу вести на адрес со слешем, иначе каждая ссылка
+  // и каждый адрес карты проходят через переадресацию (так было до 17.10:
+  // 52 из 77 адресов карты Google видел переадресацией)
+  trailingSlash: true,
   images: { unoptimized: true },
 };
 export default nextConfig;
