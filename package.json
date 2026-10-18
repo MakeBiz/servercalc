@@ -4,7 +4,9 @@
   "private": true,
   "description": "ServerCalc, справочный каталог виртуальных серверов с подбором под задачу",
   "scripts": {
+    "predev": "node scripts/catalog-pull.mjs",
     "dev": "next dev -p 3000",
+    "prebuild": "node scripts/catalog-pull.mjs",
     "build": "next build && node scripts/postbuild.mjs",
     "start": "npx --yes serve out -l ${PORT:-3000}",
     "start:server": "SERVERCALC_SERVER=1 next start -p ${PORT:-3000} -H 0.0.0.0",
