@@ -10,6 +10,7 @@ import { taskContent } from '@/lib/task-content';
 import { postsForTask, rubricName } from '@/lib/news';
 import { CAMPAIGN } from '@/lib/utm';
 import { price, plural, ruDate } from '@/lib/format';
+import { taskAnswer, geoAnswer, itemListLd } from '@/lib/geo-answer';
 
 export function generateStaticParams() {
   return TASKS.map((t) => ({ task: t.slug }));
@@ -39,15 +40,18 @@ export default async function TaskPage({ params }) {
     (p) => p.ram >= task.ram && p.cpu >= task.cpu && providers.some((x) => x.slug === p.providerSlug)
   ).sort((a, b) => a.priceRub - b.priceRub);
   const cheapest = suited[0];
+  const quick = taskAnswer(task, suited, providers, STATS.verifiedAt);
+  const faqAll = [...(content?.faq || []), ...(quick ? [quick.faq] : [])];
+  const pageUrl = `https://servercalc.ru/vps-dlya/${slug}`;
 
   return (
     <>
-      {content?.faq && (
+      {faqAll.length > 0 && (
         <JsonLd
           data={{
             '@context': 'https://schema.org',
             '@type': 'FAQPage',
-            mainEntity: content.faq.map((f) => ({
+            mainEntity: faqAll.map((f) => ({
               '@type': 'Question',
               name: f.q,
               acceptedAnswer: { '@type': 'Answer', text: f.a },
@@ -55,6 +59,8 @@ export default async function TaskPage({ params }) {
           }}
         />
       )}
+
+      {quick && <JsonLd data={itemListLd(task.h1, pageUrl, suited, providers, STATS.verifiedAt)} />}
 
       <PageHead
         eyebrow="Подбор под задачу"
@@ -73,6 +79,16 @@ export default async function TaskPage({ params }) {
           </>
         }
       />
+
+      {quick && (
+        <section className="section-tight paper">
+          <div className="wrap">
+            <div className="notice">
+              <strong>Коротко.</strong> {quick.text}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* конфигурация с объяснением: то, за чем приходят на такую страницу */}
       <section className="section paper">
@@ -232,7 +248,7 @@ export default async function TaskPage({ params }) {
       </section>
 
       {/* вопросы */}
-      {content?.faq && (
+      {faqAll.length > 0 && (
         <section className="section paper">
           <div className="wrap">
             <div className="eyebrow">
@@ -240,7 +256,7 @@ export default async function TaskPage({ params }) {
             </div>
             <h2 style={{ marginBottom: 26 }}>Что спрашивают про {task.name.toLowerCase()}</h2>
             <div className="stack-lg">
-              {content.faq.map((f) => (
+              {faqAll.map((f) => (
                 <div key={f.q}>
                   <h3>{f.q}</h3>
                   <p className="dim">{f.a}</p>
