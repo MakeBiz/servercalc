@@ -7,8 +7,10 @@ import JsonLd from '@/components/JsonLd';
 import { GEO_PAGES, getGeo, providersForGeo, plansForGeo, minPriceOf, calculatorPayload, STATS } from '@/lib/data';
 import { geoContent } from '@/lib/geo-content';
 import { CAMPAIGN } from '@/lib/utm';
-import { price, plural, ruDate } from '@/lib/format';
+import { price, plural, ruDate, termShort } from '@/lib/format';
 import { taskAnswer, geoAnswer, itemListLd } from '@/lib/geo-answer';
+import { geoLead, checkedAt, checkedLine, yearOf } from '@/lib/answer-first';
+import { absUrl } from '@/lib/site';
 
 export function generateStaticParams() {
   return GEO_PAGES.map((g) => ({ geo: g.slug }));
@@ -18,8 +20,11 @@ export async function generateMetadata({ params }) {
   const { geo: slug } = await params;
   const geo = getGeo(slug);
   if (!geo) return {};
+  const plans = plansForGeo(geo.code);
+  const year = yearOf(checkedAt(plans, STATS.verifiedAt));
+  const from = plans[0] ? `: от ${price(plans[0].priceRub)}/мес` : '';
   return {
-    title: geo.h1,
+    title: { absolute: `${geo.h1}, цены ${year}${from}` },
     description: `${geo.note}. Провайдеры с этой локацией и тарифы с проверенной ценой, кому подходит такое размещение`,
     alternates: { canonical: `/vps/${slug}` },
   };
@@ -35,9 +40,11 @@ export default async function GeoPage({ params }) {
   const plans = plansForGeo(geo.code);
   const payload = calculatorPayload();
   const cheapest = plans[0];
-  const quick = geoAnswer(geo, plans, providers, STATS.verifiedAt);
+  const checked = checkedAt(plans, STATS.verifiedAt);
+  const quick = geoAnswer(geo, plans, providers, checked);
+  const lead = geoLead(geo.h1.replace(/^VPS (\(ВПС\) )?/, ''), plans, checked, geo.code);
   const faqAll = [...(content?.faq || []), ...(quick ? [quick.faq] : [])];
-  const pageUrl = `https://servercalc.ru/vps/${slug}`;
+  const pageUrl = absUrl(`/vps/${slug}/`);
 
   return (
     <>
@@ -55,12 +62,12 @@ export default async function GeoPage({ params }) {
         />
       )}
 
-      {quick && <JsonLd data={itemListLd(geo.h1, pageUrl, plans, providers, STATS.verifiedAt)} />}
+      {quick && <JsonLd data={itemListLd(geo.h1, pageUrl, plans, providers, checked)} />}
 
       <PageHead
-        eyebrow="География"
+        eyebrow={plans.length ? checkedLine(checked) : 'География'}
         title={geo.h1}
-        lead={geo.note}
+        lead={lead || geo.note}
         crumbs={[
           { href: '/vps', label: 'География' },
           { href: `/vps/${slug}`, label: geo.name },
@@ -74,7 +81,7 @@ export default async function GeoPage({ params }) {
               {providers.length} {plural(providers.length, 'провайдер', 'провайдера', 'провайдеров')}
             </span>
             {cheapest && <span className="badge">от {price(cheapest.priceRub)} в месяц</span>}
-            <span className="badge">проверено {ruDate(STATS.verifiedAt)}</span>
+            <span className="badge">проверено {ruDate(checked)}</span>
           </>
         }
       />
@@ -83,7 +90,7 @@ export default async function GeoPage({ params }) {
         <section className="section-tight paper">
           <div className="wrap">
             <div className="notice">
-              <strong>Коротко.</strong> {quick.text}
+              <strong>{geo.note}.</strong> {quick.text}
             </div>
           </div>
         </section>
@@ -183,7 +190,7 @@ export default async function GeoPage({ params }) {
                           <td className="td-num">{p.disk} ГБ <span className="faint">{p.diskType}</span></td>
                           <td className="td-num">{price(p.priceRub / p.ram)}</td>
                           <td className="td-num faint">{ruDate(p.verifiedAt)}</td>
-                          <td className="td-price" style={{ textAlign: 'right' }}>{price(p.priceRub)}</td>
+                          <td className="td-price" style={{ textAlign: 'right' }}>{price(p.priceRub)}{termShort(p) && <div className="faint" style={{ fontSize: '0.75rem', fontWeight: 400 }}>{termShort(p)}</div>}</td>
                         </tr>
                       );
                     })}

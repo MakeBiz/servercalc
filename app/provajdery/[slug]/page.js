@@ -18,7 +18,7 @@ import {
   STATS,
 } from '@/lib/data';
 import { CAMPAIGN } from '@/lib/utm';
-import { price, plural, ruDate } from '@/lib/format';
+import { price, plural, ruDate, termShort } from '@/lib/format';
 import { absUrl } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -232,7 +232,7 @@ export default async function ProviderPage({ params }) {
                             </>
                           )}
                         </td>
-                        <td className="td-price" style={{ textAlign: 'right' }}>{price(p.priceRub)}</td>
+                        <td className="td-price" style={{ textAlign: 'right' }}>{price(p.priceRub)}{termShort(p) && <div className="faint" style={{ fontSize: '0.75rem', fontWeight: 400 }}>{termShort(p)}</div>}</td>
                         <td style={{ textAlign: 'right' }}>
                           <OutLink
                             provider={provider}

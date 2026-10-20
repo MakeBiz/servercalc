@@ -34,7 +34,9 @@
    "h1": "VPS для Telegram-бота",
    "ram": 2,
    "cpu": 1,
-   "intent": "Боты, вебхуки, небольшие сервисы с постоянным аптаймом"
+   "intent": "Боты, вебхуки, небольшие сервисы с постоянным аптаймом",
+   "titleShort": "VPS для Telegram-бота недорого",
+   "leadWhat": "Telegram-бота"
   },
   {
    "slug": "baza-dannyh",
@@ -90,7 +92,8 @@
    "ram": 8,
    "cpu": 4,
    "intent": "Windows Server под 1С в клиент-серверном режиме, RDP для команды, .NET и отраслевой софт",
-   "hideInCalc": true
+   "hideInCalc": true,
+   "titleShort": "Аренда Windows VPS (ВПС) под 1С и RDP"
   },
   {
    "slug": "gpu",

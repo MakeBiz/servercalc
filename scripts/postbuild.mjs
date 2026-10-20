@@ -41,3 +41,54 @@ function walk(dir) {
 
 walk(OUT);
 console.log(`[postbuild] продублировано страниц в index.html: ${made}`);
+
+/**
+ * og:url, og:title и og:description у каждой страницы свои (21.10.2026).
+ * Next берёт openGraph из корневого layout целиком, если страница не задаёт
+ * свой, поэтому до этой правки og:url всех страниц вёл на главную, а og:title
+ * был названием сайта. Ссылки в ChatGPT и мессенджерах показывали главную.
+ * Берём адрес из rel=canonical, заголовок из <title>, описание из meta description
+ */
+let ogFixed = 0;
+const attr = (tag, name) => {
+  const m = tag.match(new RegExp(`${name}="([^"]*)"`));
+  return m ? m[1] : null;
+};
+function fixOg(file) {
+  let html = fs.readFileSync(file, 'utf8');
+  const canon = html.match(/<link[^>]+rel="canonical"[^>]*>/);
+  if (!canon) return;
+  const url = attr(canon[0], 'href');
+  if (!url || /noindex/.test(html.slice(0, 4000)) && /http-equiv="refresh"/.test(html)) return;
+  const title = (html.match(/<title>([^<]*)<\/title>/) || [])[1] || null;
+  const descTag = html.match(/<meta[^>]+name="description"[^>]*>/);
+  const desc = descTag ? attr(descTag[0], 'content') : null;
+  const set = (prop, value) => {
+    if (value == null) return;
+    const re = new RegExp(`<meta[^>]+property="${prop}"[^>]*>`);
+    const tag = `<meta property="${prop}" content="${String(value).replace(/"/g, '&quot;')}"/>`;
+    if (re.test(html)) html = html.replace(re, tag);
+    else html = html.replace('</head>', `${tag}</head>`);
+  };
+  const before = html;
+  set('og:url', url);
+  set('og:title', title);
+  set('og:description', desc);
+  if (html !== before) {
+    fs.writeFileSync(file, html);
+    ogFixed += 1;
+  }
+}
+function walkOg(dir) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (entry.name === '_next') continue;
+      walkOg(full);
+    } else if (entry.name.endsWith('.html')) {
+      fixOg(full);
+    }
+  }
+}
+walkOg(OUT);
+console.log(`[postbuild] og:url/og:title/og:description по странице: ${ogFixed} файлов`);

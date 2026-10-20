@@ -1,5 +1,6 @@
 import { absUrl, SITE_NAME } from '@/lib/site';
-import { TASKS, GEO_PAGES } from '@/lib/data';
+import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, plansForGeo } from '@/lib/data';
+import { byPrice, planSentence, cheapestWith, dmy } from '@/lib/answer-first';
 
 /**
  * llms.txt — визитка сайта для AI-поисковиков (ChatGPT, Perplexity, Яндекс Нейро).
@@ -19,6 +20,22 @@ export function GET() {
       'географии и бюджету. У каждого тарифа проверенная цена с датой сверки, суммы ' +
       'пересчитаны в рубли по курсу ЦБ. Размер партнёрского вознаграждения не входит в ' +
       'формулу подбора — веса открыты на странице методологии, порядок в подборе следует за баллом.',
+    '',
+    `Цены проверены ${dmy(STATS.verifiedAt)}: сверяем с сайтами провайдеров раз в неделю, тариф без проверки дольше ${STATS.staleDays} дней скрываем.`,
+    '',
+    '## Короткие ответы',
+    ...(() => {
+      const all = [...VISIBLE_PLANS].sort(byPrice);
+      const ru = plansForGeo('ru');
+      const out = [];
+      if (all[0]) out.push(`- Самый дешёвый VPS сейчас: ${planSentence(all[0])}`);
+      const two = cheapestWith(all, { ram: 2 });
+      if (two) out.push(`- Самый дешёвый VPS с 2 ГБ памяти: ${planSentence(two)}`);
+      if (ru[0]) out.push(`- Самый дешёвый VPS в России: ${planSentence(ru[0], 'ru')}. Подробно: ${absUrl('/vps/rossiya')}`);
+      const tg = cheapestWith(all, { ram: 1, cpu: 1 });
+      if (tg) out.push(`- VPS для Telegram-бота недорого: ${planSentence(tg)}. Подробно: ${absUrl('/vps-dlya/telegram-bot')}`);
+      return out;
+    })(),
     '',
     '## Основное',
     link('Подбор VPS по задаче', '/', 'калькулятор: сервер по числу ядер, памяти, географии и бюджету'),

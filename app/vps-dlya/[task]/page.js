@@ -9,8 +9,11 @@ import { TASKS, getTask, providersForTask, minPriceOf, calculatorPayload, VISIBL
 import { taskContent } from '@/lib/task-content';
 import { postsForTask, rubricName } from '@/lib/news';
 import { CAMPAIGN } from '@/lib/utm';
-import { price, plural, ruDate } from '@/lib/format';
+import { price, plural, ruDate, termShort } from '@/lib/format';
 import { taskAnswer, geoAnswer, itemListLd } from '@/lib/geo-answer';
+import { taskLead, checkedAt, checkedLine, yearOf } from '@/lib/answer-first';
+import { windowsLead, windowsFrom } from '@/lib/windows';
+import { absUrl } from '@/lib/site';
 
 export function generateStaticParams() {
   return TASKS.map((t) => ({ task: t.slug }));
@@ -20,8 +23,17 @@ export async function generateMetadata({ params }) {
   const { task: slug } = await params;
   const task = getTask(slug);
   if (!task) return {};
+  const providers = providersForTask(slug);
+  const suited = VISIBLE_PLANS.filter(
+    (p) => p.ram >= task.ram && p.cpu >= task.cpu && providers.some((x) => x.slug === p.providerSlug)
+  ).sort((a, b) => a.priceRub - b.priceRub);
+  const year = yearOf(checkedAt(suited, STATS.verifiedAt));
+  const winFrom = slug === 'windows' ? windowsFrom(suited) : null;
+  const from = slug === 'windows'
+    ? (winFrom ? `: от ${price(winFrom)}/мес с лицензией` : '')
+    : !task.noTariffs && suited[0] ? `: от ${price(suited[0].priceRub)}/мес` : '';
   return {
-    title: task.h1,
+    title: { absolute: `${task.titleShort || task.h1}, цены ${year}${from}` },
     description: `${task.intent}. Рекомендованная конфигурация, что проверить у провайдера и подходящие тарифы с проверенной ценой`,
     alternates: { canonical: `/vps-dlya/${slug}` },
   };
@@ -40,9 +52,11 @@ export default async function TaskPage({ params }) {
     (p) => p.ram >= task.ram && p.cpu >= task.cpu && providers.some((x) => x.slug === p.providerSlug)
   ).sort((a, b) => a.priceRub - b.priceRub);
   const cheapest = suited[0];
-  const quick = taskAnswer(task, suited, providers, STATS.verifiedAt);
+  const checked = checkedAt(suited, STATS.verifiedAt);
+  const quick = taskAnswer(task, suited, providers, checked);
+  const lead = slug === 'windows' ? windowsLead(suited, checked) : taskLead(task, suited, VISIBLE_PLANS, checked, { what: task.leadWhat });
   const faqAll = [...(content?.faq || []), ...(quick ? [quick.faq] : [])];
-  const pageUrl = `https://servercalc.ru/vps-dlya/${slug}`;
+  const pageUrl = absUrl(`/vps-dlya/${slug}/`);
 
   return (
     <>
@@ -60,12 +74,12 @@ export default async function TaskPage({ params }) {
         />
       )}
 
-      {quick && <JsonLd data={itemListLd(task.h1, pageUrl, suited, providers, STATS.verifiedAt)} />}
+      {quick && <JsonLd data={itemListLd(task.h1, pageUrl, suited, providers, checked)} />}
 
       <PageHead
-        eyebrow="Подбор под задачу"
+        eyebrow={!task.noTariffs && suited.length ? checkedLine(checked) : 'Подбор под задачу'}
         title={task.h1}
-        lead={task.intent}
+        lead={lead || task.intent}
         crumbs={[
           { href: '/vps-dlya', label: 'Задачи' },
           { href: `/vps-dlya/${slug}`, label: task.name },
@@ -74,8 +88,10 @@ export default async function TaskPage({ params }) {
           <>
             <span className="badge badge-brass">рекомендуем {task.cpu} × {task.ram} ГБ</span>
             <span className="badge">{providers.length} подходящих провайдеров</span>
-            {!task.noTariffs && cheapest && <span className="badge">от {price(cheapest.priceRub)} в месяц</span>}
-            <span className="badge">проверено {ruDate(STATS.verifiedAt)}</span>
+            {!task.noTariffs && cheapest && (slug === 'windows' && windowsFrom(suited)
+              ? <span className="badge">от {price(windowsFrom(suited))} в месяц с лицензией</span>
+              : <span className="badge">от {price(cheapest.priceRub)} в месяц</span>)}
+            <span className="badge">проверено {ruDate(checked)}</span>
           </>
         }
       />
@@ -84,7 +100,7 @@ export default async function TaskPage({ params }) {
         <section className="section-tight paper">
           <div className="wrap">
             <div className="notice">
-              <strong>Коротко.</strong> {quick.text}
+              <strong>{task.intent}.</strong> {quick.text}
             </div>
           </div>
         </section>
@@ -186,7 +202,7 @@ export default async function TaskPage({ params }) {
           ) : suited.length === 0 ? (
             <div className="notice notice-warn">
               <strong>Пока пусто.</strong> В базе нет тарифов с проверенной ценой, которые
-              перекрывают эту конфигурацию. Как только парсер обновит цены, список появится
+              перекрывают эту конфигурацию. Список появится после ближайшей еженедельной сверки цен
             </div>
           ) : (
             <div className="tbl-wrap">
@@ -220,7 +236,7 @@ export default async function TaskPage({ params }) {
                           <td className="td-num">{p.disk} ГБ <span className="faint">{p.diskType}</span></td>
                           <td className="td-num">{price(p.priceRub / p.ram)}</td>
                           <td className="td-num faint">{ruDate(p.verifiedAt)}</td>
-                          <td className="td-price" style={{ textAlign: 'right' }}>{price(p.priceRub)}</td>
+                          <td className="td-price" style={{ textAlign: 'right' }}>{price(p.priceRub)}{termShort(p) && <div className="faint" style={{ fontSize: '0.75rem', fontWeight: 400 }}>{termShort(p)}</div>}</td>
                         </tr>
                       );
                     })}

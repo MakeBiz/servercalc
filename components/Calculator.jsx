@@ -5,7 +5,7 @@ import Link from 'next/link';
 import OutLink from './OutLink';
 import TaskIcon from './TaskIcon';
 import { runMatch } from '@/lib/score';
-import { price, plural, ruDate } from '@/lib/format';
+import { price, plural, ruDate, termShort } from '@/lib/format';
 import { goal, GOALS } from '@/lib/metrika';
 import { CAMPAIGN } from '@/lib/utm';
 import { readParams, num, list, writeParams } from '@/lib/url-state';
@@ -362,7 +362,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                     <i style={{ width: `${r.score}%` }} />
                   </span>
                 </div>
-                <div className="res-price">{price(r.plan.priceRub)}<span className="faint"> в месяц</span></div>
+                <div className="res-price">{price(r.plan.priceRub)}<span className="faint"> в месяц</span>{termShort(r.plan) && <div className="faint" style={{ fontSize: '0.75rem', fontWeight: 400 }}>{termShort(r.plan)}</div>}</div>
                 <OutLink provider={r.provider} campaign={campaign} goalName="calc_click" className="btn btn-brass btn-sm btn-block">
                   {r.provider.partner ? 'Перейти' : 'На сайт'}
                 </OutLink>

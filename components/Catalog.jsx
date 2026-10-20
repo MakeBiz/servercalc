@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import OutLink from './OutLink';
-import { price, plural, ruDateShort } from '@/lib/format';
+import { price, plural, ruDateShort, termShort } from '@/lib/format';
 import { goal, GOALS } from '@/lib/metrika';
 import { CAMPAIGN } from '@/lib/utm';
 import { readParams, num, list, writeParams } from '@/lib/url-state';
@@ -305,7 +305,7 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
                   <td>{r.geoName}</td>
                   <td className="td-num">{price(r.priceRub / r.ram)}</td>
                   <td className="td-num faint">{ruDateShort(r.verifiedAt)}</td>
-                  <td className="td-price" style={{ textAlign: 'right' }}>{price(r.priceRub)}</td>
+                  <td className="td-price" style={{ textAlign: 'right' }}>{price(r.priceRub)}{termShort(r) && <div className="faint" style={{ fontSize: '0.75rem', fontWeight: 400 }}>{termShort(r)}</div>}</td>
                   <td style={{ textAlign: 'right' }}>
                     {providerBySlug[r.providerSlug] && (
                       <OutLink

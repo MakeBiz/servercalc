@@ -9,13 +9,14 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "ru",
-    "price": 882,
+    "price": 2800,
     "currency": "RUB",
-    "priceRub": 882,
+    "priceRub": 2800,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://timeweb.cloud/services/cloud-servers"
   },
   {
     "id": "timeweb-2",
@@ -27,13 +28,14 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "ru",
-    "price": 1062,
+    "price": 3840,
     "currency": "RUB",
-    "priceRub": 1062,
+    "priceRub": 3840,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://timeweb.cloud/services/cloud-servers"
   },
   {
     "id": "timeweb-3",
@@ -45,13 +47,14 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "ru",
-    "price": 1782,
+    "price": 7000,
     "currency": "RUB",
-    "priceRub": 1782,
+    "priceRub": 7000,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://timeweb.cloud/services/cloud-servers"
   },
   {
     "id": "timeweb-4",
@@ -63,13 +66,14 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "ru",
-    "price": 2772,
+    "price": 10760,
     "currency": "RUB",
-    "priceRub": 2772,
+    "priceRub": 10760,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://timeweb.cloud/services/cloud-servers"
   },
   {
     "id": "ruvds-1",
@@ -86,8 +90,10 @@
     "priceRub": 1149,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://ruvds.com/ru/ruvds_price_2026_jul/",
+    "term": 3
   },
   {
     "id": "ruvds-2",
@@ -104,8 +110,10 @@
     "priceRub": 1599,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://ruvds.com/ru/vps_nvme/",
+    "term": 3
   },
   {
     "id": "ruvds-3",
@@ -122,44 +130,10 @@
     "priceRub": 1899,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
-  },
-  {
-    "id": "hostman-1",
-    "providerSlug": "hostman",
-    "name": "Cloud 1",
-    "cpu": 1,
-    "ram": 1,
-    "disk": 25,
-    "diskType": "NVMe",
-    "trafficTb": null,
-    "geo": "eu",
-    "price": 4,
-    "currency": "USD",
-    "priceRub": 324,
-    "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
-  },
-  {
-    "id": "hostman-2",
-    "providerSlug": "hostman",
-    "name": "Cloud 2",
-    "cpu": 1,
-    "ram": 2,
-    "disk": 40,
-    "diskType": "NVMe",
-    "trafficTb": null,
-    "geo": "eu",
-    "price": 5,
-    "currency": "USD",
-    "priceRub": 405,
-    "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://ruvds.com/ru/ruvds_price_2026_jul/",
+    "term": 3
   },
   {
     "id": "hostman-3",
@@ -171,13 +145,27 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "eu",
-    "price": 6,
+    "price": 7.0,
     "currency": "USD",
-    "priceRub": 486,
+    "priceRub": 566.51,
     "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "ipv4": false,
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://hostman.com/pricing/cloud-servers",
+    "alsoIn": [
+      "us"
+    ],
+    "cityBy": {
+      "eu": "Frankfurt, Amsterdam, London, Helsinki or Paris",
+      "us": "New York"
+    },
+    "cityByRu": {
+      "eu": "Франкфурт, Амстердам, Лондон, Хельсинки или Париж",
+      "us": "Нью-Йорк"
+    },
+    "location": "Франкфурт, Амстердам, Лондон, Хельсинки, Париж, Нью-Йорк",
+    "locationEn": "Frankfurt, Amsterdam, London, Helsinki, Paris or New York"
   },
   {
     "id": "hostman-4",
@@ -189,13 +177,27 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "eu",
-    "price": 8,
+    "price": 10.0,
     "currency": "USD",
-    "priceRub": 647,
+    "priceRub": 809.3,
     "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "ipv4": false,
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://hostman.com/pricing/cloud-servers",
+    "alsoIn": [
+      "us"
+    ],
+    "cityBy": {
+      "eu": "Frankfurt, Amsterdam, London, Helsinki or Paris",
+      "us": "New York"
+    },
+    "cityByRu": {
+      "eu": "Франкфурт, Амстердам, Лондон, Хельсинки или Париж",
+      "us": "Нью-Йорк"
+    },
+    "location": "Франкфурт, Амстердам, Лондон, Хельсинки, Париж, Нью-Йорк",
+    "locationEn": "Frankfurt, Amsterdam, London, Helsinki, Paris or New York"
   },
   {
     "id": "hostman-5",
@@ -207,13 +209,27 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "eu",
-    "price": 17,
+    "price": 22.0,
     "currency": "USD",
-    "priceRub": 1376,
+    "priceRub": 1780.46,
     "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "ipv4": false,
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://hostman.com/pricing/cloud-servers",
+    "alsoIn": [
+      "us"
+    ],
+    "cityBy": {
+      "eu": "Frankfurt, Amsterdam, London, Helsinki or Paris",
+      "us": "New York"
+    },
+    "cityByRu": {
+      "eu": "Франкфурт, Амстердам, Лондон, Хельсинки или Париж",
+      "us": "Нью-Йорк"
+    },
+    "location": "Франкфурт, Амстердам, Лондон, Хельсинки, Париж, Нью-Йорк",
+    "locationEn": "Frankfurt, Amsterdam, London, Helsinki, Paris or New York"
   },
   {
     "id": "hostman-6",
@@ -225,13 +241,27 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "eu",
-    "price": 37,
+    "price": 48.0,
     "currency": "USD",
-    "priceRub": 2994,
+    "priceRub": 3884.64,
     "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "ipv4": false,
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://hostman.com/pricing/cloud-servers",
+    "alsoIn": [
+      "us"
+    ],
+    "cityBy": {
+      "eu": "Frankfurt, Amsterdam, London, Helsinki or Paris",
+      "us": "New York"
+    },
+    "cityByRu": {
+      "eu": "Франкфурт, Амстердам, Лондон, Хельсинки или Париж",
+      "us": "Нью-Йорк"
+    },
+    "location": "Франкфурт, Амстердам, Лондон, Хельсинки, Париж, Нью-Йорк",
+    "locationEn": "Frankfurt, Amsterdam, London, Helsinki, Paris or New York"
   },
   {
     "id": "ishosting-1",
@@ -241,15 +271,30 @@
     "ram": 1,
     "disk": 20,
     "diskType": "SSD",
-    "trafficTb": null,
+    "trafficTb": 2,
     "geo": "global",
     "price": 5.94,
     "currency": "USD",
-    "priceRub": 481,
+    "priceRub": 480.72,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://ishosting.com/en/vps",
+    "alsoIn": [
+      "eu",
+      "asia"
+    ],
+    "cityBy": {
+      "eu": "22 European countries",
+      "asia": "Singapore, Tokyo or Istanbul"
+    },
+    "cityByRu": {
+      "eu": "22 страны Европы",
+      "asia": "Сингапур, Токио или Стамбул"
+    },
+    "location": "40 стран, в том числе Германия, Нидерланды, Стамбул, Сингапур, Токио",
+    "locationEn": "40 countries incl. Germany, Netherlands, Istanbul, Singapore, Tokyo"
   },
   {
     "id": "ishosting-2",
@@ -259,15 +304,30 @@
     "ram": 2,
     "disk": 30,
     "diskType": "SSD",
-    "trafficTb": null,
+    "trafficTb": 3,
     "geo": "global",
     "price": 10.19,
     "currency": "USD",
-    "priceRub": 825,
+    "priceRub": 824.68,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://ishosting.com/en/vps",
+    "alsoIn": [
+      "eu",
+      "asia"
+    ],
+    "cityBy": {
+      "eu": "22 European countries",
+      "asia": "Singapore, Tokyo or Istanbul"
+    },
+    "cityByRu": {
+      "eu": "22 страны Европы",
+      "asia": "Сингапур, Токио или Стамбул"
+    },
+    "location": "40 стран, в том числе Европа, Стамбул, Сингапур, Токио",
+    "locationEn": "40 countries incl. Europe, Istanbul, Singapore, Tokyo"
   },
   {
     "id": "ishosting-3",
@@ -281,11 +341,26 @@
     "geo": "global",
     "price": 21.24,
     "currency": "USD",
-    "priceRub": 1719,
+    "priceRub": 1718.95,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://ishosting.com/en/vps",
+    "alsoIn": [
+      "eu",
+      "asia"
+    ],
+    "cityBy": {
+      "eu": "22 European countries",
+      "asia": "Singapore, Tokyo or Istanbul"
+    },
+    "cityByRu": {
+      "eu": "22 страны Европы",
+      "asia": "Сингапур, Токио или Стамбул"
+    },
+    "location": "40 стран, в том числе Европа, Стамбул, Сингапур, Токио",
+    "locationEn": "40 countries incl. Europe, Istanbul, Singapore, Tokyo"
   },
   {
     "id": "ishosting-4",
@@ -299,29 +374,47 @@
     "geo": "global",
     "price": 33.99,
     "currency": "USD",
-    "priceRub": 2751,
+    "priceRub": 2750.81,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://ishosting.com/en/vps",
+    "alsoIn": [
+      "eu",
+      "asia"
+    ],
+    "cityBy": {
+      "eu": "22 European countries",
+      "asia": "Singapore, Tokyo or Istanbul"
+    },
+    "cityByRu": {
+      "eu": "22 страны Европы",
+      "asia": "Сингапур, Токио или Стамбул"
+    },
+    "location": "40 стран, в том числе Европа, Стамбул, Сингапур, Токио",
+    "locationEn": "40 countries incl. Europe, Istanbul, Singapore, Tokyo"
   },
   {
     "id": "vpsorg-1",
     "providerSlug": "vpsorg",
     "name": "Starter",
     "cpu": 1,
-    "ram": 1,
-    "disk": 25,
+    "ram": 2,
+    "disk": 10,
     "diskType": "SSD",
-    "trafficTb": null,
-    "geo": "global",
+    "trafficTb": 0.5,
+    "geo": "us",
     "price": 3.5,
     "currency": "USD",
-    "priceRub": 283,
+    "priceRub": 283.25,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.vps.org/pricing/",
+    "location": "США, Нью-Джерси",
+    "locationEn": "New Jersey, USA"
   },
   {
     "id": "vpsorg-2",
@@ -329,17 +422,20 @@
     "name": "1C-2GB",
     "cpu": 1,
     "ram": 2,
-    "disk": 20,
+    "disk": 25,
     "diskType": "SSD",
-    "trafficTb": null,
-    "geo": "global",
-    "price": 5,
+    "trafficTb": 1,
+    "geo": "us",
+    "price": 5.0,
     "currency": "USD",
-    "priceRub": 405,
+    "priceRub": 404.65,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.vps.org/pricing/",
+    "location": "США, Нью-Джерси",
+    "locationEn": "New Jersey, USA"
   },
   {
     "id": "vpsorg-3",
@@ -347,17 +443,20 @@
     "name": "Basic",
     "cpu": 2,
     "ram": 2,
-    "disk": 50,
+    "disk": 65,
     "diskType": "SSD",
-    "trafficTb": null,
-    "geo": "global",
-    "price": 15,
+    "trafficTb": 3,
+    "geo": "us",
+    "price": 15.0,
     "currency": "USD",
-    "priceRub": 1214,
+    "priceRub": 1213.95,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.vps.org/pricing/",
+    "location": "США, Нью-Джерси",
+    "locationEn": "New Jersey, USA"
   },
   {
     "id": "vpsorg-4",
@@ -367,15 +466,18 @@
     "ram": 4,
     "disk": 80,
     "diskType": "SSD",
-    "trafficTb": null,
-    "geo": "global",
-    "price": 20,
+    "trafficTb": 3,
+    "geo": "us",
+    "price": 20.0,
     "currency": "USD",
-    "priceRub": 1619,
+    "priceRub": 1618.6,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.vps.org/pricing/",
+    "location": "США, Нью-Джерси",
+    "locationEn": "New Jersey, USA"
   },
   {
     "id": "vpsorg-5",
@@ -385,15 +487,18 @@
     "ram": 8,
     "disk": 160,
     "diskType": "SSD",
-    "trafficTb": null,
-    "geo": "global",
-    "price": 40,
+    "trafficTb": 4,
+    "geo": "us",
+    "price": 40.0,
     "currency": "USD",
-    "priceRub": 3237,
+    "priceRub": 3237.2,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.vps.org/pricing/",
+    "location": "США, Нью-Джерси",
+    "locationEn": "New Jersey, USA"
   },
   {
     "id": "adminvps-1",
@@ -403,14 +508,14 @@
     "ram": 1,
     "disk": 15,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 1,
     "geo": "ru",
-    "price": 299,
+    "price": 349,
     "currency": "RUB",
-    "priceRub": 299,
+    "priceRub": 349,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -422,14 +527,14 @@
     "ram": 2,
     "disk": 30,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 3,
     "geo": "ru",
-    "price": 429,
+    "price": 499,
     "currency": "RUB",
-    "priceRub": 429,
+    "priceRub": 499,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -441,14 +546,14 @@
     "ram": 4,
     "disk": 60,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 5,
     "geo": "ru",
-    "price": 799,
+    "price": 899,
     "currency": "RUB",
-    "priceRub": 799,
+    "priceRub": 899,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -460,14 +565,14 @@
     "ram": 8,
     "disk": 80,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 10,
     "geo": "ru",
     "price": 1289,
     "currency": "RUB",
     "priceRub": 1289,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -479,14 +584,14 @@
     "ram": 12,
     "disk": 100,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 10,
     "geo": "ru",
     "price": 2149,
     "currency": "RUB",
     "priceRub": 2149,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -498,14 +603,14 @@
     "ram": 16,
     "disk": 160,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 10,
     "geo": "ru",
     "price": 3379,
     "currency": "RUB",
     "priceRub": 3379,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
@@ -517,128 +622,128 @@
     "ram": 16,
     "disk": 200,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 10,
     "geo": "ru",
     "price": 5349,
     "currency": "RUB",
     "priceRub": 5349,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
   {
     "id": "regru-1",
     "providerSlug": "regru",
-    "name": "Стандартный C1-M1-D10",
+    "name": "Std C1-M1-D10",
     "cpu": 1,
     "ram": 1,
     "disk": 10,
-    "diskType": "SSD",
+    "diskType": "SATA",
     "trafficTb": null,
     "geo": "ru",
-    "price": 390,
+    "price": 491,
     "currency": "RUB",
-    "priceRub": 390,
+    "priceRub": 491,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
   {
     "id": "regru-2",
     "providerSlug": "regru",
-    "name": "Стандартный C2-M2-D40",
+    "name": "Std C2-M2-D40",
     "cpu": 2,
     "ram": 2,
     "disk": 40,
-    "diskType": "SSD",
+    "diskType": "SATA",
     "trafficTb": null,
     "geo": "ru",
-    "price": 980,
+    "price": 1199,
     "currency": "RUB",
-    "priceRub": 980,
+    "priceRub": 1199,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
   {
     "id": "regru-3",
     "providerSlug": "regru",
-    "name": "Стандартный C3-M3-D60",
+    "name": "Std C3-M3-D60",
     "cpu": 3,
     "ram": 3,
     "disk": 60,
-    "diskType": "SSD",
+    "diskType": "SATA",
     "trafficTb": null,
     "geo": "ru",
-    "price": 1470,
+    "price": 1799,
     "currency": "RUB",
-    "priceRub": 1470,
+    "priceRub": 1799,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
   {
     "id": "regru-4",
     "providerSlug": "regru",
-    "name": "Стандартный C4-M4-D80",
+    "name": "Std C4-M4-D80",
     "cpu": 4,
     "ram": 4,
     "disk": 80,
-    "diskType": "SSD",
+    "diskType": "SATA",
     "trafficTb": null,
     "geo": "ru",
-    "price": 1960,
+    "price": 2399,
     "currency": "RUB",
-    "priceRub": 1960,
+    "priceRub": 2399,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
   {
     "id": "regru-5",
     "providerSlug": "regru",
-    "name": "Стандартный C6-M6-D100",
+    "name": "Std C6-M6-D100",
     "cpu": 6,
     "ram": 6,
     "disk": 100,
-    "diskType": "SSD",
+    "diskType": "SATA",
     "trafficTb": null,
     "geo": "ru",
-    "price": 2740,
+    "price": 3381,
     "currency": "RUB",
-    "priceRub": 2740,
+    "priceRub": 3381,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
   {
     "id": "regru-6",
     "providerSlug": "regru",
-    "name": "Стандартный C8-M8-D120",
+    "name": "Std C8-M8-D120",
     "cpu": 8,
     "ram": 8,
     "disk": 120,
-    "diskType": "SSD",
+    "diskType": "SATA",
     "trafficTb": null,
     "geo": "ru",
-    "price": 3520,
+    "price": 4363,
     "currency": "RUB",
-    "priceRub": 3520,
+    "priceRub": 4363,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://www.reg.ru/vps/"
   },
@@ -657,7 +762,7 @@
     "priceRub": 299,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -676,7 +781,7 @@
     "priceRub": 339,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -695,7 +800,7 @@
     "priceRub": 519,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -714,7 +819,7 @@
     "priceRub": 599,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -733,7 +838,7 @@
     "priceRub": 919,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -752,7 +857,7 @@
     "priceRub": 1579,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://firstvds.ru/docs/tariffs.html"
   },
@@ -764,14 +869,14 @@
     "ram": 1,
     "disk": 10,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 1,
     "geo": "ru",
     "price": 150,
     "currency": "RUB",
     "priceRub": 150,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://vdsina.ru/pricing/standard"
   },
@@ -783,14 +888,14 @@
     "ram": 2,
     "disk": 50,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 32,
     "geo": "ru",
     "price": 600,
     "currency": "RUB",
     "priceRub": 600,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://vdsina.ru/pricing/standard"
   },
@@ -802,14 +907,14 @@
     "ram": 4,
     "disk": 100,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 32,
     "geo": "ru",
     "price": 1200,
     "currency": "RUB",
     "priceRub": 1200,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://vdsina.ru/pricing/standard"
   },
@@ -821,14 +926,14 @@
     "ram": 8,
     "disk": 150,
     "diskType": "NVMe",
-    "trafficTb": null,
+    "trafficTb": 32,
     "geo": "ru",
     "price": 2400,
     "currency": "RUB",
     "priceRub": 2400,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://vdsina.ru/pricing/standard"
   },
@@ -844,12 +949,14 @@
     "geo": "us",
     "price": 4.99,
     "currency": "USD",
-    "priceRub": 404,
+    "priceRub": 403.84,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://portal.datapacket.net/store/vps-hosting"
+    "source": "https://portal.datapacket.net/store/vps-hosting",
+    "location": "США",
+    "locationEn": "the USA"
   },
   {
     "id": "datapacket-2",
@@ -863,12 +970,14 @@
     "geo": "us",
     "price": 9.99,
     "currency": "USD",
-    "priceRub": 808,
+    "priceRub": 808.49,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://portal.datapacket.net/store/vps-hosting"
+    "source": "https://portal.datapacket.net/store/vps-hosting",
+    "location": "США",
+    "locationEn": "the USA"
   },
   {
     "id": "datapacket-3",
@@ -882,12 +991,14 @@
     "geo": "us",
     "price": 14.99,
     "currency": "USD",
-    "priceRub": 1213,
+    "priceRub": 1213.14,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://portal.datapacket.net/store/vps-hosting"
+    "source": "https://portal.datapacket.net/store/vps-hosting",
+    "location": "США",
+    "locationEn": "the USA"
   },
   {
     "id": "datapacket-4",
@@ -901,12 +1012,14 @@
     "geo": "us",
     "price": 19.99,
     "currency": "USD",
-    "priceRub": 1618,
+    "priceRub": 1617.79,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://portal.datapacket.net/store/vps-hosting"
+    "source": "https://portal.datapacket.net/store/vps-hosting",
+    "location": "США",
+    "locationEn": "the USA"
   },
   {
     "id": "datapacket-5",
@@ -920,12 +1033,14 @@
     "geo": "us",
     "price": 24.99,
     "currency": "USD",
-    "priceRub": 2022,
+    "priceRub": 2022.44,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://portal.datapacket.net/store/vps-hosting"
+    "source": "https://portal.datapacket.net/store/vps-hosting",
+    "location": "США",
+    "locationEn": "the USA"
   },
   {
     "id": "datapacket-6",
@@ -939,12 +1054,14 @@
     "geo": "us",
     "price": 34.99,
     "currency": "USD",
-    "priceRub": 2832,
+    "priceRub": 2831.74,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://portal.datapacket.net/store/vps-hosting"
+    "source": "https://portal.datapacket.net/store/vps-hosting",
+    "location": "США",
+    "locationEn": "the USA"
   },
   {
     "id": "fornex-1",
@@ -958,12 +1075,14 @@
     "geo": "eu",
     "price": 5.5,
     "currency": "EUR",
-    "priceRub": 513,
+    "priceRub": 512.54,
     "billing": "month",
     "ipv4": null,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://fornex.com/virtual-private-servers/"
+    "source": "https://fornex.com/virtual-private-servers/",
+    "location": "Франкфурт, Роттердам, Фалькенберг, Барселона",
+    "locationEn": "Frankfurt, Rotterdam, Falkenberg or Barcelona"
   },
   {
     "id": "fornex-2",
@@ -977,12 +1096,14 @@
     "geo": "eu",
     "price": 7.5,
     "currency": "EUR",
-    "priceRub": 699,
+    "priceRub": 698.92,
     "billing": "month",
     "ipv4": null,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://fornex.com/virtual-private-servers/"
+    "source": "https://fornex.com/virtual-private-servers/",
+    "location": "Франкфурт, Роттердам, Фалькенберг, Барселона",
+    "locationEn": "Frankfurt, Rotterdam, Falkenberg or Barcelona"
   },
   {
     "id": "fornex-3",
@@ -996,12 +1117,14 @@
     "geo": "eu",
     "price": 15,
     "currency": "EUR",
-    "priceRub": 1398,
+    "priceRub": 1397.85,
     "billing": "month",
     "ipv4": null,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://fornex.com/virtual-private-servers/"
+    "source": "https://fornex.com/virtual-private-servers/",
+    "location": "Франкфурт, Роттердам, Фалькенберг, Барселона",
+    "locationEn": "Frankfurt, Rotterdam, Falkenberg or Barcelona"
   },
   {
     "id": "fornex-4",
@@ -1015,12 +1138,14 @@
     "geo": "eu",
     "price": 26,
     "currency": "EUR",
-    "priceRub": 2423,
+    "priceRub": 2422.94,
     "billing": "month",
     "ipv4": null,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://fornex.com/virtual-private-servers/"
+    "source": "https://fornex.com/virtual-private-servers/",
+    "location": "Франкфурт, Роттердам, Фалькенберг, Барселона",
+    "locationEn": "Frankfurt, Rotterdam, Falkenberg or Barcelona"
   },
   {
     "id": "fornex-5",
@@ -1034,12 +1159,14 @@
     "geo": "eu",
     "price": 34,
     "currency": "EUR",
-    "priceRub": 3168,
+    "priceRub": 3168.46,
     "billing": "month",
     "ipv4": null,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://fornex.com/virtual-private-servers/"
+    "source": "https://fornex.com/virtual-private-servers/",
+    "location": "Франкфурт, Роттердам, Фалькенберг, Барселона",
+    "locationEn": "Frankfurt, Rotterdam, Falkenberg or Barcelona"
   },
   {
     "id": "aeza-1",
@@ -1051,33 +1178,37 @@
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "ru",
-    "price": 593,
-    "currency": "RUB",
-    "priceRub": 593,
+    "price": 5.93,
+    "currency": "EUR",
+    "priceRub": 552.62,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://aeza.net/"
+    "source": "https://my.aeza.net/api/services/products",
+    "location": "Москва",
+    "locationEn": "Moscow"
   },
   {
     "id": "aeza-2",
     "providerSlug": "aeza",
-    "name": "Shared vCPU (Франкфурт)",
+    "name": "WAWs-1 (Shared, Варшава)",
     "cpu": 1,
     "ram": 2,
     "disk": 30,
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "eu",
-    "price": 593,
-    "currency": "RUB",
-    "priceRub": 593,
+    "price": 5.93,
+    "currency": "EUR",
+    "priceRub": 552.62,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://aeza.net/"
+    "source": "https://aeza.net/ru/virtual-servers",
+    "location": "Варшава",
+    "locationEn": "Warsaw"
   },
   {
     "id": "cherryservers-1",
@@ -1091,12 +1222,14 @@
     "geo": "asia",
     "price": 3.51,
     "currency": "USD",
-    "priceRub": 297,
+    "priceRub": 284.06,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://www.cherryservers.com/virtual-servers/cloud-vps"
+    "source": "https://www.cherryservers.com/virtual-servers/cloud-vps",
+    "locationEn": "Singapore or Tokyo",
+    "location": "Сингапур или Токио"
   },
   {
     "id": "cherryservers-2",
@@ -1110,12 +1243,14 @@
     "geo": "asia",
     "price": 7.02,
     "currency": "USD",
-    "priceRub": 594,
+    "priceRub": 568.13,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://www.cherryservers.com/virtual-servers/cloud-vps"
+    "source": "https://www.cherryservers.com/virtual-servers/cloud-vps",
+    "locationEn": "Singapore or Tokyo",
+    "location": "Сингапур или Токио"
   },
   {
     "id": "cherryservers-3",
@@ -1129,12 +1264,14 @@
     "geo": "asia",
     "price": 10.53,
     "currency": "USD",
-    "priceRub": 890,
+    "priceRub": 852.19,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://www.cherryservers.com/virtual-servers/cloud-vps"
+    "source": "https://www.cherryservers.com/virtual-servers/cloud-vps",
+    "locationEn": "Singapore or Tokyo",
+    "location": "Сингапур или Токио"
   },
   {
     "id": "massivegrid-1",
@@ -1148,12 +1285,29 @@
     "geo": "asia",
     "price": 3.99,
     "currency": "USD",
-    "priceRub": 337,
+    "priceRub": 322.91,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://massivegrid.com/vps/"
+    "source": "https://massivegrid.com/vps/",
+    "alsoIn": [
+      "us",
+      "eu",
+      "asia"
+    ],
+    "cityBy": {
+      "us": "New York",
+      "eu": "London or Frankfurt",
+      "asia": "Singapore"
+    },
+    "cityByRu": {
+      "us": "Нью-Йорк",
+      "eu": "Лондон или Франкфурт",
+      "asia": "Сингапур"
+    },
+    "location": "Нью-Йорк, Лондон, Франкфурт или Сингапур",
+    "locationEn": "New York, London, Frankfurt or Singapore"
   },
   {
     "id": "massivegrid-2",
@@ -1167,12 +1321,29 @@
     "geo": "asia",
     "price": 7.98,
     "currency": "USD",
-    "priceRub": 675,
+    "priceRub": 645.82,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://massivegrid.com/vps/"
+    "source": "https://massivegrid.com/vps/",
+    "alsoIn": [
+      "us",
+      "eu",
+      "asia"
+    ],
+    "cityBy": {
+      "us": "New York",
+      "eu": "London or Frankfurt",
+      "asia": "Singapore"
+    },
+    "cityByRu": {
+      "us": "Нью-Йорк",
+      "eu": "Лондон или Франкфурт",
+      "asia": "Сингапур"
+    },
+    "location": "Нью-Йорк, Лондон, Франкфурт или Сингапур",
+    "locationEn": "New York, London, Frankfurt or Singapore"
   },
   {
     "id": "massivegrid-3",
@@ -1186,12 +1357,29 @@
     "geo": "asia",
     "price": 19.16,
     "currency": "USD",
-    "priceRub": 1620,
+    "priceRub": 1550.62,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://massivegrid.com/vps/"
+    "source": "https://massivegrid.com/vps/",
+    "alsoIn": [
+      "us",
+      "eu",
+      "asia"
+    ],
+    "cityBy": {
+      "us": "New York",
+      "eu": "London or Frankfurt",
+      "asia": "Singapore"
+    },
+    "cityByRu": {
+      "us": "Нью-Йорк",
+      "eu": "Лондон или Франкфурт",
+      "asia": "Сингапур"
+    },
+    "location": "Нью-Йорк, Лондон, Франкфурт или Сингапур",
+    "locationEn": "New York, London, Frankfurt or Singapore"
   },
   {
     "id": "ethernetservers-1",
@@ -1205,12 +1393,25 @@
     "geo": "us",
     "price": 3,
     "currency": "USD",
-    "priceRub": 254,
+    "priceRub": 242.79,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://www.ethernetservers.com/vps-hosting"
+    "source": "https://www.ethernetservers.com/vps-hosting",
+    "alsoIn": [
+      "eu"
+    ],
+    "cityBy": {
+      "us": "Miami, Los Angeles or New Jersey",
+      "eu": "Frankfurt or London"
+    },
+    "cityByRu": {
+      "us": "Майами, Лос-Анджелес или Нью-Джерси",
+      "eu": "Франкфурт или Лондон"
+    },
+    "location": "Майами, Лос-Анджелес, Нью-Джерси, Франкфурт, Лондон",
+    "locationEn": "Miami, Los Angeles, New Jersey, Frankfurt or London"
   },
   {
     "id": "ethernetservers-2",
@@ -1224,12 +1425,25 @@
     "geo": "us",
     "price": 6,
     "currency": "USD",
-    "priceRub": 507,
+    "priceRub": 485.58,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://www.ethernetservers.com/vps-hosting"
+    "source": "https://www.ethernetservers.com/vps-hosting",
+    "alsoIn": [
+      "eu"
+    ],
+    "cityBy": {
+      "us": "Miami, Los Angeles or New Jersey",
+      "eu": "Frankfurt or London"
+    },
+    "cityByRu": {
+      "us": "Майами, Лос-Анджелес или Нью-Джерси",
+      "eu": "Франкфурт или Лондон"
+    },
+    "location": "Майами, Лос-Анджелес, Нью-Джерси, Франкфурт, Лондон",
+    "locationEn": "Miami, Los Angeles, New Jersey, Frankfurt or London"
   },
   {
     "id": "ethernetservers-3",
@@ -1243,12 +1457,25 @@
     "geo": "us",
     "price": 12,
     "currency": "USD",
-    "priceRub": 1015,
+    "priceRub": 971.16,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://www.ethernetservers.com/vps-hosting"
+    "source": "https://www.ethernetservers.com/vps-hosting",
+    "alsoIn": [
+      "eu"
+    ],
+    "cityBy": {
+      "us": "Miami, Los Angeles or New Jersey",
+      "eu": "Frankfurt or London"
+    },
+    "cityByRu": {
+      "us": "Майами, Лос-Анджелес или Нью-Джерси",
+      "eu": "Франкфурт или Лондон"
+    },
+    "location": "Майами, Лос-Анджелес, Нью-Джерси, Франкфурт, Лондон",
+    "locationEn": "Miami, Los Angeles, New Jersey, Frankfurt or London"
   },
   {
     "id": "vpsdime-1",
@@ -1257,15 +1484,15 @@
     "cpu": 4,
     "ram": 6,
     "disk": 30,
-    "diskType": "SSD",
+    "diskType": "NVMe",
     "trafficTb": 2,
     "geo": "us",
-    "price": 7,
+    "price": 7.0,
     "currency": "USD",
-    "priceRub": 592,
+    "priceRub": 566.51,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://vpsdime.com/linux-vps"
   },
@@ -1279,12 +1506,12 @@
     "diskType": "SSD",
     "trafficTb": 4,
     "geo": "us",
-    "price": 14,
+    "price": 14.0,
     "currency": "USD",
-    "priceRub": 1184,
+    "priceRub": 1133.02,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://vpsdime.com/linux-vps"
   },
@@ -1303,9 +1530,9 @@
     "priceRub": 390,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://profitserver.ru/vps/"
+    "source": "https://profitserver.ru/vps-linux/"
   },
   {
     "id": "profitserver-2",
@@ -1322,9 +1549,9 @@
     "priceRub": 430,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://profitserver.ru/vps/"
+    "source": "https://profitserver.ru/vps-linux/"
   },
   {
     "id": "profitserver-3",
@@ -1341,9 +1568,9 @@
     "priceRub": 790,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://profitserver.ru/vps/"
+    "source": "https://profitserver.ru/vps/netherlands/"
   },
   {
     "id": "profitserver-4",
@@ -1360,9 +1587,9 @@
     "priceRub": 390,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://profitserver.ru/vps/"
+    "source": "https://profitserver.ru/vps-linux/"
   },
   {
     "id": "selectel-1",
@@ -1379,7 +1606,7 @@
     "priceRub": 200,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://selectel.ru/services/cloud/vps-vds/"
   },
@@ -1398,7 +1625,7 @@
     "priceRub": 250,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://selectel.ru/services/cloud/vps-vds/"
   },
@@ -1417,7 +1644,7 @@
     "priceRub": 400,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://selectel.ru/services/cloud/vps-vds/"
   },
@@ -1433,10 +1660,10 @@
     "geo": "us",
     "price": 4.99,
     "currency": "USD",
-    "priceRub": 422,
+    "priceRub": 403.84,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://www.hostwinds.com/vps/unmanaged-linux"
   },
@@ -1452,10 +1679,10 @@
     "geo": "us",
     "price": 9.99,
     "currency": "USD",
-    "priceRub": 845,
+    "priceRub": 808.49,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://www.hostwinds.com/vps/unmanaged-linux"
   },
@@ -1471,10 +1698,10 @@
     "geo": "us",
     "price": 18.99,
     "currency": "USD",
-    "priceRub": 1606,
+    "priceRub": 1536.86,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
     "source": "https://www.hostwinds.com/vps/unmanaged-linux"
   },
@@ -1490,12 +1717,14 @@
     "geo": "eu",
     "price": 2.99,
     "currency": "EUR",
-    "priceRub": 292,
+    "priceRub": 278.64,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://alphavps.com/kvm-vps.html"
+    "source": "https://alphavps.com/kvm-vps.html",
+    "location": "София, Нюрнберг, Лондон",
+    "locationEn": "Sofia, Nuremberg or London"
   },
   {
     "id": "alphavps-2",
@@ -1509,12 +1738,14 @@
     "geo": "eu",
     "price": 3.99,
     "currency": "EUR",
-    "priceRub": 389,
+    "priceRub": 371.83,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://alphavps.com/kvm-vps.html"
+    "source": "https://alphavps.com/kvm-vps.html",
+    "location": "София, Нюрнберг, Лондон",
+    "locationEn": "Sofia, Nuremberg or London"
   },
   {
     "id": "alphavps-3",
@@ -1528,12 +1759,14 @@
     "geo": "eu",
     "price": 4.99,
     "currency": "EUR",
-    "priceRub": 487,
+    "priceRub": 465.02,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://alphavps.com/kvm-vps.html"
+    "source": "https://alphavps.com/kvm-vps.html",
+    "location": "София, Нюрнберг, Лондон",
+    "locationEn": "Sofia, Nuremberg or London"
   },
   {
     "id": "vpshouse-1",
@@ -1574,59 +1807,25 @@
     "source": "https://vps.house/learn_api/tariff"
   },
   {
-    "id": "vpshouse-3",
-    "providerSlug": "vpshouse",
-    "name": "Standard",
+    "id": "beget-1",
+    "providerSlug": "beget",
+    "name": "VPS 2/2/30 (Конфигурация 1)",
     "cpu": 2,
     "ram": 2,
     "disk": 30,
     "diskType": "NVMe",
     "trafficTb": null,
     "geo": "ru",
-    "price": 940,
+    "price": 810,
     "currency": "RUB",
-    "priceRub": 940,
+    "priceRub": 810,
     "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "ipv4": false,
+    "verifiedAt": "2026-10-21",
     "dataStatus": "live",
-    "source": "https://vps.house/learn_api/tariff"
-  },
-  {
-    "id": "beget-1",
-    "providerSlug": "beget",
-    "name": "VPS 1",
-    "cpu": 1,
-    "ram": 1,
-    "disk": 10,
-    "diskType": "NVMe",
-    "trafficTb": null,
-    "geo": "ru",
-    "price": 330,
-    "currency": "RUB",
-    "priceRub": 330,
-    "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-16",
-    "dataStatus": "live"
-  },
-  {
-    "id": "beget-2",
-    "providerSlug": "beget",
-    "name": "VPS 2",
-    "cpu": 1,
-    "ram": 2,
-    "disk": 15,
-    "diskType": "NVMe",
-    "trafficTb": null,
-    "geo": "ru",
-    "price": 510,
-    "currency": "RUB",
-    "priceRub": 510,
-    "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-16",
-    "dataStatus": "live"
+    "source": "https://beget.com/ru/vps",
+    "location": "Санкт-Петербург",
+    "locationEn": "St. Petersburg"
   },
   {
     "id": "beget-3",
@@ -1637,14 +1836,17 @@
     "disk": 40,
     "diskType": "NVMe",
     "trafficTb": null,
-    "geo": "kz",
+    "geo": "ru",
     "price": 990,
     "currency": "RUB",
     "priceRub": 990,
     "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-16",
-    "dataStatus": "live"
+    "ipv4": false,
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://beget.com/ru/vps",
+    "location": "Санкт-Петербург",
+    "locationEn": "St. Petersburg"
   },
   {
     "id": "beget-4",
@@ -1660,9 +1862,12 @@
     "currency": "RUB",
     "priceRub": 2040,
     "billing": "month",
-    "ipv4": true,
-    "verifiedAt": "2026-08-16",
-    "dataStatus": "live"
+    "ipv4": false,
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://beget.com/ru/vps",
+    "location": "Санкт-Петербург",
+    "locationEn": "St. Petersburg"
   },
   {
     "id": "racknerd-1",
@@ -1676,11 +1881,16 @@
     "geo": "us",
     "price": 1.83,
     "currency": "USD",
-    "priceRub": 148,
+    "priceRub": 148.1,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-16",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.racknerd.com/specials/",
+    "term": 12,
+    "termPrice": 21.99,
+    "location": "США (Нью-Йорк, Лос-Анджелес, Чикаго, Даллас, Сиэтл)",
+    "locationEn": "the USA (New York, Los Angeles, Chicago, Dallas or Seattle)"
   },
   {
     "id": "racknerd-2",
@@ -1691,14 +1901,19 @@
     "disk": 35,
     "diskType": "SSD",
     "trafficTb": 5,
-    "geo": "eu",
-    "price": 3,
+    "geo": "us",
+    "price": 3.0,
     "currency": "USD",
-    "priceRub": 243,
+    "priceRub": 242.79,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-16",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.racknerd.com/specials/",
+    "term": 12,
+    "termPrice": 35.99,
+    "location": "США (Нью-Йорк, Лос-Анджелес, Чикаго, Даллас, Сиэтл)",
+    "locationEn": "the USA (New York, Los Angeles, Chicago, Dallas or Seattle)"
   },
   {
     "id": "racknerd-3",
@@ -1709,14 +1924,19 @@
     "disk": 60,
     "diskType": "SSD",
     "trafficTb": 7,
-    "geo": "asia",
-    "price": 5,
+    "geo": "us",
+    "price": 5.0,
     "currency": "USD",
-    "priceRub": 405,
+    "priceRub": 404.65,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-16",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.racknerd.com/specials/",
+    "term": 12,
+    "termPrice": 59.99,
+    "location": "США (Нью-Йорк, Лос-Анджелес, Чикаго, Даллас, Сиэтл)",
+    "locationEn": "the USA (New York, Los Angeles, Chicago, Dallas or Seattle)"
   },
   {
     "id": "rosehosting-1",
@@ -1730,11 +1950,14 @@
     "geo": "us",
     "price": 43.99,
     "currency": "USD",
-    "priceRub": 3560,
+    "priceRub": 3560.11,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-16",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.rosehosting.com/vps-hosting.html",
+    "location": "США, Сент-Луис",
+    "locationEn": "St. Louis, USA"
   },
   {
     "id": "rosehosting-2",
@@ -1748,11 +1971,14 @@
     "geo": "us",
     "price": 64.99,
     "currency": "USD",
-    "priceRub": 5260,
+    "priceRub": 5259.64,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-16",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.rosehosting.com/vps-hosting.html",
+    "location": "США, Сент-Луис",
+    "locationEn": "St. Louis, USA"
   },
   {
     "id": "rosehosting-3",
@@ -1766,10 +1992,13 @@
     "geo": "us",
     "price": 89.99,
     "currency": "USD",
-    "priceRub": 7283,
+    "priceRub": 7282.89,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-16",
-    "dataStatus": "live"
+    "verifiedAt": "2026-10-21",
+    "dataStatus": "live",
+    "source": "https://www.rosehosting.com/vps-hosting.html",
+    "location": "США, Сент-Луис",
+    "locationEn": "St. Louis, USA"
   }
 ]
