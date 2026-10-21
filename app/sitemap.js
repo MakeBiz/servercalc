@@ -30,6 +30,8 @@ export default function sitemap() {
   const core = [
     { url: absUrl('/'), priority: 1, changeFrequency: 'daily', lastModified: updated },
     { url: absUrl('/catalog'), priority: 0.9, changeFrequency: 'daily', lastModified: updated },
+    { url: absUrl('/kalkulyator'), priority: 0.85, changeFrequency: 'weekly', lastModified: updated },
+    { url: absUrl('/luchshie-vps-rossii'), priority: 0.85, changeFrequency: 'weekly', lastModified: updated },
     { url: absUrl('/provajdery'), priority: 0.8, changeFrequency: 'weekly', lastModified: updated },
     { url: absUrl('/vps-dlya'), priority: 0.8, changeFrequency: 'weekly', lastModified: updated },
     { url: absUrl('/vps'), priority: 0.8, changeFrequency: 'weekly', lastModified: updated },

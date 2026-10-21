@@ -15,6 +15,10 @@ import { readFileSync } from 'node:fs';
 
 const BASE = process.argv[2] || 'http://localhost:3000';
 const PROVIDERS = JSON.parse(readFileSync(new URL('../data/providers.json', import.meta.url), 'utf8'));
+// провайдеры, скрытые в кабинете, на сайте не публикуются: их страницы не проверяем (21.10.2026)
+let HIDDEN = new Set();
+try { HIDDEN = new Set(JSON.parse(readFileSync(new URL('../data/catalog-publish.json', import.meta.url), 'utf8')).hidden || []); } catch { /* нет файла */ }
+const shown = (path) => { const m = path.match(/^\/provajdery\/([^/]+)/); return !m || !HIDDEN.has(m[1]); };
 
 const PAGES = [
   '/', '/catalog', '/provajdery', '/vps-dlya', '/vps', '/novosti', '/akcii',
@@ -25,7 +29,8 @@ const PAGES = [
   '/novosti/nvme-protiv-ssd-kogda-raznica-zametna',
   '/novosti/timeweb-cloud-vtoroe-mesto-reyting-partnerskih-programm',
   '/novosti/adminvps-desyat-let-i-tridcat-tysyach-klientov',
-];
+  '/kalkulyator', '/luchshie-vps-rossii',
+].filter(shown);
 
 const FORBIDDEN = [
   { re: /\bvpn\b/i, why: 'тема VPN закрыта на русской версии (раздел 3.1 брифа)' },
@@ -92,7 +97,7 @@ console.log(`  разрезы utm_campaign: ${[...campaigns].join(', ') || 'не
 // 5. непартнёрские провайдеры не должны получать метку.
 // Список берём из данных, а не хардкодом: как только провайдер становится
 // партнёром, проверка сама снимает его с контроля
-const nonPartners = PROVIDERS.filter((p) => p.affiliateStatus !== 'active');
+const nonPartners = PROVIDERS.filter((p) => p.affiliateStatus !== 'active' && !HIDDEN.has(p.slug));
 if (nonPartners.length === 0) {
   console.log('  все провайдеры сейчас партнёрские — контроль непартнёрской ссылки не требуется');
 } else {
@@ -107,7 +112,9 @@ if (nonPartners.length === 0) {
 }
 // и обратная проверка: у подтверждённой партнёрки метка обязана быть
 const regru = pages.get('/provajdery/regru') || '';
-if (/reg\.ru[^"']*utm_source=servercalc/.test(regru)) {
+if (HIDDEN.has('regru')) {
+  console.log('  Reg.ru скрыт в кабинете, проверка метки пропущена');
+} else if (/reg\.ru[^"']*utm_source=servercalc/.test(regru)) {
   console.log('  Reg.ru: партнёрская ссылка с меткой на месте');
 } else {
   fail('Reg.ru: партнёрка подтверждена, а метки на ссылке нет');
