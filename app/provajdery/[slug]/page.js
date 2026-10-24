@@ -20,6 +20,7 @@ import {
 import { CAMPAIGN } from '@/lib/utm';
 import { price, plural, ruDate, termShort } from '@/lib/format';
 import { absUrl } from '@/lib/site';
+import { pairsOf, pairTitle } from '@/lib/compare';
 
 export function generateStaticParams() {
   return PROVIDERS.map((p) => ({ slug: p.slug }));
@@ -313,6 +314,23 @@ export default async function ProviderPage({ params }) {
           </div>
         </div>
       </section>
+
+      {pairsOf(slug).length > 0 && (
+        <section className="section-tight paper">
+          <div className="wrap">
+            <div className="eyebrow">
+              <span className="label">Сравнения</span>
+            </div>
+            <div className="chips">
+              {pairsOf(slug).map((p) => (
+                <Link key={p.slug} href={`/sravnenie/${p.slug}`} className="chip chip-light">
+                  {pairTitle(p)}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="section-tight paper-alt">
         <div className="wrap">

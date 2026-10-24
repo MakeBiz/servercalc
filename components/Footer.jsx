@@ -41,6 +41,7 @@ export default function Footer() {
             <h4>Провайдеры</h4>
             <ul>
               <li><Link href="/provajdery">Все провайдеры</Link></li>
+              <li><Link href="/sravnenie">Сравнение провайдеров</Link></li>
               <li><Link href="/provajdery/timeweb">Timeweb Cloud</Link></li>
               <li><Link href="/provajdery/adminvps">AdminVPS</Link></li>
               <li><Link href="/provajdery/hostman">Hostman</Link></li>

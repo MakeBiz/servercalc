@@ -1,6 +1,7 @@
 import { PROVIDERS, TASKS, GEO_PAGES, STATS } from '@/lib/data';
 import { allPosts } from '@/lib/news';
 import { HAS_PROMOS } from '@/lib/promos';
+import { PAIRS } from '@/lib/compare';
 import { absUrl } from '@/lib/site';
 
 /**
@@ -35,6 +36,7 @@ export default function sitemap() {
     { url: absUrl('/provajdery'), priority: 0.8, changeFrequency: 'weekly', lastModified: updated },
     { url: absUrl('/vps-dlya'), priority: 0.8, changeFrequency: 'weekly', lastModified: updated },
     { url: absUrl('/vps'), priority: 0.8, changeFrequency: 'weekly', lastModified: updated },
+    ...(PAIRS.length ? [{ url: absUrl('/sravnenie'), priority: 0.7, changeFrequency: 'weekly', lastModified: updated }] : []),
     { url: absUrl('/novosti'), priority: 0.7, changeFrequency: 'weekly', lastModified: newsUpdated },
     // раздел акций попадает в карту, только когда в нём есть проверенные акции
     ...(HAS_PROMOS
@@ -74,5 +76,12 @@ export default function sitemap() {
     priority: 0.6,
   }));
 
-  return [...core, ...tasks, ...geos, ...providers, ...postUrls];
+  const compares = PAIRS.map((p) => ({
+    url: absUrl(`/sravnenie/${p.slug}`),
+    lastModified: updated,
+    changeFrequency: 'weekly',
+    priority: 0.75,
+  }));
+
+  return [...core, ...tasks, ...geos, ...providers, ...compares, ...postUrls];
 }

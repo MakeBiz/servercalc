@@ -1,0 +1,9 @@
+{
+  "note": "Пары провайдеров для раздела /sravnenie/<slug>/ (24.10.2026, перенесены с ПодборVPS при склейке каталогов). Страница собирается из каталога: цены, локации, задачи, возможности и промокоды берутся из plans.json, providers.json и promos.json, поэтому текст не стареет. Пара со скрытым в кабинете провайдером не собирается, postbuild кладёт вместо неё переадресацию на /sravnenie/",
+  "pairs": [
+    { "slug": "timeweb-ili-aeza", "a": "timeweb", "b": "aeza" },
+    { "slug": "timeweb-ili-adminvps", "a": "timeweb", "b": "adminvps" },
+    { "slug": "adminvps-ili-aeza", "a": "adminvps", "b": "aeza" },
+    { "slug": "aeza-ili-fornex", "a": "aeza", "b": "fornex" }
+  ]
+}
