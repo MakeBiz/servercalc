@@ -4,7 +4,7 @@
     "vdsina": { "included": true, "verifiedAt": "2026-10-25", "source": "https://vdsina.ru/pricing/standard", "note": "Лицензия в цене тарифа от 2 vCPU / 4 ГБ" },
     "ruvds": { "included": true, "verifiedAt": "2026-10-25", "source": "https://ruvds.com/ru/ruvds_price_2026_jul/" },
     "vpsdime": { "included": true, "verifiedAt": "2026-10-25", "source": "https://vpsdime.com/windows-vps" },
-    "vpshouse": { "included": true, "verifiedAt": "2026-10-21", "source": "https://vps.house/" },
+    "vpshouse": { "included": true, "verifiedAt": "2026-10-25", "source": "https://vps.house/" },
     "timeweb": { "included": false, "licenseRub": 720, "verifiedAt": "2026-10-25", "source": "https://timeweb.cloud/prices" }
   },
   "offers": [

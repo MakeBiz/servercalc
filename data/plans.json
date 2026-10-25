@@ -1764,9 +1764,9 @@
     "priceRub": 430,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-25",
     "dataStatus": "live",
-    "source": "https://vps.house/learn_api/tariff"
+    "source": "https://vps.house/"
   },
   {
     "id": "vpshouse-2",
@@ -1783,9 +1783,9 @@
     "priceRub": 710,
     "billing": "month",
     "ipv4": true,
-    "verifiedAt": "2026-08-15",
+    "verifiedAt": "2026-10-25",
     "dataStatus": "live",
-    "source": "https://vps.house/learn_api/tariff"
+    "source": "https://vps.house/"
   },
   {
     "id": "beget-1",
