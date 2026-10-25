@@ -1,14 +1,14 @@
 {
-  "note": "Лицензия Windows Server по провайдерам и отдельные Windows-тарифы с лицензией в цене. Сверено 21.10.2026 по сайтам провайдеров. Провайдер без записи в итог страницы /vps-dlya/windows/ не попадает",
+  "note": "Лицензия Windows Server по провайдерам и отдельные Windows-тарифы с лицензией в цене. Сверено 25.10.2026 по сайтам провайдеров. Провайдер без записи в итог страницы /vps-dlya/windows/ не попадает",
   "providers": {
-    "vdsina": { "included": true, "verifiedAt": "2026-10-21", "source": "https://vdsina.ru/pricing/standard", "note": "Лицензия в цене тарифа от 2 vCPU / 4 ГБ" },
-    "ruvds": { "included": true, "verifiedAt": "2026-10-21", "source": "https://ruvds.com/ru/ruvds_price_2026_jul/" },
-    "vpsdime": { "included": true, "verifiedAt": "2026-10-21", "source": "https://vpsdime.com/windows-vps" },
+    "vdsina": { "included": true, "verifiedAt": "2026-10-25", "source": "https://vdsina.ru/pricing/standard", "note": "Лицензия в цене тарифа от 2 vCPU / 4 ГБ" },
+    "ruvds": { "included": true, "verifiedAt": "2026-10-25", "source": "https://ruvds.com/ru/ruvds_price_2026_jul/" },
+    "vpsdime": { "included": true, "verifiedAt": "2026-10-25", "source": "https://vpsdime.com/windows-vps" },
     "vpshouse": { "included": true, "verifiedAt": "2026-10-21", "source": "https://vps.house/" },
-    "timeweb": { "included": false, "licenseRub": 720, "verifiedAt": "2026-10-21", "source": "https://timeweb.cloud/prices" }
+    "timeweb": { "included": false, "licenseRub": 720, "verifiedAt": "2026-10-25", "source": "https://timeweb.cloud/prices" }
   },
   "offers": [
-    { "id": "adminvps-win3", "providerSlug": "adminvps", "name": "WIN3", "cpu": 4, "ram": 8, "disk": 80, "diskType": "NVMe", "geo": "ru", "priceRub": 2649, "verifiedAt": "2026-10-21", "source": "https://adminvps.ru/vps/", "note": "Windows-тариф, лицензия в цене" },
-    { "id": "adminvps-win2", "providerSlug": "adminvps", "name": "WIN2", "cpu": 2, "ram": 4, "disk": 60, "diskType": "NVMe", "geo": "ru", "priceRub": 1899, "verifiedAt": "2026-10-21", "source": "https://adminvps.ru/vps/", "note": "Windows-тариф, лицензия в цене" }
+    { "id": "adminvps-win3", "providerSlug": "adminvps", "name": "WIN3", "cpu": 4, "ram": 8, "disk": 80, "diskType": "NVMe", "geo": "ru", "priceRub": 2649, "verifiedAt": "2026-10-25", "source": "https://adminvps.ru/vps/", "note": "Windows-тариф, лицензия в цене" },
+    { "id": "adminvps-win2", "providerSlug": "adminvps", "name": "WIN2", "cpu": 2, "ram": 4, "disk": 60, "diskType": "NVMe", "geo": "ru", "priceRub": 1899, "verifiedAt": "2026-10-25", "source": "https://adminvps.ru/vps/", "note": "Windows-тариф, лицензия в цене" }
   ]
 }
