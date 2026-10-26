@@ -31,6 +31,7 @@ export default function Footer() {
             <ul>
               <li><Link href="/#podbor">Калькулятор</Link></li>
               <li><Link href="/catalog">Каталог тарифов</Link></li>
+              <li><Link href="/indeks-cen-vps">Индекс цен VPS</Link></li>
               <li><Link href="/vps-dlya">Подбор под задачу</Link></li>
               <li><Link href="/vps">Подбор по географии</Link></li>
               {HAS_PROMOS && <li><Link href="/akcii">Акции и промокоды</Link></li>}
