@@ -495,7 +495,7 @@ p:last-child { margin-bottom: 0; }
 
 /* Ровная сетка равных колонок вместо flex-переноса: кнопки одной ширины и
    высоты, без рваных рядов. Приём переносим на все группы кнопок калькулятора */
-.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr)); gap: 8px; }
 .chips .chip { width: 100%; min-height: 44px; justify-content: flex-start; }
 
 .chip {
@@ -787,10 +787,10 @@ p:last-child { margin-bottom: 0; }
 .cards {
   display: grid;
   gap: 16px;
-  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(268px, 100%), 1fr));
 }
-.cards-2 { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); }
-.cards-4 { grid-template-columns: repeat(auto-fill, minmax(212px, 1fr)); }
+.cards-2 { grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr)); }
+.cards-4 { grid-template-columns: repeat(auto-fill, minmax(min(212px, 100%), 1fr)); }
 
 .card {
   background: var(--paper-card);
@@ -907,7 +907,7 @@ table.tbl tbody tr:hover { background: var(--paper-sunk); }
 /* спецификации в две колонки */
 .specs {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
@@ -1469,7 +1469,7 @@ html:not([data-theme='dark']) .reason-no { color: var(--danger); border-color: r
 .res-fit-part { color: var(--warn); }
 .res-terms { font-size: 0.8rem; margin: 2px 0 10px; }
 .res-rank { font-weight: 700; }
-.cards-3 { grid-template-columns: repeat(auto-fit, minmax(268px, 1fr)); }
+.cards-3 { grid-template-columns: repeat(auto-fit, minmax(min(268px, 100%), 1fr)); }
 
 /* ============================================================
    Вариант A «чистый справочник» (29.10.2026): одна раскладка для
@@ -1724,3 +1724,22 @@ html[data-theme='dark'] .th-sort:hover, html[data-theme='dark'] .th-sort.on { co
 .chip-light, a.chip, .chips a { text-decoration: none; }
 .calc-main .calc { align-self: start; height: auto; }
 .calc-main .calc-foot { margin-top: 20px; }
+/* шапка на средних и узких экранах (30.10.2026): ничего не вылезает за край */
+.header-in { gap: 16px; }
+@media (min-width: 941px) and (max-width: 1240px) {
+  .nav { gap: 0; }
+  .nav a { padding: 8px 8px; font-size: 0.85rem; }
+  .lang-switch, .theme-switch { margin-left: 4px; }
+}
+@media (max-width: 480px) {
+  :root { --gut: 16px; }
+  .header-in { gap: 8px; }
+  .brand { font-size: 1rem; gap: 8px; }
+  .lang-switch { margin-left: auto; min-width: 34px; height: 30px; padding: 0 8px; }
+  .theme-switch { margin-left: 4px; width: 52px; height: 30px; }
+  .theme-switch .ts-knob { width: 22px; height: 22px; }
+  .theme-switch[aria-checked='true'] .ts-knob { transform: translateX(22px); }
+  .theme-switch .ts-moon { left: 7px; }
+  .theme-switch .ts-sun { right: 7px; }
+  .burger { margin-left: 4px; width: 38px; height: 38px; }
+}

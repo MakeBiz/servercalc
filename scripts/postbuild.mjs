@@ -76,6 +76,8 @@ function stubIfMissing(rel, to) {
 try {
   const read = (n) => JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', n), 'utf8'));
   for (const p of read('providers.json')) if (p && p.slug) stubIfMissing(`provajdery/${p.slug}`, '/provajdery');
+  // провайдеры, убранные из базы совсем (Reg.ru 30.10.2026): старый адрес ведёт в раздел
+  for (const slug of ['regru']) stubIfMissing(`provajdery/${slug}`, '/provajdery');
   const tax = read('taxonomy.json');
   for (const g of tax.geos || []) if (g && g.slug) stubIfMissing(`vps/${g.slug}`, '/vps');
   for (const t of tax.tasks || []) if (t && t.slug) stubIfMissing(`vps-dlya/${t.slug}`, '/vps-dlya');

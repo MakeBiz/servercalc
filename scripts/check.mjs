@@ -24,7 +24,7 @@ const PAGES = [
   '/', '/catalog', '/provajdery', '/vps-dlya', '/vps', '/novosti', '/akcii',
   '/metodologiya', '/o-proekte',
   '/politika-konfidencialnosti', '/cookie',
-  '/provajdery/timeweb', '/provajdery/regru', '/provajdery/vdsina',
+  '/provajdery/timeweb', '/provajdery/vdsina',
   '/vps-dlya/1c-bitrix', '/vps-dlya/n8n', '/vps/rossiya', '/vps/evropa',
   '/novosti/nvme-protiv-ssd-kogda-raznica-zametna',
   '/novosti/timeweb-cloud-vtoroe-mesto-reyting-partnerskih-programm',
@@ -111,14 +111,7 @@ if (nonPartners.length === 0) {
   else console.log(`  провайдеры без партнёрства (${nonPartners.map((p) => p.slug).join(', ')}) отдают обычную ссылку без метки`);
 }
 // и обратная проверка: у подтверждённой партнёрки метка обязана быть
-const regru = pages.get('/provajdery/regru') || '';
-if (HIDDEN.has('regru')) {
-  console.log('  Reg.ru скрыт в кабинете, проверка метки пропущена');
-} else if (/reg\.ru[^"']*utm_source=servercalc/.test(regru)) {
-  console.log('  Reg.ru: партнёрская ссылка с меткой на месте');
-} else {
-  fail('Reg.ru: партнёрка подтверждена, а метки на ссылке нет');
-}
+// Reg.ru убран из базы 30.10.2026, проверка его метки снята
 
 // 6. счётчик
 console.log('\n4. Аналитика и техника');

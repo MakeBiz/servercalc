@@ -26,13 +26,6 @@
    "paypal": true,
    "card": true
   },
-  "regru": {
-   "mir": true,
-   "sbp": true,
-   "crypto": false,
-   "paypal": false,
-   "card": true
-  },
   "fornex": {
    "mir": true,
    "sbp": true,

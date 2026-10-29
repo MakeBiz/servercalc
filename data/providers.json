@@ -350,52 +350,6 @@
     "verifiedAt": "2026-08-02"
   },
   {
-    "slug": "regru",
-    "name": "Reg.ru",
-    "color": "#1f6fb2",
-    "country": "RU",
-    "affiliateStatus": "active",
-    "url": "https://www.reg.ru/?rlink=reflink-31242589",
-    "site": "https://www.reg.ru",
-    "geos": [
-      "ru"
-    ],
-    "tasks": [
-      "sajt",
-      "magazin",
-      "1c-bitrix",
-      "dev"
-    ],
-    "virtualization": [
-      "KVM"
-    ],
-    "features": {
-      "panel": true,
-      "ddos": true,
-      "backup": true,
-      "hourly": false,
-      "testPeriod": false
-    },
-    "description": "Крупный российский регистратор и хостер. Удобен, когда домен, хостинг и сервер нужны в одном кабинете, с закрывающими документами",
-    "pros": [
-      "Домены, хостинг и серверы в одном кабинете",
-      "Документы и договор для юрлиц",
-      "Известный бренд с долгой историей"
-    ],
-    "cons": [
-      "Цены выше нишевых провайдеров",
-      "Интерфейс перегружен"
-    ],
-    "affiliate": {
-      "rate": "40% хостинг, 15% облако, 3,5% домены",
-      "term": "recurring на продления",
-      "cookie": "14 дней",
-      "note": "Партнёрка подтверждена, ссылка из выгрузки владельца",
-      "payoutInternal": "от 200 ₽, только рублёвый счёт банка РФ"
-    },
-    "verifiedAt": "2026-08-02"
-  },
-  {
     "slug": "fornex",
     "name": "Fornex",
     "color": "#2b7a78",
