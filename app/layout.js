@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{if(localStorage.getItem('sc-theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();",
+              "(function(){try{if(sessionStorage.getItem('sc-theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}})();",
           }}
         />
         <DemoStrip />

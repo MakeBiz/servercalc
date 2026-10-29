@@ -135,3 +135,26 @@ function walkOg(dir) {
 }
 walkOg(OUT);
 console.log(`[postbuild] og:url/og:title/og:description по странице: ${ogFixed} файлов`);
+
+/* ---------- hreflang: servercalc.ru и servercalc.com — языковые версии друг друга (29.10.2026) ----------
+   Для страниц с точным переводом ставим rel=alternate hreflang ru/en/x-default в обе стороны.
+   Пары лежат в data/lang-pairs.json, файл одинаковый в обоих репо */
+const LANG = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/lang-pairs.json'), 'utf8'));
+const SIDE = 'ru';
+let hrefl = 0;
+for (const [ruPath, enPath, exact] of LANG.pairs) {
+  if (!exact) continue;
+  const own = SIDE === 'ru' ? ruPath : enPath;
+  const file = path.join(OUT, own, 'index.html');
+  if (!fs.existsSync(file)) continue;
+  let html = fs.readFileSync(file, 'utf8');
+  if (html.includes('hreflang="en"')) continue;
+  const tags =
+    `<link rel="alternate" hreflang="ru" href="${LANG.ru}${ruPath}"/>` +
+    `<link rel="alternate" hreflang="en" href="${LANG.en}${enPath}"/>` +
+    `<link rel="alternate" hreflang="x-default" href="${LANG.en}${enPath}"/>`;
+  html = html.replace('</head>', `${tags}</head>`);
+  fs.writeFileSync(file, html);
+  hrefl += 1;
+}
+console.log(`[postbuild] hreflang ru/en: ${hrefl} страниц`);

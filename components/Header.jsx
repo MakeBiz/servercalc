@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
+import { counterpart } from '@/lib/lang';
 import { SITE_NAME } from '@/lib/site';
 import { goal } from '@/lib/metrika';
 
@@ -31,7 +32,7 @@ export default function Header({ showPromos = false }) {
     const next = theme === 'light' ? 'dark' : 'light';
     if (next === 'dark') document.documentElement.dataset.theme = 'dark';
     else delete document.documentElement.dataset.theme;
-    try { localStorage.setItem('sc-theme', next); } catch {}
+    try { sessionStorage.setItem('sc-theme', next); } catch {}
     setTheme(next);
     goal(next === 'light' ? 'theme_to_light' : 'theme_to_dark');
   };
@@ -65,6 +66,9 @@ export default function Header({ showPromos = false }) {
           Подобрать сервер
         </Link>
 
+        <a className="lang-switch" href={counterpart(pathname).url} hrefLang="en" lang="en" aria-label="English version" title="English version" onClick={() => goal('lang_switch')}>
+          EN
+        </a>
         <button
           type="button"
           role="switch"
