@@ -2,18 +2,19 @@ import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import JsonLd from '@/components/JsonLd';
 import { allPosts, RUBRICS, rubricName } from '@/lib/news';
-import { plural } from '@/lib/format';
+import { plural, ruDate } from '@/lib/format';
 import { absUrl } from '@/lib/site';
 
 export const metadata = {
-  title: 'Новости и разборы',
+  title: 'Новости рынка VPS и хостинга',
   description:
     'Разборы по выбору сервера, новости рынка хостинга и журнал изменений цен в каталоге. Каждый материал решает конкретный вопрос читателя, а не пересказывает пресс-релиз',
   alternates: { canonical: '/novosti' },
 };
 
 export default function NewsPage() {
-  const posts = allPosts();
+  // разборы живут в «Журнале» (/zhurnal), здесь новости рынка и изменения цен
+  const posts = allPosts().filter((p) => p.rubric !== 'obzory');
 
   return (
     <>
@@ -35,7 +36,7 @@ export default function NewsPage() {
       <PageHead
         eyebrow="Публикации"
         title="Новости и разборы"
-        lead="Не новостная лента ради ленты: каждый материал отвечает на вопрос, который возникает при выборе сервера. Отдельная рубрика отведена под изменения цен в каталоге"
+        lead="Что происходит на рынке хостинга и у провайдеров, и что подорожало или подешевело в каталоге. Разборы по выбору сервера собраны в Журнале"
         crumbs={[{ href: '/novosti', label: 'Новости' }]}
         badges={
           <>
@@ -64,7 +65,7 @@ export default function NewsPage() {
                 <div className="nf-right">
                   <p className="dim">{posts[0].description}</p>
                   <div className="between">
-                    <span className="faint">{posts[0].author}</span>
+                    <span className="faint">{ruDate(posts[0].date)}{posts[0].updated ? `, обновлено ${ruDate(posts[0].updated)}` : ''}</span>
                     <span className="faint mono">{posts[0].minutes} мин</span>
                   </div>
                 </div>
@@ -82,7 +83,7 @@ export default function NewsPage() {
                 <h3 style={{ fontSize: '1.15rem' }}>{post.title}</h3>
                 <p className="faint" style={{ margin: 0 }}>{post.description}</p>
                 <div className="card-foot">
-                  <span className="faint">{post.author}</span>
+                  <span className="faint">{ruDate(post.date)}</span>
                   <span className="faint">{post.minutes} мин</span>
                 </div>
               </Link>

@@ -5,7 +5,7 @@ import JsonLd from '@/components/JsonLd';
 import OutLink from '@/components/OutLink';
 import { allPosts, getPost, rubricName } from '@/lib/news';
 import { getProvider, minPriceOf } from '@/lib/data';
-import { price } from '@/lib/format';
+import { price, ruDate } from '@/lib/format';
 import { absUrl, SITE_NAME } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -65,14 +65,13 @@ export default async function PostPage({ params }) {
         title={post.title}
         lead={post.description}
         crumbs={[
-          { href: '/novosti', label: 'Новости' },
+          post.rubric === 'obzory' ? { href: '/zhurnal', label: 'Журнал' } : { href: '/novosti', label: 'Новости' },
           { href: `/novosti/${slug}`, label: post.title },
         ]}
         badges={
           <>
-            {/* Даты в интерфейсе не показываем по решению владельца: материал
-                не должен выглядеть протухшим. В разметке для поисковиков
-                datePublished остаётся — там она полезна и читателю не видна */}
+            <span className="badge badge-brass">{ruDate(post.date)}</span>
+            {post.updated && post.updated !== post.date && <span className="badge">обновлено {ruDate(post.updated)}</span>}
             {post.fresh && <span className="badge badge-brass">Новое</span>}
             <span className="badge">{post.author}</span>
             <span className="badge">{post.minutes} мин чтения</span>

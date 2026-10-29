@@ -12,16 +12,20 @@ const RAM_STEPS = [0, 1, 2, 4, 8, 16, 32];
 const CPU_STEPS = [0, 1, 2, 4, 6, 8];
 const PRICE_MAX = 12000;
 
-const SORTS = [
-  { code: 'price', label: 'Дешевле', fn: (a, b) => a.priceRub - b.priceRub },
-  { code: 'ram', label: 'Больше памяти', fn: (a, b) => b.ram - a.ram || a.priceRub - b.priceRub },
-  { code: 'cpu', label: 'Больше ядер', fn: (a, b) => b.cpu - a.cpu || a.priceRub - b.priceRub },
-  {
-    code: 'perGb',
-    label: 'Цена за ГБ памяти',
-    fn: (a, b) => a.priceRub / a.ram - b.priceRub / b.ram,
-  },
+// Сортировка кликом по заголовку таблицы: ключ и направление по умолчанию
+const COLS = [
+  { code: 'provider', label: 'Провайдер', dir: 1, fn: (a, b) => a.providerName.localeCompare(b.providerName, 'ru') || a.priceRub - b.priceRub },
+  { code: 'name', label: 'Тариф', dir: 1, fn: (a, b) => a.name.localeCompare(b.name, 'ru') },
+  { code: 'cpu', label: 'CPU', dir: -1, num: true, fn: (a, b) => a.cpu - b.cpu || b.priceRub - a.priceRub },
+  { code: 'ram', label: 'Память', dir: -1, num: true, fn: (a, b) => a.ram - b.ram || b.priceRub - a.priceRub },
+  { code: 'disk', label: 'Диск', dir: -1, num: true, fn: (a, b) => a.disk - b.disk || b.priceRub - a.priceRub },
+  { code: 'geo', label: 'Локация', dir: 1, fn: (a, b) => (a.geoName || '').localeCompare(b.geoName || '', 'ru') || a.priceRub - b.priceRub },
+  { code: 'perGb', label: 'Цена за ГБ', dir: 1, num: true, fn: (a, b) => a.priceRub / a.ram - b.priceRub / b.ram },
+  { code: 'checked', label: 'Проверено', dir: -1, num: true, fn: (a, b) => String(a.verifiedAt).localeCompare(String(b.verifiedAt)) },
+  { code: 'price', label: 'Цена', dir: 1, num: true, right: true, fn: (a, b) => a.priceRub - b.priceRub },
 ];
+const SORTS = COLS;
+const PRICE_STEPS = [300, 500, 1000, 2000, 5000];
 
 export default function Catalog({ rows, providers, geos, requirements, presetGeo = null }) {
   const [geo, setGeo] = useState(presetGeo);
@@ -30,6 +34,7 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
   const [maxPrice, setMaxPrice] = useState(PRICE_MAX);
   const [reqs, setReqs] = useState([]);
   const [sort, setSort] = useState('price');
+  const [dir, setDir] = useState(1);
 
   const providerBySlug = useMemo(
     () => Object.fromEntries(providers.map((p) => [p.slug, p])),
@@ -53,6 +58,7 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
     if (rq) setReqs(rq.filter((code) => requirements.some((x) => x.code === code)));
     const s = p.get('sort');
     if (s && SORTS.some((x) => x.code === s)) setSort(s);
+    if (p.get('dir') === 'desc') setDir(-1);
     restored.current = true;
   }, [geos, requirements]);
 
@@ -65,8 +71,9 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
       price: maxPrice < PRICE_MAX ? maxPrice : null,
       req: reqs.length ? reqs.join(',') : null,
       sort: sort !== 'price' ? sort : null,
+      dir: dir === -1 ? 'desc' : null,
     });
-  }, [geo, minRam, minCpu, maxPrice, reqs, sort, presetGeo]);
+  }, [geo, minRam, minCpu, maxPrice, reqs, sort, dir, presetGeo]);
 
   function touch(field, value) {
     goal(GOALS.catalogFilter, { field, value: String(value) });
@@ -90,9 +97,16 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
       }
       return true;
     });
-    const s = SORTS.find((x) => x.code === sort) || SORTS[0];
-    return [...list].sort(s.fn);
-  }, [rows, geo, minRam, minCpu, maxPrice, reqs, sort]);
+    const s = SORTS.find((x) => x.code === sort) || SORTS[SORTS.length - 1];
+    return [...list].sort((a, b) => dir * s.fn(a, b));
+  }, [rows, geo, minRam, minCpu, maxPrice, reqs, sort, dir]);
+
+  function sortBy(code) {
+    const col = COLS.find((c) => c.code === code);
+    if (sort === code) setDir((d) => -d);
+    else { setSort(code); setDir(col.dir); }
+    touch('sort', code);
+  }
 
   function reset() {
     setGeo(presetGeo);
@@ -101,6 +115,7 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
     setMaxPrice(PRICE_MAX);
     setReqs([]);
     setSort('price');
+    setDir(1);
   }
 
   /**
@@ -141,130 +156,48 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
 
   return (
     <div>
-      <div className="filters">
-        <div className="field">
-          <span className="label">География</span>
-          <div className="chips">
-            <button
-              type="button"
-              className={geo === null ? 'chip chip-light on' : 'chip chip-light'}
-              aria-pressed={geo === null}
-              onClick={() => { setGeo(null); touch('geo', 'all'); }}
-            >
-              Все
-            </button>
-            {geos.map((g) => (
-              <button
-                key={g.code}
-                type="button"
-                className={geo === g.code ? 'chip chip-light on' : 'chip chip-light'}
-                aria-pressed={geo === g.code}
-                onClick={() => { setGeo(g.code); touch('geo', g.code); }}
-              >
-                {g.name}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="field">
-          <span className="label">Требования</span>
-          <div className="chips">
-            {requirements.map((r) => (
-              <button
-                key={r.code}
-                type="button"
-                className={reqs.includes(r.code) ? 'chip chip-light on' : 'chip chip-light'}
-                aria-pressed={reqs.includes(r.code)}
-                onClick={() => toggleReq(r.code)}
-                title={r.note}
-              >
-                {r.short}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="field">
-          <div className="field-head">
-            <span className="label">Минимум памяти</span>
-            <span className="field-val" style={{ color: 'var(--brass-deep)' }}>
-              {minRam === 0 ? 'любая' : `от ${minRam} ГБ`}
-            </span>
-          </div>
-          <input
-            className="range range-light"
-            type="range"
-            min={0}
-            max={RAM_STEPS.length - 1}
-            value={RAM_STEPS.indexOf(minRam)}
-            onChange={(e) => setMinRam(RAM_STEPS[Number(e.target.value)])}
-            onMouseUp={() => touch('ram', minRam)}
-            aria-label="Минимальный объём памяти"
-          />
-          <div className="field-head" style={{ marginTop: 14, marginBottom: 0 }}>
-            <span className="label">Минимум ядер</span>
-            <span className="field-val" style={{ color: 'var(--brass-deep)' }}>
-              {minCpu === 0 ? 'любое' : `от ${minCpu}`}
-            </span>
-          </div>
-          <input
-            className="range range-light"
-            type="range"
-            min={0}
-            max={CPU_STEPS.length - 1}
-            value={CPU_STEPS.indexOf(minCpu)}
-            onChange={(e) => setMinCpu(CPU_STEPS[Number(e.target.value)])}
-            onMouseUp={() => touch('cpu', minCpu)}
-            aria-label="Минимальное число ядер"
-          />
-        </div>
-
-        <div className="field">
-          <div className="field-head">
-            <span className="label">Цена в месяц</span>
-            <span className="field-val" style={{ color: 'var(--brass-deep)' }}>
-              {maxPrice >= PRICE_MAX ? 'любая' : `до ${price(maxPrice)}`}
-            </span>
-          </div>
-          <input
-            className="range range-light"
-            type="range"
-            min={200}
-            max={PRICE_MAX}
-            step={100}
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(Number(e.target.value))}
-            onMouseUp={() => touch('price', maxPrice)}
-            aria-label="Максимальная цена"
-          />
-          <div className="range-scale" style={{ color: 'var(--text-faint)' }}>
-            <span>200 ₽</span>
-            <span>без лимита</span>
-          </div>
-          <button type="button" className="btn btn-ghost btn-sm" style={{ marginTop: 14 }} onClick={reset}>
-            Сбросить фильтры
+      <div className="cat-filters">
+        <div className="cat-row" role="group" aria-label="География">
+          <button type="button" className={geo === null ? 'qchip on' : 'qchip'} aria-pressed={geo === null} onClick={() => { setGeo(null); touch('geo', 'all'); }}>
+            Все страны
           </button>
-        </div>
-      </div>
-
-      <div className="filters-bar">
-        <span className="dim">
-          {filtered.length} {plural(filtered.length, 'тариф', 'тарифа', 'тарифов')} из {rows.length}
-        </span>
-        <div className="chips">
-          <span className="label" style={{ margin: 0, alignSelf: 'center' }}>Сортировка</span>
-          {SORTS.map((s) => (
-            <button
-              key={s.code}
-              type="button"
-              className={sort === s.code ? 'chip chip-light on' : 'chip chip-light'}
-              aria-pressed={sort === s.code}
-              onClick={() => { setSort(s.code); touch('sort', s.code); }}
-            >
-              {s.label}
+          {geos.map((g) => (
+            <button key={g.code} type="button" className={geo === g.code ? 'qchip on' : 'qchip'} aria-pressed={geo === g.code} onClick={() => { setGeo(g.code); touch('geo', g.code); }}>
+              {g.name}
             </button>
           ))}
+        </div>
+        <div className="cat-row" role="group" aria-label="Требования">
+          {requirements.map((r) => (
+            <button key={r.code} type="button" className={reqs.includes(r.code) ? 'qchip on' : 'qchip'} aria-pressed={reqs.includes(r.code)} onClick={() => toggleReq(r.code)} title={r.note}>
+              {r.short}
+            </button>
+          ))}
+        </div>
+        <div className="cat-row cat-selects">
+          <label className="fsel">
+            <span>Память</span>
+            <select value={minRam} onChange={(e) => { setMinRam(Number(e.target.value)); touch('ram', e.target.value); }}>
+              {RAM_STEPS.map((v) => <option key={v} value={v}>{v === 0 ? 'любая' : `от ${v} ГБ`}</option>)}
+            </select>
+          </label>
+          <label className="fsel">
+            <span>Ядра</span>
+            <select value={minCpu} onChange={(e) => { setMinCpu(Number(e.target.value)); touch('cpu', e.target.value); }}>
+              {CPU_STEPS.map((v) => <option key={v} value={v}>{v === 0 ? 'любое' : `от ${v}`}</option>)}
+            </select>
+          </label>
+          <label className="fsel">
+            <span>Цена в месяц</span>
+            <select value={PRICE_STEPS.includes(maxPrice) ? maxPrice : PRICE_MAX} onChange={(e) => { setMaxPrice(Number(e.target.value)); touch('price', e.target.value); }}>
+              <option value={PRICE_MAX}>любая</option>
+              {PRICE_STEPS.map((v) => <option key={v} value={v}>до {price(v)}</option>)}
+            </select>
+          </label>
+          <span className="cat-count">
+            {filtered.length} {plural(filtered.length, 'тариф', 'тарифа', 'тарифов')} из {rows.length}
+          </span>
+          <button type="button" className="cat-reset" onClick={reset}>Сбросить</button>
         </div>
       </div>
 
@@ -273,15 +206,17 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
           <table className="tbl">
             <thead>
               <tr>
-                <th>Провайдер</th>
-                <th>Тариф</th>
-                <th>CPU</th>
-                <th>Память</th>
-                <th>Диск</th>
-                <th>Локация</th>
-                <th>Цена за ГБ</th>
-                <th>Проверено</th>
-                <th style={{ textAlign: 'right' }}>Цена</th>
+                {COLS.map((c) => {
+                  const on = sort === c.code;
+                  return (
+                    <th key={c.code} aria-sort={on ? (dir === 1 ? 'ascending' : 'descending') : 'none'} style={c.right ? { textAlign: 'right' } : undefined}>
+                      <button type="button" className={on ? 'th-sort on' : 'th-sort'} onClick={() => sortBy(c.code)} title="Сортировать">
+                        {c.label}
+                        <span className="th-arrow" aria-hidden="true">{on ? (dir === 1 ? '↑' : '↓') : '↕'}</span>
+                      </button>
+                    </th>
+                  );
+                })}
                 <th />
               </tr>
             </thead>

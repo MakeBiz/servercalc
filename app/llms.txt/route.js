@@ -59,7 +59,8 @@ export function GET() {
     ...PAY_METHODS.map((m) => link(m.h1, `/vps-s-oplatoj/${m.slug}`, `принимают: ${providersByPayment(m.key).map((p) => p.name).join(', ')}`)),
     '',
     '## Новости рынка',
-    link('Новости и обзоры', '/novosti', 'что происходит на рынке VPS, хостинга и цен'),
+    link('Новости рынка', '/novosti', 'что происходит на рынке VPS, хостинга и цен'),
+    link('Журнал', '/zhurnal', 'разборы: как выбрать VPS, сколько ресурсов нужно, налоги и документы'),
     '',
   ].join('\n');
 

@@ -1,7 +1,7 @@
 import PageHead from '@/components/PageHead';
 import ProviderCard from '@/components/ProviderCard';
 import JsonLd from '@/components/JsonLd';
-import { PROVIDERS, STATS, minPriceOf, plansOf } from '@/lib/data';
+import { PROVIDERS, STATS, minPriceOf, plansOf, sortForProvidersPage } from '@/lib/data';
 import { CAMPAIGN } from '@/lib/utm';
 import { plural, ruDate } from '@/lib/format';
 import { absUrl } from '@/lib/site';
@@ -16,8 +16,6 @@ export const metadata = {
 export default function ProvidersPage() {
   const ru = PROVIDERS.filter((p) => p.country === 'RU');
   const intl = PROVIDERS.filter((p) => p.country !== 'RU');
-  // Порядок: по минимальной проверенной цене (с 29.10.2026 партнёрство на порядок не влияет)
-  const sortByPrice = (a, b) => (minPriceOf(a.slug) ?? Infinity) - (minPriceOf(b.slug) ?? Infinity) || a.name.localeCompare(b.name);
 
   return (
     <>
@@ -59,7 +57,7 @@ export default function ProvidersPage() {
             внутри страны
           </p>
           <div className="cards cards-2">
-            {[...ru].sort(sortByPrice).map((p) => (
+            {sortForProvidersPage(ru).map((p) => (
               <ProviderCard key={p.slug} provider={p} minPrice={minPriceOf(p.slug)} campaign={CAMPAIGN.providers} />
             ))}
           </div>
@@ -76,7 +74,7 @@ export default function ProvidersPage() {
             России или нужна конкретная страна размещения
           </p>
           <div className="cards cards-2">
-            {[...intl].sort(sortByPrice).map((p) => (
+            {sortForProvidersPage(intl).map((p) => (
               <ProviderCard key={p.slug} provider={p} minPrice={minPriceOf(p.slug)} campaign={CAMPAIGN.providers} />
             ))}
           </div>
@@ -87,8 +85,9 @@ export default function ProvidersPage() {
         <div className="wrap">
           <div className="notice">
             <strong>Как формируется этот список.</strong> Провайдер попадает в каталог, если у него
-            есть публичный прайс, который можно проверить, и линейка виртуальных серверов. Позиция
-            в списке зависит от минимальной цены в базе, а не от размера вознаграждения. Всего в
+            есть публичный прайс, который можно проверить, и линейка виртуальных серверов. Первыми
+            стоят провайдеры, с которыми мы работаем напрямую, остальные идут по минимальной цене в
+            базе. В подборе на главной порядок задают только условия запроса и цена. Всего в
             базе {PROVIDERS.reduce((n, p) => n + plansOf(p.slug).length, 0)} проверенных тарифов
           </div>
         </div>

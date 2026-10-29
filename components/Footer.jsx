@@ -57,7 +57,8 @@ export default function Footer() {
             <ul>
               <li><Link href="/metodologiya">Методология подбора</Link></li>
               <li><Link href="/o-proekte">О проекте</Link></li>
-              <li><Link href="/novosti">Новости и обзоры</Link></li>
+              <li><Link href="/novosti">Новости рынка</Link></li>
+              <li><Link href="/zhurnal">Журнал: как выбрать VPS</Link></li>
               <li><Link href="/politika-konfidencialnosti">Политика конфиденциальности</Link></li>
               <li><Link href="/cookie">Использование cookie</Link></li>
               {SITE.contactEmail && (

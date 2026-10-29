@@ -17,6 +17,7 @@ const NAV = [
   // пустой раздел в меню хуже, чем его отсутствие
   { href: '/akcii', label: 'Акции', optional: true },
   { href: '/novosti', label: 'Новости' },
+  { href: '/zhurnal', label: 'Журнал' },
   { href: '/metodologiya', label: 'Методология' },
 ];
 

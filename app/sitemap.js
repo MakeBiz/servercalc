@@ -40,6 +40,7 @@ export default function sitemap() {
     { url: absUrl('/vps'), priority: 0.8, changeFrequency: 'weekly', lastModified: updated },
     ...(PAIRS.length ? [{ url: absUrl('/sravnenie'), priority: 0.7, changeFrequency: 'weekly', lastModified: updated }] : []),
     { url: absUrl('/novosti'), priority: 0.7, changeFrequency: 'weekly', lastModified: newsUpdated },
+    { url: absUrl('/zhurnal'), priority: 0.7, changeFrequency: 'weekly', lastModified: newsUpdated },
     // раздел акций попадает в карту, только когда в нём есть проверенные акции
     ...(HAS_PROMOS
       ? [{ url: absUrl('/akcii'), priority: 0.8, changeFrequency: 'daily', lastModified: updated }]
