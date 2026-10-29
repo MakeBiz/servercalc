@@ -16,14 +16,16 @@ import Link from 'next/link';
 import OutLink from './OutLink';
 import TaskIcon from './TaskIcon';
 import { measureGeo, PING_GEOS } from '@/lib/ping';
-import { price, plural } from '@/lib/format';
+import { price, plural, ruDateShort } from '@/lib/format';
 import { goal, GOALS } from '@/lib/metrika';
 import { CAMPAIGN } from '@/lib/utm';
 import { readParams, num, list, writeParams } from '@/lib/url-state';
 
-const RAM_OPTS = [0, 1, 2, 4, 8, 16, 32];
+const RAM_OPTS = [0, 1, 2, 4, 8, 16];
 const CPU_OPTS = [0, 1, 2, 4, 8];
-const BUDGET_OPTS = [0, 300, 500, 1000, 2000, 5000];
+const BUDGET_OPTS = [0, 300, 500, 1000, 2000, 3000, 5000];
+// ползунок бюджета: шаги слева направо, последний «без лимита»
+const BUDGET_STEPS = [300, 500, 1000, 2000, 3000, 5000, 0];
 const PAYS = [
   { key: 'mir', label: 'Карта МИР' },
   { key: 'sbp', label: 'СБП' },
@@ -238,54 +240,84 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   const geoOptions = payload.geos.filter((g) => !g.hideInCalc || g.slug === geo);
   const termTotal = (p) => (p.term && p.term > 1 ? `оплата сразу ${price(Math.round(p.priceRub * p.term))} за ${p.term === 12 ? 'год' : p.term === 24 ? '2 года' : p.term + ' мес.'}` : 'оплата помесячно');
 
+  const segBtn = (on) => (on ? 'on' : '');
   const controls = (
-    <div className="flt-grid">
-      <label className="fsel">
-        <span>Регион</span>
-        <select value={geo} onChange={(e) => { setGeo(e.target.value); setShowAll(false); track('geo', { geo: e.target.value }); }}>
-          <option value="any">любой</option>
+    <div className="flt-side">
+      <div className="fblock">
+        <div className="flbl">Регион</div>
+        <div className="fbtns">
+          <button type="button" className={geo === 'any' ? 'fbtn on' : 'fbtn'} aria-pressed={geo === 'any'} onClick={() => { setGeo('any'); setShowAll(false); track('geo', { geo: 'any' }); }}>Любой</button>
           {geoOptions.map((g) => (
-            <option key={g.slug} value={g.slug}>{g.name}{pingText(g.code)}</option>
+            <button key={g.slug} type="button" className={geo === g.slug ? 'fbtn on' : 'fbtn'} aria-pressed={geo === g.slug} onClick={() => { setGeo(geo === g.slug ? 'any' : g.slug); setShowAll(false); track('geo', { geo: g.slug }); }}>
+              {g.name}
+              {pings[g.code] !== undefined && <span className={pings[g.code] === null ? 'ping-v' : pings[g.code] < 80 ? 'ping-v ping-good' : pings[g.code] < 200 ? 'ping-v ping-mid' : 'ping-v ping-bad'}>{pings[g.code] === null ? '—' : `${pings[g.code]} мс`}</span>}
+            </button>
           ))}
-        </select>
-      </label>
-      <label className="fsel">
-        <span>Память</span>
-        <select value={ram} onChange={(e) => { setRam(Number(e.target.value)); setShowAll(false); track('ram', { ram: e.target.value }); }}>
-          {RAM_OPTS.map((v) => <option key={v} value={v}>{v ? `от ${v} ГБ` : 'любая'}</option>)}
-        </select>
-      </label>
-      <label className="fsel">
-        <span>Ядра</span>
-        <select value={cpu} onChange={(e) => { setCpu(Number(e.target.value)); setShowAll(false); track('cpu', { cpu: e.target.value }); }}>
-          {CPU_OPTS.map((v) => <option key={v} value={v}>{v ? `от ${v}` : 'любое'}</option>)}
-        </select>
-      </label>
-      <label className="fsel">
-        <span>Бюджет</span>
-        <select value={budget} onChange={(e) => { setBudget(Number(e.target.value)); setShowAll(false); track('budget', { budget: e.target.value }); }}>
-          {BUDGET_OPTS.map((v) => <option key={v} value={v}>{v ? `до ${price(v)}` : 'любой'}</option>)}
-        </select>
-      </label>
-      <div className="flt-group" role="group" aria-label="Оплата">
-        <span className="flt-cap">Оплата</span>
-        {PAYS.map((x) => (
-          <button key={x.key} type="button" className={pay.includes(x.key) ? 'qchip on' : 'qchip'} aria-pressed={pay.includes(x.key)} onClick={() => { setPay((v) => toggle(v, x.key)); setShowAll(false); track('pay', { pay: x.key }); }}>
-            {x.label}
-          </button>
-        ))}
+        </div>
+        <button type="button" className="ping-btn" onClick={runPing} disabled={pinging}>
+          {pinging ? 'Замеряем задержку…' : Object.keys(pings).length ? 'Замерить ещё раз' : 'Проверить задержку из вашей сети'}
+        </button>
       </div>
-      <div className="flt-group" role="group" aria-label="Дополнительно">
-        <span className="flt-cap">Ещё</span>
-        {EXTRAS.map((x) => (
-          <button key={x.key} type="button" className={extras.includes(x.key) ? 'qchip on' : 'qchip'} aria-pressed={extras.includes(x.key)} onClick={() => { setExtras((v) => toggle(v, x.key)); setShowAll(false); track('req', { req: x.key }); }}>
-            {x.label}
-          </button>
-        ))}
+
+      <div className="fblock">
+        <div className="flbl">Память, ГБ</div>
+        <div className="fseg" role="group" aria-label="Память">
+          {RAM_OPTS.map((v) => (
+            <button key={v} type="button" className={segBtn(ram === v)} aria-pressed={ram === v} onClick={() => { setRam(v); setShowAll(false); track('ram', { ram: v }); }}>{v || 'все'}</button>
+          ))}
+        </div>
       </div>
-      <button type="button" className="ping-btn" onClick={runPing} disabled={pinging}>
-        {pinging ? 'Замеряем задержку…' : Object.keys(pings).length ? 'Замерить задержку ещё раз' : 'Проверить задержку до регионов из вашей сети'}
-      </button>
+
+      <div className="fblock">
+        <div className="flbl">Ядра</div>
+        <div className="fseg" role="group" aria-label="Ядра">
+          {CPU_OPTS.map((v) => (
+            <button key={v} type="button" className={segBtn(cpu === v)} aria-pressed={cpu === v} onClick={() => { setCpu(v); setShowAll(false); track('cpu', { cpu: v }); }}>{v || 'все'}</button>
+          ))}
+        </div>
+      </div>
+
+      <div className="fblock">
+        <div className="flbl">Бюджет в месяц <b>{budget ? `до ${price(budget)}` : 'без лимита'}</b></div>
+        <input
+          className="range"
+          type="range"
+          min={0}
+          max={BUDGET_STEPS.length - 1}
+          step={1}
+          value={Math.max(0, BUDGET_STEPS.indexOf(budget))}
+          onChange={(e) => { setBudget(BUDGET_STEPS[Number(e.target.value)]); setShowAll(false); }}
+          onMouseUp={() => track('budget', { budget })}
+          onTouchEnd={() => track('budget', { budget })}
+          aria-label="Бюджет в месяц"
+          aria-valuetext={budget ? `до ${price(budget)}` : 'без лимита'}
+        />
+        <div className="range-scale"><span>300 ₽</span><span>без лимита</span></div>
+      </div>
+
+      <div className="fblock">
+        <div className="flbl">Оплата</div>
+        <div className="fbtns">
+          {PAYS.map((x) => (
+            <button key={x.key} type="button" className={pay.includes(x.key) ? 'fbtn on' : 'fbtn'} aria-pressed={pay.includes(x.key)} onClick={() => { setPay((v) => toggle(v, x.key)); setShowAll(false); track('pay', { pay: x.key }); }}>
+              {x.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="fblock">
+        <div className="flbl">Ещё</div>
+        <div className="fbtns">
+          {EXTRAS.map((x) => (
+            <button key={x.key} type="button" className={extras.includes(x.key) ? 'fbtn on' : 'fbtn'} aria-pressed={extras.includes(x.key)} onClick={() => { setExtras((v) => toggle(v, x.key)); setShowAll(false); track('req', { req: x.key }); }}>
+              {x.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {active.length > 0 && <button type="button" className="flt-reset" onClick={resetAll}>Сбросить все фильтры</button>}
     </div>
   );
 
@@ -307,13 +339,15 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
       </div>
 
       <div className="calc-main calc-main-v2">
-        <div className="flt" id="params">
+        <aside className="flt" id="params" aria-label="Фильтры подбора">
           <button type="button" className="flt-toggle" aria-expanded={panelOpen} onClick={() => setPanelOpen((v) => !v)}>
             Фильтры{active.length ? ` · ${active.length}` : ''}
             <span aria-hidden="true">{panelOpen ? '▲' : '▼'}</span>
           </button>
           <div className={panelOpen ? 'flt-body open' : 'flt-body'}>{controls}</div>
+        </aside>
 
+        <div className="results">
           {active.length > 0 && (
             <div className="flt-active" aria-label="Выбранные условия">
               {active.map((a) => (
@@ -324,9 +358,6 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
               <button type="button" className="flt-reset" onClick={resetAll}>Сбросить всё</button>
             </div>
           )}
-        </div>
-
-        <div className="results">
           <div className="results-bar">
             <p className="results-sum">
               {results.length
@@ -363,38 +394,55 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
           )}
 
           {visible.map((r) => {
-            const geoName = payload.geos.find((g) => g.code === r.plan.geo)?.name || (r.plan.geo === 'global' ? 'несколько регионов' : r.plan.geo);
-            const ini = r.provider.name.replace(/[^A-Za-zА-Яа-я0-9]/g, '').slice(0, 2).toUpperCase();
-            const chips = [geoName];
-            if (r.provider.features?.hourly) chips.push('Почасовая оплата');
-            if (r.provider.features?.testPeriod) chips.push('Тест-период');
-            if (r.provider.payments?.mir) chips.push('Карта МИР');
-            if (r.provider.payments?.sbp) chips.push('СБП');
-            if (r.provider.payments?.crypto) chips.push('Крипта');
+            const p = r.plan;
+            const pr = r.provider;
+            const whereFull = (p.cityByRu && geoObj && p.cityByRu[geoObj.code]) || p.location || payload.geos.find((g) => g.code === p.geo)?.name || (p.geo === 'global' ? 'несколько регионов' : p.geo);
+            // длинный список городов сокращаем: «США (Нью-Йорк, Лос-Анджелес и ещё 3)»
+            const where = (() => {
+              const m = String(whereFull).match(/^(.*?)\((.*)\)$/);
+              const head = m ? m[1].trim() : '';
+              const list = (m ? m[2] : whereFull).split(',').map((x) => x.trim()).filter(Boolean);
+              if (list.length <= 3) return whereFull;
+              const short = `${list.slice(0, 2).join(', ')} и ещё ${list.length - 2}`;
+              return head ? `${head} (${short})` : short;
+            })();
+            const ini = pr.name.replace(/[^A-Za-zА-Яа-я0-9]/g, '').slice(0, 2).toUpperCase();
+            const pays = [pr.payments?.mir && 'Карта МИР', pr.payments?.sbp && 'СБП', pr.payments?.card && 'Visa/Mastercard', pr.payments?.crypto && 'Криптовалюта'].filter(Boolean);
+            const feats = [pr.features?.hourly && 'Почасовая оплата', pr.features?.testPeriod && 'Тест-период', pr.features?.ddos && 'Защита от DDoS', pr.features?.backup && 'Бэкапы', pr.features?.panel && 'Панель управления'].filter(Boolean);
+            const desc = pr.description && pr.description.length > 150 ? pr.description.slice(0, 148).replace(/[ ,.]+[^ ]*$/, '') + '…' : pr.description;
             return (
-              <article className="rescard" key={r.provider.slug}>
-                <span className="res-logo" style={{ background: r.provider.color }} aria-hidden="true">{ini}</span>
-                <div className="res-main">
-                  <div className="res-title">
-                    <strong>{r.provider.name}</strong>
+              <article className="rescard rescard-v3" key={pr.slug}>
+                <div className="rc-head">
+                  <span className="res-logo" style={{ background: pr.color }} aria-hidden="true">{ini}</span>
+                  <div className="rc-who">
+                    <Link href={`/provajdery/${pr.slug}`} className="rc-name">{pr.name}</Link>
+                    <div className="rc-meta">{pr.country === 'RU' ? 'Российская компания' : 'Зарубежная компания'}{pr.virtualization?.length ? ` · ${pr.virtualization.join(', ')}` : ''}</div>
                   </div>
-                  <div className="res-plan">
-                    {r.plan.name} · {r.plan.cpu} {coresWord(r.plan.cpu)} · {r.plan.ram} ГБ · {r.plan.disk} ГБ {r.plan.diskType}
+                  <div className="rc-price">
+                    <div className="res-price">{price(p.priceRub)}<span> в месяц</span></div>
+                    <div className="res-terms">{termTotal(p)}</div>
                   </div>
-                  <div className="res-chips">
-                    {chips.map((c) => <span key={c} className="pchip">{c}</span>)}
-                  </div>
-                  {r.more > 0 && (
-                    <Link href={`/provajdery/${r.provider.slug}`} className="res-more">
-                      ещё {r.more} {plural(r.more, 'подходящий тариф', 'подходящих тарифа', 'подходящих тарифов')} у {r.provider.name}
-                    </Link>
-                  )}
                 </div>
-                <div className="res-side">
-                  <div className="res-price">{price(r.plan.priceRub)}<span> в месяц</span></div>
-                  <div className="res-terms">{termTotal(r.plan)}</div>
-                  <OutLink provider={r.provider} campaign={campaign} goalName="calc_click" className="btn btn-brass btn-block">
-                    Тарифы {r.provider.name} <span className="nowrap">от {price(r.plan.priceRub)}</span>
+                {desc && <p className="rc-desc">{desc}</p>}
+                <dl className="rc-specs">
+                  <div><dt>Тариф</dt><dd>{p.name}</dd></div>
+                  <div><dt>Процессор</dt><dd>{p.cpu} {coresWord(p.cpu)}</dd></div>
+                  <div><dt>Память</dt><dd>{p.ram} ГБ</dd></div>
+                  <div><dt>Диск</dt><dd>{p.disk} ГБ {p.diskType}</dd></div>
+                  <div><dt>Где</dt><dd>{where}</dd></div>
+                  <div><dt>IPv4</dt><dd>{p.ipv4 === false ? 'нет' : 'есть'}</dd></div>
+                  {p.trafficTb != null && <div><dt>Трафик</dt><dd>{p.trafficTb} ТБ в месяц</dd></div>}
+                </dl>
+                {(pays.length > 0 || feats.length > 0) && (
+                  <div className="res-chips">
+                    {pays.map((c) => <span key={c} className="pchip pchip-pay">{c}</span>)}
+                    {feats.map((c) => <span key={c} className="pchip">{c}</span>)}
+                  </div>
+                )}
+                <div className="rc-foot">
+                  <span className="rc-checked">Цена проверена {ruDateShort(p.verifiedAt)}{r.more > 0 && <> · <Link href={`/provajdery/${pr.slug}`} className="res-more">ещё {r.more} {plural(r.more, 'подходящий тариф', 'подходящих тарифа', 'подходящих тарифов')}</Link></>}</span>
+                  <OutLink provider={pr} campaign={campaign} goalName="calc_click" className="btn btn-brass rc-cta">
+                    Тарифы {pr.name} <span className="nowrap">от {price(p.priceRub)}</span>
                   </OutLink>
                 </div>
               </article>
