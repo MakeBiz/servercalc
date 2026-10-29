@@ -1847,3 +1847,39 @@ html[data-theme='dark'] .rc-specs div { box-shadow: inset -1px -1px 0 var(--ink-
 .rc-cta { gap: 0.3em; }
 /* панель фильтров во всю высоту, без собственной прокрутки (30.10.2026) */
 @media (min-width: 980px) { .calc-v2 .flt { position: static; max-height: none; overflow: visible; } }
+
+/* ---------- карточка «против рынка» (вариант 1, 30.10.2026) ---------- */
+.rescard.rescard-v4 { display: flex; flex-direction: column; gap: 14px; padding: 18px 20px; align-items: stretch; }
+.rc-icons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.ric { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: var(--paper-sunk); min-width: 0; }
+.ric svg { flex: none; width: 22px; height: 22px; fill: none; stroke: var(--brass); stroke-width: 1.8; stroke-linecap: round; }
+.ric div { min-width: 0; }
+.ric b { display: block; font: 700 0.95rem var(--font-display); color: var(--text); overflow-wrap: anywhere; }
+.ric small { display: block; font-size: 0.74rem; color: var(--text-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+html[data-theme='dark'] .ric { background: var(--ink-600); }
+html[data-theme='dark'] .ric svg { stroke: var(--brass-bright); }
+html[data-theme='dark'] .ric b { color: var(--on-ink); }
+.rc-bars { display: flex; flex-direction: column; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; }
+html[data-theme='dark'] .rc-bars { border-color: var(--ink-line-2); }
+.rc-bar { display: grid; grid-template-columns: 150px minmax(0, 1fr) 150px; gap: 14px; align-items: center; font-size: 0.85rem; }
+.rc-bl { color: var(--text-dim); }
+.rc-track { position: relative; height: 10px; border-radius: 5px; background: var(--line); }
+html[data-theme='dark'] .rc-track { background: var(--ink-line-2); }
+.rc-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 5px; }
+.rc-good { background: var(--ok); }
+.rc-even { background: var(--steel); }
+.rc-bad { background: var(--warn); }
+.rc-mark { position: absolute; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: var(--text); opacity: 0.55; border-radius: 1px; }
+html[data-theme='dark'] .rc-mark { background: var(--on-ink); }
+.rc-bv { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.25; }
+.rc-bv small { display: block; font-weight: 500; font-size: 0.74rem; color: var(--text-faint); }
+.rc-good-t { color: var(--ok); }
+.rc-even-t { color: var(--text-dim); }
+.rc-bad-t { color: var(--warn); }
+.pchip-warn { background: var(--warn-wash); border-color: transparent; color: var(--warn); font-weight: 600; }
+@media (max-width: 760px) {
+  .rc-icons { grid-template-columns: 1fr 1fr; }
+  .rc-bar { grid-template-columns: 1fr auto; gap: 6px 10px; }
+  .rc-bar .rc-track { grid-column: 1 / -1; order: 3; }
+  .rescard.rescard-v4 { padding: 16px; }
+}

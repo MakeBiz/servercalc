@@ -172,6 +172,23 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     return r;
   }, [payload, f, sort]);
   const plansTotal = results.reduce((n, r) => n + 1 + r.more, 0);
+  // обычная цена на рынке: медиана по базе для того же объёма памяти и медиана цены гигабайта
+  const market = useMemo(() => {
+    const med = (arr) => {
+      if (!arr.length) return null;
+      const s = [...arr].sort((a, b) => a - b);
+      const m = Math.floor(s.length / 2);
+      return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+    };
+    const byRam = new Map();
+    for (const p of payload.plans) {
+      if (!byRam.has(p.ram)) byRam.set(p.ram, []);
+      byRam.get(p.ram).push(p.priceRub);
+    }
+    const ram = new Map();
+    for (const [k, v] of byRam) if (v.length >= 3) ram.set(k, med(v));
+    return { ram, perGb: med(payload.plans.map((p) => p.priceRub / p.ram)) };
+  }, [payload]);
   const visible = showAll ? results : results.slice(0, 8);
 
   function chooseTask(slug) {
@@ -397,48 +414,71 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             const p = r.plan;
             const pr = r.provider;
             const whereFull = (p.cityByRu && geoObj && p.cityByRu[geoObj.code]) || p.location || payload.geos.find((g) => g.code === p.geo)?.name || (p.geo === 'global' ? 'несколько регионов' : p.geo);
-            // длинный список городов сокращаем: «США (Нью-Йорк, Лос-Анджелес и ещё 3)»
-            const where = (() => {
-              const m = String(whereFull).match(/^(.*?)\((.*)\)$/);
-              const head = m ? m[1].trim() : '';
-              const list = (m ? m[2] : whereFull).split(',').map((x) => x.trim()).filter(Boolean);
-              if (list.length <= 3) return whereFull;
-              const short = `${list.slice(0, 2).join(', ')} и ещё ${list.length - 2}`;
-              return head ? `${head} (${short})` : short;
-            })();
+            const m = String(whereFull).match(/^(.*?)\s*\((.*)\)$/);
+            const cities = (m ? m[2] : whereFull).split(',').map((x) => x.trim()).filter(Boolean);
+            const whereMain = m ? m[1] : cities.length > 1 ? cities[0] : whereFull;
+            const whereSub = m ? (cities.length > 1 ? `${cities[0]} и ещё ${cities.length - 1}` : cities[0]) : cities.length > 1 ? `и ещё ${cities.length - 1}` : '';
             const ini = pr.name.replace(/[^A-Za-zА-Яа-я0-9]/g, '').slice(0, 2).toUpperCase();
+            const prepaid = p.term && p.term > 1;
             const pays = [pr.payments?.mir && 'Карта МИР', pr.payments?.sbp && 'СБП', pr.payments?.card && 'Visa/Mastercard', pr.payments?.crypto && 'Криптовалюта'].filter(Boolean);
-            const feats = [pr.features?.hourly && 'Почасовая оплата', pr.features?.testPeriod && 'Тест-период', pr.features?.ddos && 'Защита от DDoS', pr.features?.backup && 'Бэкапы', pr.features?.panel && 'Панель управления'].filter(Boolean);
-            const desc = pr.description && pr.description.length > 150 ? pr.description.slice(0, 148).replace(/[ ,.]+[^ ]*$/, '') + '…' : pr.description;
+            const feats = [pr.features?.hourly && 'Почасовая оплата', pr.features?.testPeriod && 'Тест-период', pr.features?.ddos && 'Защита от DDoS'].filter(Boolean);
+            // полоски «против рынка»: тот же объём памяти и цена гигабайта
+            const bar = (val, base) => {
+              const max = Math.max(val, base) * 1.08;
+              const diff = Math.round((1 - val / base) * 100);
+              const tone = diff >= 5 ? 'good' : diff <= -5 ? 'bad' : 'even';
+              return { fill: (val / max) * 100, mark: (base / max) * 100, diff, tone };
+            };
+            const ramBase = market.ram.get(p.ram);
+            const b1 = ramBase ? bar(p.priceRub, ramBase) : null;
+            const b2 = market.perGb ? bar(p.priceRub / p.ram, market.perGb) : null;
+            const diffText = (b) => (b.tone === 'good' ? `на ${b.diff}% дешевле` : b.tone === 'bad' ? `на ${-b.diff}% дороже` : 'как обычно');
             return (
-              <article className="rescard rescard-v3" key={pr.slug}>
+              <article className="rescard rescard-v4" key={pr.slug}>
                 <div className="rc-head">
                   <span className="res-logo" style={{ background: pr.color }} aria-hidden="true">{ini}</span>
                   <div className="rc-who">
                     <Link href={`/provajdery/${pr.slug}`} className="rc-name">{pr.name}</Link>
-                    <div className="rc-meta">{pr.country === 'RU' ? 'Российская компания' : 'Зарубежная компания'}{pr.virtualization?.length ? ` · ${pr.virtualization.join(', ')}` : ''}</div>
+                    <div className="rc-meta">{pr.country === 'RU' ? 'Российская компания' : 'Зарубежная компания'}{pr.virtualization?.length ? ` · ${pr.virtualization.join(', ')}` : ''} · {p.name}</div>
                   </div>
                   <div className="rc-price">
                     <div className="res-price">{price(p.priceRub)}<span> в месяц</span></div>
                     <div className="res-terms">{termTotal(p)}</div>
                   </div>
                 </div>
-                {desc && <p className="rc-desc">{desc}</p>}
-                <dl className="rc-specs">
-                  <div><dt>Тариф</dt><dd>{p.name}</dd></div>
-                  <div><dt>Процессор</dt><dd>{p.cpu} {coresWord(p.cpu)}</dd></div>
-                  <div><dt>Память</dt><dd>{p.ram} ГБ</dd></div>
-                  <div><dt>Диск</dt><dd>{p.disk} ГБ {p.diskType}</dd></div>
-                  <div><dt>Где</dt><dd>{where}</dd></div>
-                  <div><dt>IPv4</dt><dd>{p.ipv4 === false ? 'нет' : 'есть'}</dd></div>
-                  {p.trafficTb != null && <div><dt>Трафик</dt><dd>{p.trafficTb} ТБ в месяц</dd></div>}
-                </dl>
-                {(pays.length > 0 || feats.length > 0) && (
-                  <div className="res-chips">
-                    {pays.map((c) => <span key={c} className="pchip pchip-pay">{c}</span>)}
-                    {feats.map((c) => <span key={c} className="pchip">{c}</span>)}
+
+                <div className="rc-icons">
+                  <div className="ric"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" /></svg><div><b>{p.cpu} {coresWord(p.cpu)}</b><small>процессор</small></div></div>
+                  <div className="ric"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="2" /><path d="M7 11v2M11 11v2M15 11v2M7 17v3M17 17v3" /></svg><div><b>{p.ram} ГБ</b><small>память</small></div></div>
+                  <div className="ric"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3" /><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" /></svg><div><b>{p.disk} ГБ {p.diskType}</b><small>{p.trafficTb != null ? `диск, ${p.trafficTb} ТБ трафика` : 'диск'}</small></div></div>
+                  <div className="ric"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg><div><b>{whereMain}</b><small>{whereSub || 'где сервер'}</small></div></div>
+                </div>
+
+                {(b1 || b2) && (
+                  <div className="rc-bars" aria-label="Сравнение с рынком">
+                    {b1 && (
+                      <div className="rc-bar">
+                        <span className="rc-bl">Цена за {p.ram} ГБ</span>
+                        <div className="rc-track"><div className={`rc-fill rc-${b1.tone}`} style={{ width: `${b1.fill}%` }} /><div className="rc-mark" style={{ left: `${b1.mark}%` }} title={`обычно ${price(ramBase)}`} /></div>
+                        <span className={`rc-bv rc-${b1.tone}-t`}>{diffText(b1)}<small>обычно {price(ramBase)}</small></span>
+                      </div>
+                    )}
+                    {b2 && (
+                      <div className="rc-bar">
+                        <span className="rc-bl">Цена гигабайта</span>
+                        <div className="rc-track"><div className={`rc-fill rc-${b2.tone}`} style={{ width: `${b2.fill}%` }} /><div className="rc-mark" style={{ left: `${b2.mark}%` }} /></div>
+                        <span className={`rc-bv rc-${b2.tone}-t`}>{price(p.priceRub / p.ram)} за ГБ<small>обычно {price(market.perGb)}</small></span>
+                      </div>
+                    )}
                   </div>
                 )}
+
+                <div className="res-chips">
+                  {prepaid && <span className="pchip pchip-warn">Оплата за {p.term === 12 ? 'год' : `${p.term} мес.`} вперёд</span>}
+                  {pays.map((c) => <span key={c} className="pchip pchip-pay">{c}</span>)}
+                  {feats.map((c) => <span key={c} className="pchip">{c}</span>)}
+                </div>
+
                 <div className="rc-foot">
                   <span className="rc-checked">Цена проверена {ruDateShort(p.verifiedAt)}{r.more > 0 && <> · <Link href={`/provajdery/${pr.slug}`} className="res-more">ещё {r.more} {plural(r.more, 'подходящий тариф', 'подходящих тарифа', 'подходящих тарифов')}</Link></>}</span>
                   <OutLink provider={pr} campaign={campaign} goalName="calc_click" className="btn btn-brass rc-cta">
