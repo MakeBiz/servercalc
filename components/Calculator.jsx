@@ -391,7 +391,6 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
               <div className="res-main">
                 <div className="res-title">
                   <strong>{r.provider.name}</strong>
-                  {r.provider.partner ? <span className="badge">Партнёр</span> : <span className="badge badge-plain">без партнёрства</span>}
                 </div>
                 <div className="res-plan">
                   {r.plan.name} · {r.plan.cpu} {plural(r.plan.cpu, 'ядро', 'ядра', 'ядер')} · {r.plan.ram} ГБ · {r.plan.disk} ГБ {r.plan.diskType}
@@ -405,7 +404,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                 <div className="res-price">{price(r.plan.priceRub)}<span> в месяц</span></div>
                 <div className="res-terms">{termTotal(r.plan)}</div>
                 <OutLink provider={r.provider} campaign={campaign} goalName="calc_click" className="btn btn-brass btn-block">
-                  {`Тарифы ${r.provider.name} от ${price(r.plan.priceRub)}`}
+                  Тарифы {r.provider.name} <span className="nowrap">от {price(r.plan.priceRub)}</span>
                 </OutLink>
               </div>
             </article>
@@ -420,8 +419,8 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
         {!compact && (
           <p className="disclosure" style={{ marginTop: 18 }}>
-            «Партнёр» значит, что при оформлении услуги по ссылке мы получим вознаграждение, цена для
-            вас не меняется. Порядок в списке задают только условия запроса и цена,{' '}
+            Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена
+            для вас не меняется. Порядок в списке задают только условия запроса и цена,{' '}
             <Link href="/metodologiya">как мы считаем</Link>
           </p>
         )}

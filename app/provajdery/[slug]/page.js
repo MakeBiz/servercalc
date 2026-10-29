@@ -105,7 +105,6 @@ export default async function ProviderPage({ params }) {
             {geos.map((g) => (
               <span className="badge" key={g.code}>{g.name}</span>
             ))}
-            {!isPartner && <span className="badge badge-plain">без партнёрства</span>}
           </>
         }
       >

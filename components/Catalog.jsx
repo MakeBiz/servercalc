@@ -292,9 +292,6 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
                     <Link href={`/provajdery/${r.providerSlug}`} style={{ textDecoration: 'none', fontWeight: 600 }}>
                       {r.providerName}
                     </Link>
-                    {!r.partner && (
-                      <div className="faint" style={{ fontSize: '0.72rem' }}>без партнёрства</div>
-                    )}
                   </td>
                   <td>{r.name}</td>
                   <td className="td-num">{r.cpu}</td>

@@ -1693,3 +1693,4 @@ html[data-theme='dark'] .header { background: rgba(12, 12, 15, 0.92); }
   .theme-switch { width: 56px; }
   .theme-switch[aria-checked='true'] .ts-knob { transform: translateX(24px); }
 }
+.calc-main .res-side .btn, .prov-cta { display: block; text-align: center; }

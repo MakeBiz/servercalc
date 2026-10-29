@@ -28,11 +28,6 @@ export default function ProviderCard({ provider, minPrice, campaign, geoLabel })
             {geoLabel ? `, ${geoLabel}` : ''}
           </div>
         </div>
-        {provider.affiliateStatus === 'active' ? (
-          <span className="badge">Партнёр</span>
-        ) : (
-          <span className="badge badge-plain">без партнёрства</span>
-        )}
       </div>
 
       <p className="prov-desc">
@@ -51,7 +46,7 @@ export default function ProviderCard({ provider, minPrice, campaign, geoLabel })
 
       <div className="prov-actions">
         <OutLink provider={provider} campaign={campaign} className="btn btn-brass btn-block prov-cta">
-          {minPrice ? `Тарифы ${provider.name} от ${price(minPrice)}` : `Сайт ${provider.name}`}
+          {minPrice ? <>Тарифы {provider.name} <span className="nowrap">от {price(minPrice)}</span></> : `Сайт ${provider.name}`}
         </OutLink>
         <Link href={`/provajdery/${provider.slug}`} className="prov-review">
           Обзор {provider.name}

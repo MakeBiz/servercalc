@@ -111,7 +111,6 @@ export default function BestRuPage() {
                     <th>Баллы</th>
                     <th>Тариф с 2 ГБ</th>
                     <th>Возможности</th>
-                    <th>Партнёр</th>
                     <th>Проверено</th>
                     <th />
                   </tr>
@@ -124,7 +123,6 @@ export default function BestRuPage() {
                       <td className="td-num" title={`цена ${r.parts.price}, возможности ${r.parts.features}, NVMe и KVM ${r.parts.extra}, выбор ${r.parts.choice}${r.parts.penalty ? `, предоплата -${r.parts.penalty}` : ''}`}><strong>{r.score}</strong></td>
                       <td>{r.twoGb.name}, {r.twoGb.cpu} × {r.twoGb.ram} ГБ<div className="faint" style={{ fontSize: '0.8rem' }}>{priceText(r.twoGb)}</div></td>
                       <td className="faint">{r.features.map((k) => FEATURE_NAMES[k]).join(', ') || 'нет данных'}</td>
-                      <td className="faint">{r.partner ? 'да' : 'нет'}</td>
                       <td className="td-num faint">{ruDate(r.verifiedAt)}</td>
                       <td style={{ textAlign: 'right' }}><OutLink provider={r.provider} campaign="luchshie_vps_rossii" content={r.slug}>Перейти</OutLink></td>
                     </tr>
