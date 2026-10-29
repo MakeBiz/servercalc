@@ -1,28 +1,89 @@
 'use client';
 
+/**
+ * Подбор сервера, вариант «одна строка фильтров, всё строго» (30.10.2026, решение Антона).
+ *
+ * - Все условия строгие: показываем только тарифы, которые проходят каждое из них.
+ *   «До 500 ₽» значит до 500 ₽, «криптовалюта» значит провайдер её принимает.
+ * - Скрытых настроек нет: по умолчанию ничего не выбрано. Задача подставляет
+ *   рекомендуемые память и ядра видимыми плашками, их можно снять.
+ * - Всё выбранное видно плашками с крестиком и снимается по одному или разом.
+ * - Если ничего не нашлось, говорим, какое условие мешает, и сколько найдётся без него.
+ * - Порядок: дешевле, цена за гигабайт памяти или больше памяти. Партнёрство на порядок не влияет.
+ */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import OutLink from './OutLink';
 import TaskIcon from './TaskIcon';
-import { runMatch } from '@/lib/score';
 import { measureGeo, PING_GEOS } from '@/lib/ping';
-import { price, plural, ruDate, termShort } from '@/lib/format';
+import { price, plural } from '@/lib/format';
 import { goal, GOALS } from '@/lib/metrika';
 import { CAMPAIGN } from '@/lib/utm';
 import { readParams, num, list, writeParams } from '@/lib/url-state';
 
-const RAM_STEPS = [1, 2, 4, 8, 16, 32, 64];
-const CPU_STEPS = [1, 2, 4, 6, 8, 12, 16];
-const BUDGET_MIN = 200;
-const BUDGET_MAX = 10000;
-const BUDGET_STEP = 100;
+const RAM_OPTS = [0, 1, 2, 4, 8, 16, 32];
+const CPU_OPTS = [0, 1, 2, 4, 8];
+const BUDGET_OPTS = [0, 300, 500, 1000, 2000, 5000];
+const PAYS = [
+  { key: 'mir', label: 'Карта МИР' },
+  { key: 'sbp', label: 'СБП' },
+  { key: 'crypto', label: 'Криптовалюта' },
+];
+const EXTRAS = [
+  { key: 'nvme', label: 'NVMe' },
+  { key: 'hourly', label: 'Почасовая оплата' },
+  { key: 'testPeriod', label: 'Тест-период' },
+  { key: 'ddos', label: 'Защита от DDoS' },
+  { key: 'win', label: 'Windows' },
+  { key: 'ru', label: 'Российский провайдер' },
+];
+const SORTS = [
+  { key: 'price', label: 'Дешевле' },
+  { key: 'perGb', label: 'Цена за ГБ' },
+  { key: 'ram', label: 'Больше памяти' },
+];
 
-function nearestIndex(steps, value) {
-  let best = 0;
-  for (let i = 0; i < steps.length; i += 1) {
-    if (Math.abs(steps[i] - value) < Math.abs(steps[best] - value)) best = i;
+const toggle = (arr, v) => (arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]);
+const coresWord = (n) => plural(n, 'ядро', 'ядра', 'ядер');
+// после «от»: от 1 ядра, от 2 ядер
+const coresFrom = (n) => (n % 10 === 1 && n % 100 !== 11 ? 'ядра' : 'ядер');
+
+function planPasses(p, f) {
+  if (f.geoCode && !(p.geo === f.geoCode || (p.alsoIn || []).includes(f.geoCode))) return false;
+  if (f.ram && p.ram < f.ram) return false;
+  if (f.cpu && p.cpu < f.cpu) return false;
+  if (f.budget && p.priceRub > f.budget) return false;
+  if (f.extras.includes('nvme') && p.diskType !== 'NVMe') return false;
+  return true;
+}
+
+function providerPasses(pr, f) {
+  if (f.task && !(pr.tasks || []).includes(f.task)) return false;
+  for (const k of f.extras) {
+    if (k === 'nvme') continue;
+    if (k === 'ru') { if (pr.country !== 'RU') return false; continue; }
+    if (k === 'win') { if (!(pr.tasks || []).includes('windows')) return false; continue; }
+    if (!(pr.requirements || []).includes(k)) return false;
   }
-  return best;
+  for (const k of f.pay) if (pr.payments?.[k] !== true) return false;
+  return true;
+}
+
+/** Для каждого провайдера самый дешёвый тариф, который проходит все условия */
+function match(payload, f) {
+  const byProv = new Map();
+  for (const p of payload.plans) {
+    if (!planPasses(p, f)) continue;
+    if (!byProv.has(p.providerSlug)) byProv.set(p.providerSlug, []);
+    byProv.get(p.providerSlug).push(p);
+  }
+  const out = [];
+  for (const pr of payload.providers) {
+    if (!providerPasses(pr, f)) continue;
+    const plans = (byProv.get(pr.slug) || []).sort((a, b) => a.priceRub - b.priceRub);
+    if (plans.length) out.push({ provider: pr, plan: plans[0], more: plans.length - 1 });
+  }
+  return out;
 }
 
 export default function Calculator({ payload, presetTask = null, presetGeo = 'any', campaign = CAMPAIGN.calculator, compact = false, split = false }) {
@@ -30,15 +91,138 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
   const [task, setTask] = useState(presetTask);
   const [geo, setGeo] = useState(presetGeo);
-  const [requirements, setRequirements] = useState([]);
-  const [ram, setRam] = useState(presetTaskObj?.ram ?? 4);
-  const [cpu, setCpu] = useState(presetTaskObj?.cpu ?? 2);
-  const [budget, setBudget] = useState(2000);
+  const [ram, setRam] = useState(presetTaskObj?.ram ?? 0);
+  const [cpu, setCpu] = useState(presetTaskObj?.cpu ?? 0);
+  const [budget, setBudget] = useState(0);
+  const [pay, setPay] = useState([]);
+  const [extras, setExtras] = useState([]);
+  const [sort, setSort] = useState('price');
   const [showAll, setShowAll] = useState(false);
-  const [sort, setSort] = useState('fit');
-  const [quick, setQuick] = useState([]);
+  const [panelOpen, setPanelOpen] = useState(false);
   const [pings, setPings] = useState({});
   const [pinging, setPinging] = useState(false);
+  const started = useRef(false);
+  const restored = useRef(false);
+
+  const track = useCallback((what, extra) => {
+    if (!started.current) {
+      started.current = true;
+      goal(GOALS.calcStart);
+    }
+    goal(GOALS.calcResult, { field: what, ...extra });
+  }, []);
+
+  // подбор из адреса страницы (ссылку можно переслать)
+  useEffect(() => {
+    const p = readParams();
+    const t = p.get('task');
+    const tObj = t ? payload.tasks.find((x) => x.slug === t) : null;
+    if (tObj) {
+      setTask(t);
+      // задача из ссылки без явных ресурсов: подставляем её рекомендацию видимыми плашками
+      if (!p.has('ram')) setRam(tObj.ram);
+      if (!p.has('cpu')) setCpu(tObj.cpu);
+    }
+    const g = p.get('geo');
+    if (g && (g === 'any' || payload.geos.some((x) => x.slug === g))) setGeo(g);
+    const r = num(p, 'ram', null);
+    if (r !== null && RAM_OPTS.includes(r)) setRam(r);
+    const c = num(p, 'cpu', null);
+    if (c !== null && CPU_OPTS.includes(c)) setCpu(c);
+    const b = num(p, 'budget', null);
+    if (b !== null && BUDGET_OPTS.includes(b)) setBudget(b);
+    const pp = list(p, 'pay');
+    if (pp) setPay(pp.filter((k) => PAYS.some((x) => x.key === k)));
+    const ex = list(p, 'req');
+    if (ex) setExtras(ex.filter((k) => EXTRAS.some((x) => x.key === k)));
+    const s = p.get('sort');
+    if (s && SORTS.some((x) => x.key === s)) setSort(s);
+    restored.current = true;
+  }, [payload]);
+
+  useEffect(() => {
+    if (!restored.current) return;
+    writeParams({
+      task: task && task !== presetTask ? task : null,
+      geo: geo && geo !== 'any' && geo !== presetGeo ? geo : null,
+      ram: ram || null,
+      cpu: cpu || null,
+      budget: budget || null,
+      pay: pay.length ? pay.join(',') : null,
+      req: extras.length ? extras.join(',') : null,
+      sort: sort !== 'price' ? sort : null,
+    });
+  }, [task, geo, ram, cpu, budget, pay, extras, sort, presetTask, presetGeo]);
+
+  const taskObj = payload.tasks.find((t) => t.slug === task) || null;
+  const geoObj = geo && geo !== 'any' ? payload.geos.find((g) => g.slug === geo) : null;
+  const f = useMemo(
+    () => ({ task, geoCode: geoObj?.code || null, ram, cpu, budget, pay, extras }),
+    [task, geoObj, ram, cpu, budget, pay, extras]
+  );
+
+  const results = useMemo(() => {
+    const r = match(payload, f);
+    const perGb = (x) => x.plan.priceRub / x.plan.ram;
+    if (sort === 'perGb') r.sort((a, b) => perGb(a) - perGb(b) || a.plan.priceRub - b.plan.priceRub);
+    else if (sort === 'ram') r.sort((a, b) => b.plan.ram - a.plan.ram || a.plan.priceRub - b.plan.priceRub);
+    else r.sort((a, b) => a.plan.priceRub - b.plan.priceRub);
+    return r;
+  }, [payload, f, sort]);
+  const plansTotal = results.reduce((n, r) => n + 1 + r.more, 0);
+  const visible = showAll ? results : results.slice(0, 8);
+
+  function chooseTask(slug) {
+    const next = task === slug ? null : slug;
+    const prev = taskObj;
+    const t = payload.tasks.find((x) => x.slug === next);
+    setTask(next);
+    if (t) {
+      setRam(t.ram);
+      setCpu(t.cpu);
+    } else if (prev) {
+      // сняли задачу: убираем и подставленные ею ресурсы, если человек их не менял
+      if (ram === prev.ram) setRam(0);
+      if (cpu === prev.cpu) setCpu(0);
+    }
+    setShowAll(false);
+    track('task', { task: next || 'none' });
+  }
+
+  // активные условия: плашки с крестиком и разбор пустой выдачи
+  const active = [];
+  if (taskObj) active.push({ key: 'task', label: taskObj.name, clear: () => chooseTask(taskObj.slug), with: { task: null } });
+  if (geoObj) active.push({ key: 'geo', label: geoObj.name, clear: () => setGeo('any'), with: { geoCode: null } });
+  if (ram) active.push({ key: 'ram', label: `от ${ram} ГБ памяти`, clear: () => setRam(0), with: { ram: 0 } });
+  if (cpu) active.push({ key: 'cpu', label: `от ${cpu} ${coresFrom(cpu)}`, clear: () => setCpu(0), with: { cpu: 0 } });
+  if (budget) active.push({ key: 'budget', label: `до ${price(budget)}`, clear: () => setBudget(0), with: { budget: 0 } });
+  pay.forEach((k) => active.push({ key: `pay:${k}`, label: PAYS.find((x) => x.key === k).label, clear: () => setPay((v) => toggle(v, k)), with: { pay: pay.filter((x) => x !== k) } }));
+  extras.forEach((k) => active.push({ key: `ex:${k}`, label: EXTRAS.find((x) => x.key === k).label, clear: () => setExtras((v) => toggle(v, k)), with: { extras: extras.filter((x) => x !== k) } }));
+
+  const blocker = useMemo(() => {
+    if (results.length || !active.length) return null;
+    let best = null;
+    for (const a of active) {
+      const r = match(payload, { ...f, ...a.with });
+      if (r.length && (!best || r.length > best.n)) best = { ...a, n: r.length, from: Math.min(...r.map((x) => x.plan.priceRub)) };
+    }
+    return best;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results.length, payload, f]);
+
+  function resetAll() {
+    setTask(null);
+    setGeo('any');
+    setRam(0);
+    setCpu(0);
+    setBudget(0);
+    setPay([]);
+    setExtras([]);
+    setSort('price');
+    setShowAll(false);
+    track('reset');
+  }
+
   async function runPing() {
     setPinging(true);
     const next = {};
@@ -49,382 +233,189 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     setPinging(false);
     track('ping', { ru: next.ru, eu: next.eu });
   }
-  const UNIT_MS = 'мс';
-  const pingLabel = (code) => {
-    const v = pings[code];
-    if (v === undefined) return null;
-    return <span className={v === null ? 'ping-v' : v < 80 ? 'ping-v ping-good' : v < 200 ? 'ping-v ping-mid' : 'ping-v ping-bad'}>{v === null ? '—' : `${v} ${UNIT_MS}`}</span>;
-  };
-  const resourcesTouched = useRef(Boolean(presetTask));
-  const started = useRef(false);
-  const [copied, setCopied] = useState(false);
-  // до первого чтения адреса ничего в него не пишем, иначе на монтировании
-  // затрём параметры, с которыми человек пришёл по ссылке
-  const restored = useRef(false);
+  const pingText = (code) => (pings[code] === undefined ? '' : pings[code] === null ? ' · нет ответа' : ` · ${pings[code]} мс`);
 
-  // восстановление подбора из адреса страницы
-  useEffect(() => {
-    const p = readParams();
-    if ([...p.keys()].some((k) => ['task', 'geo', 'ram', 'cpu', 'budget', 'req'].includes(k))) {
-      const t = p.get('task');
-      if (t && payload.tasks.some((x) => x.slug === t)) setTask(t);
-      const g = p.get('geo');
-      if (g && (g === 'any' || payload.geos.some((x) => x.slug === g))) setGeo(g);
-      const r = num(p, 'ram', null);
-      if (r && RAM_STEPS.includes(r)) { setRam(r); resourcesTouched.current = true; }
-      const c = num(p, 'cpu', null);
-      if (c && CPU_STEPS.includes(c)) { setCpu(c); resourcesTouched.current = true; }
-      const b = num(p, 'budget', null);
-      if (b && b >= BUDGET_MIN && b <= BUDGET_MAX) setBudget(b);
-      const reqs = list(p, 'req');
-      if (reqs) setRequirements(reqs.filter((code) => payload.requirements.some((x) => x.code === code)));
-    }
-    restored.current = true;
-  }, [payload]);
-
-  // запись текущего состояния в адрес: ссылку можно переслать
-  useEffect(() => {
-    if (!restored.current) return;
-    writeParams({
-      task: task || null,
-      geo: geo && geo !== 'any' ? geo : null,
-      ram: ram === 4 && !resourcesTouched.current ? null : ram,
-      cpu: cpu === 2 && !resourcesTouched.current ? null : cpu,
-      budget: budget === 2000 ? null : budget,
-      req: requirements.length ? requirements.join(',') : null,
-    });
-  }, [task, geo, ram, cpu, budget, requirements]);
-
-  function copyLink() {
-    if (typeof window === 'undefined') return;
-    const url = window.location.href;
-    const done = () => { setCopied(true); setTimeout(() => setCopied(false), 2000); };
-    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(url).then(done).catch(() => {});
-    else done();
-  }
-
-  const track = useCallback((what, extra) => {
-    if (!started.current) {
-      started.current = true;
-      goal(GOALS.calcStart);
-    }
-    goal(GOALS.calcResult, { field: what, ...extra });
-  }, []);
-
-  function chooseTask(slug) {
-    const next = task === slug ? null : slug;
-    setTask(next);
-    const t = payload.tasks.find((x) => x.slug === next);
-    if (t && !resourcesTouched.current) {
-      setRam(t.ram);
-      setCpu(t.cpu);
-    }
-    setShowAll(false);
-    track('task', { task: next || 'none' });
-  }
-
-  function toggleRequirement(code) {
-    setRequirements((prev) => (prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]));
-    track('requirements', { req: code });
-  }
-
-  const query = useMemo(
-    () => ({ task, geo, ram, cpu, budget: budget >= BUDGET_MAX ? null : budget, requirements }),
-    [task, geo, ram, cpu, budget, requirements]
-  );
-
-  const pool = useMemo(() => {
-    if (!quick.length) return payload;
-    const providers = payload.providers.filter((p) =>
-      (!quick.includes('ru') || p.country === 'RU') &&
-      (!quick.includes('win') || (p.tasks || []).includes('windows')) &&
-      ['mir', 'sbp', 'crypto'].every((k) => !quick.includes(k) || p.payments?.[k] === true));
-    return { ...payload, providers };
-  }, [payload, quick]);
-  const results = useMemo(() => runMatch(pool, query, sort), [pool, query, sort]);
-  const visible = showAll ? results : results.slice(0, 6);
-  const taskObj = payload.tasks.find((t) => t.slug === task) || null;
-  const budgetLabel = budget >= BUDGET_MAX ? 'без ограничения' : `до ${price(budget)} в месяц`;
-
-  function reset() {
-    setTask(null);
-    setGeo('any');
-    setRequirements([]);
-    setRam(4);
-    setCpu(2);
-    setBudget(2000);
-    setShowAll(false);
-    setQuick([]);
-    setSort('fit');
-    resourcesTouched.current = false;
-  }
-
-  const toggleQuick = (key) => setQuick((q) => (q.includes(key) ? q.filter((x) => x !== key) : [...q, key]));
-  const QUICK = [
-    { key: 'b500', label: 'До 500 ₽', on: budget <= 500, toggle: () => setBudget(budget <= 500 ? 2000 : 500) },
-    { key: 'ru', label: 'Российский провайдер', on: quick.includes('ru'), toggle: () => toggleQuick('ru') },
-    { key: 'mir', label: 'Карта МИР', on: quick.includes('mir'), toggle: () => toggleQuick('mir') },
-    { key: 'sbp', label: 'Оплата по СБП', on: quick.includes('sbp'), toggle: () => toggleQuick('sbp') },
-    { key: 'crypto', label: 'Криптовалюта', on: quick.includes('crypto'), toggle: () => toggleQuick('crypto') },
-    { key: 'win', label: 'С Windows', on: quick.includes('win'), toggle: () => toggleQuick('win') },
-    { key: 'nvme', label: 'Только NVMe', on: requirements.includes('nvme'), toggle: () => toggleRequirement('nvme') },
-    { key: 'hourly', label: 'Почасовая оплата', on: requirements.includes('hourly'), toggle: () => toggleRequirement('hourly') },
-  ];
-
-  const fitText = (r) => {
-    if (!r.fit.total) return 'Подходит под запрос';
-    if (r.fit.met === r.fit.total) return `Подходит по ${r.fit.met} из ${r.fit.total} условий`;
-    const miss = r.reasons.find((x) => !x.ok && ['task', 'geo', 'requirements', 'resources', 'budget'].includes(x.code));
-    return `Подходит по ${r.fit.met} из ${r.fit.total}${miss ? `: ${miss.text.charAt(0).toLowerCase()}${miss.text.slice(1)}` : ''}`;
-  };
+  const geoOptions = payload.geos.filter((g) => !g.hideInCalc || g.slug === geo);
   const termTotal = (p) => (p.term && p.term > 1 ? `оплата сразу ${price(Math.round(p.priceRub * p.term))} за ${p.term === 12 ? 'год' : p.term === 24 ? '2 года' : p.term + ' мес.'}` : 'оплата помесячно');
 
+  const controls = (
+    <div className="flt-grid">
+      <label className="fsel">
+        <span>Регион</span>
+        <select value={geo} onChange={(e) => { setGeo(e.target.value); setShowAll(false); track('geo', { geo: e.target.value }); }}>
+          <option value="any">любой</option>
+          {geoOptions.map((g) => (
+            <option key={g.slug} value={g.slug}>{g.name}{pingText(g.code)}</option>
+          ))}
+        </select>
+      </label>
+      <label className="fsel">
+        <span>Память</span>
+        <select value={ram} onChange={(e) => { setRam(Number(e.target.value)); setShowAll(false); track('ram', { ram: e.target.value }); }}>
+          {RAM_OPTS.map((v) => <option key={v} value={v}>{v ? `от ${v} ГБ` : 'любая'}</option>)}
+        </select>
+      </label>
+      <label className="fsel">
+        <span>Ядра</span>
+        <select value={cpu} onChange={(e) => { setCpu(Number(e.target.value)); setShowAll(false); track('cpu', { cpu: e.target.value }); }}>
+          {CPU_OPTS.map((v) => <option key={v} value={v}>{v ? `от ${v}` : 'любое'}</option>)}
+        </select>
+      </label>
+      <label className="fsel">
+        <span>Бюджет</span>
+        <select value={budget} onChange={(e) => { setBudget(Number(e.target.value)); setShowAll(false); track('budget', { budget: e.target.value }); }}>
+          {BUDGET_OPTS.map((v) => <option key={v} value={v}>{v ? `до ${price(v)}` : 'любой'}</option>)}
+        </select>
+      </label>
+      <div className="flt-group" role="group" aria-label="Оплата">
+        <span className="flt-cap">Оплата</span>
+        {PAYS.map((x) => (
+          <button key={x.key} type="button" className={pay.includes(x.key) ? 'qchip on' : 'qchip'} aria-pressed={pay.includes(x.key)} onClick={() => { setPay((v) => toggle(v, x.key)); setShowAll(false); track('pay', { pay: x.key }); }}>
+            {x.label}
+          </button>
+        ))}
+      </div>
+      <div className="flt-group" role="group" aria-label="Дополнительно">
+        <span className="flt-cap">Ещё</span>
+        {EXTRAS.map((x) => (
+          <button key={x.key} type="button" className={extras.includes(x.key) ? 'qchip on' : 'qchip'} aria-pressed={extras.includes(x.key)} onClick={() => { setExtras((v) => toggle(v, x.key)); setShowAll(false); track('req', { req: x.key }); }}>
+            {x.label}
+          </button>
+        ))}
+      </div>
+      <button type="button" className="ping-btn" onClick={runPing} disabled={pinging}>
+        {pinging ? 'Замеряем задержку…' : Object.keys(pings).length ? 'Замерить задержку ещё раз' : 'Проверить задержку до регионов из вашей сети'}
+      </button>
+    </div>
+  );
+
   return (
-    <div id="podbor" className={split ? 'anchor calc-split' : 'anchor'}>
+    <div id="podbor" className={split ? 'anchor calc-split calc-v2' : 'anchor calc-v2'}>
       <div className="calc-tasks">
         <div className="calc-tasks-head">
           <span className="label">Ваша задача</span>
-          {taskObj && <span className="field-val">рекомендуем {taskObj.cpu} × {taskObj.ram} ГБ</span>}
+          {taskObj && ram === taskObj.ram && cpu === taskObj.cpu && <span className="field-val">подставили память от {taskObj.ram} ГБ и от {taskObj.cpu} {coresFrom(taskObj.cpu)}, можно изменить</span>}
         </div>
         <div className="chips">
-            {payload.tasks.filter((t) => !t.hideInCalc).map((t) => (
-              <button
-                key={t.slug}
-                type="button"
-                className={task === t.slug ? 'chip on' : 'chip'}
-                aria-pressed={task === t.slug}
-                onClick={() => chooseTask(t.slug)}
-              >
-                <TaskIcon slug={t.slug} />
-                {t.name}
-              </button>
-            ))}
-          </div>
-        {taskObj && <p className="faint calc-intent">{taskObj.intent}</p>}
+          {payload.tasks.filter((t) => !t.hideInCalc || t.slug === task).map((t) => (
+            <button key={t.slug} type="button" className={task === t.slug ? 'chip on' : 'chip'} aria-pressed={task === t.slug} onClick={() => chooseTask(t.slug)}>
+              <TaskIcon slug={t.slug} />
+              {t.name}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="calc-main">
-      <div className="calc" id="params">
-        <div className="calc-head">
-          <h2>Параметры</h2>
+      <div className="calc-main calc-main-v2">
+        <div className="flt" id="params">
+          <button type="button" className="flt-toggle" aria-expanded={panelOpen} onClick={() => setPanelOpen((v) => !v)}>
+            Фильтры{active.length ? ` · ${active.length}` : ''}
+            <span aria-hidden="true">{panelOpen ? '▲' : '▼'}</span>
+          </button>
+          <div className={panelOpen ? 'flt-body open' : 'flt-body'}>{controls}</div>
+
+          {active.length > 0 && (
+            <div className="flt-active" aria-label="Выбранные условия">
+              {active.map((a) => (
+                <button key={a.key} type="button" className="achip" onClick={() => { a.clear(); setShowAll(false); track('clear', { what: a.key }); }} aria-label={`Убрать: ${a.label}`}>
+                  {a.label} <span aria-hidden="true">✕</span>
+                </button>
+              ))}
+              <button type="button" className="flt-reset" onClick={resetAll}>Сбросить всё</button>
+            </div>
+          )}
         </div>
 
-        <div className="calc-cols">
-          <div className="field span-2">
-            <div className="field-head">
-              <span className="label">География</span>
-              <button type="button" className="ping-btn" onClick={runPing} disabled={pinging}>
-                {pinging ? 'Замеряем…' : Object.keys(pings).length ? 'Замерить ещё раз' : 'Проверить задержку из вашей сети'}
-              </button>
-            </div>
-              <div className="chips">
-                <button
-                  type="button"
-                  className={geo === 'any' ? 'chip on' : 'chip'}
-                  aria-pressed={geo === 'any'}
-                  onClick={() => { setGeo('any'); track('geo', { geo: 'any' }); }}
-                >
-                  Не важна
-                </button>
-                {payload.geos.filter((g) => !g.hideInCalc).map((g) => (
-                  <button
-                    key={g.slug}
-                    type="button"
-                    className={geo === g.slug ? 'chip on' : 'chip'}
-                    aria-pressed={geo === g.slug}
-                    onClick={() => { setGeo(g.slug); track('geo', { geo: g.slug }); }}
-                  >
-                    {g.name}{pingLabel(g.code)}
-                  </button>
-                ))}
-              </div>
-            {Object.keys(pings).length > 0 && <p className="ping-note">Время ответа по HTTPS из вашего браузера до серверов в регионе: чем меньше, тем быстрее сайт или бот будет отвечать вам и вашим клиентам рядом</p>}
-          </div>
-
-          <div className="field">
-            <div className="field-head">
-              <span className="label">Память</span>
-              <span className="field-val">{ram} ГБ</span>
-            </div>
-            <input
-              className="range"
-              type="range"
-              min={0}
-              max={RAM_STEPS.length - 1}
-              step={1}
-              value={nearestIndex(RAM_STEPS, ram)}
-              onChange={(e) => { resourcesTouched.current = true; setRam(RAM_STEPS[Number(e.target.value)]); }}
-              onMouseUp={() => track('ram', { ram })}
-              onTouchEnd={() => track('ram', { ram })}
-              aria-label="Объём оперативной памяти"
-            />
-            <div className="range-scale">
-              <span>1 ГБ</span>
-              <span>64 ГБ</span>
-            </div>
-          </div>
-
-          <div className="field">
-            <div className="field-head">
-              <span className="label">Ядра</span>
-              <span className="field-val">{cpu} {plural(cpu, 'ядро', 'ядра', 'ядер')}</span>
-            </div>
-            <input
-              className="range"
-              type="range"
-              min={0}
-              max={CPU_STEPS.length - 1}
-              step={1}
-              value={nearestIndex(CPU_STEPS, cpu)}
-              onChange={(e) => { resourcesTouched.current = true; setCpu(CPU_STEPS[Number(e.target.value)]); }}
-              onMouseUp={() => track('cpu', { cpu })}
-              onTouchEnd={() => track('cpu', { cpu })}
-              aria-label="Количество ядер"
-            />
-            <div className="range-scale">
-              <span>1</span>
-              <span>16</span>
-            </div>
-          </div>
-
-          <div className="field">
-            <div className="field-head">
-              <span className="label">Бюджет</span>
-              <span className="field-val">{budgetLabel}</span>
-            </div>
-            <input
-              className="range"
-              type="range"
-              min={BUDGET_MIN}
-              max={BUDGET_MAX}
-              step={BUDGET_STEP}
-              value={budget}
-              onChange={(e) => setBudget(Number(e.target.value))}
-              onMouseUp={() => track('budget', { budget })}
-              onTouchEnd={() => track('budget', { budget })}
-              aria-label="Бюджет в месяц"
-            />
-            <div className="range-scale">
-              <span>200 ₽</span>
-              <span>без лимита</span>
-            </div>
-          </div>
-
-          <div className="field">
-            <div className="field-head">
-              <span className="label">Требования</span>
-              {requirements.length > 0 && <span className="field-val">выбрано {requirements.length}</span>}
-            </div>
-            <div className="chips">
-              {payload.requirements.map((r) => (
-                <button
-                  key={r.code}
-                  type="button"
-                  className={requirements.includes(r.code) ? 'chip on' : 'chip'}
-                  aria-pressed={requirements.includes(r.code)}
-                  onClick={() => toggleRequirement(r.code)}
-                  title={r.note}
-                >
-                  {r.name}
-                </button>
+        <div className="results">
+          <div className="results-bar">
+            <p className="results-sum">
+              {results.length
+                ? `${plansTotal} ${plural(plansTotal, 'тариф', 'тарифа', 'тарифов')} у ${results.length} ${plural(results.length, 'провайдера', 'провайдеров', 'провайдеров')}${active.length ? ' подходят под все условия' : ''}`
+                : 'Под все условия тарифов нет'}
+            </p>
+            <div className="sortseg" role="group" aria-label="Сортировка">
+              {SORTS.map((s) => (
+                <button key={s.key} type="button" className={sort === s.key ? 'on' : ''} aria-pressed={sort === s.key} onClick={() => { setSort(s.key); track('sort', { sort: s.key }); }}>{s.label}</button>
               ))}
             </div>
           </div>
-        </div>
 
-        <div className="calc-foot">
-          <span className="faint">
-            Комиссия провайдеров на порядок не влияет.{' '}
-            <Link href="/metodologiya" className="link-brass">Как мы считаем</Link>
-          </span>
-          <div className="row">
-            <button type="button" className="btn btn-ghost btn-sm" onClick={copyLink}>
-              {copied ? 'Ссылка скопирована' : 'Скопировать подбор'}
-            </button>
-            <button type="button" className="btn btn-ghost btn-sm" onClick={reset}>
-              Сбросить
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="results">
-        <div className="results-head">
-          <div className="quick" aria-label="Быстрые фильтры">
-            {QUICK.map((q) => (
-              <button key={q.key} type="button" className={q.on ? 'qchip on' : 'qchip'} aria-pressed={q.on} onClick={() => { q.toggle(); setShowAll(false); track('quick', { quick: q.key }); }}>
-                {q.label}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="results-bar">
-          <p className="results-sum">
-            {results.length} {plural(results.length, 'тариф подходит', 'тарифа подходят', 'тарифов подходят')} под {cpu} {plural(cpu, 'ядро', 'ядра', 'ядер')}, {ram} ГБ{budget >= BUDGET_MAX ? '' : ` и бюджет до ${price(budget)}`}
-            <a href="#params" className="results-edit">Изменить</a>
-          </p>
-            <div className="sortseg" role="group" aria-label="Сортировка">
-              <button type="button" className={sort === 'fit' ? 'on' : ''} aria-pressed={sort === 'fit'} onClick={() => { setSort('fit'); track('sort', { sort: 'fit' }); }}>Подходящие</button>
-              <button type="button" className={sort === 'price' ? 'on' : ''} aria-pressed={sort === 'price'} onClick={() => { setSort('price'); track('sort', { sort: 'price' }); }}>Дешёвые</button>
+          {results.length === 0 && (
+            <div className="notice">
+              {blocker ? (
+                <>
+                  <strong>Мешает условие «{blocker.label}».</strong> Без него найдётся {blocker.n}{' '}
+                  {plural(blocker.n, 'провайдер', 'провайдера', 'провайдеров')}, тарифы от {price(blocker.from)} в месяц
+                  <div className="row mt">
+                    <button type="button" className="btn btn-brass btn-sm" onClick={() => { blocker.clear(); track('clear', { what: blocker.key }); }}>Убрать «{blocker.label}»</button>
+                    <button type="button" className="btn btn-ghost btn-sm" onClick={resetAll}>Сбросить всё</button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <strong>Ничего не нашлось.</strong> Снимите пару условий или начните заново
+                  <div className="row mt">
+                    <button type="button" className="btn btn-brass btn-sm" onClick={resetAll}>Сбросить всё</button>
+                  </div>
+                </>
+              )}
             </div>
+          )}
+
+          {visible.map((r) => {
+            const geoName = payload.geos.find((g) => g.code === r.plan.geo)?.name || (r.plan.geo === 'global' ? 'несколько регионов' : r.plan.geo);
+            const ini = r.provider.name.replace(/[^A-Za-zА-Яа-я0-9]/g, '').slice(0, 2).toUpperCase();
+            const chips = [geoName];
+            if (r.provider.features?.hourly) chips.push('Почасовая оплата');
+            if (r.provider.features?.testPeriod) chips.push('Тест-период');
+            if (r.provider.payments?.mir) chips.push('Карта МИР');
+            if (r.provider.payments?.sbp) chips.push('СБП');
+            if (r.provider.payments?.crypto) chips.push('Крипта');
+            return (
+              <article className="rescard" key={r.provider.slug}>
+                <span className="res-logo" style={{ background: r.provider.color }} aria-hidden="true">{ini}</span>
+                <div className="res-main">
+                  <div className="res-title">
+                    <strong>{r.provider.name}</strong>
+                  </div>
+                  <div className="res-plan">
+                    {r.plan.name} · {r.plan.cpu} {coresWord(r.plan.cpu)} · {r.plan.ram} ГБ · {r.plan.disk} ГБ {r.plan.diskType}
+                  </div>
+                  <div className="res-chips">
+                    {chips.map((c) => <span key={c} className="pchip">{c}</span>)}
+                  </div>
+                  {r.more > 0 && (
+                    <Link href={`/provajdery/${r.provider.slug}`} className="res-more">
+                      ещё {r.more} {plural(r.more, 'подходящий тариф', 'подходящих тарифа', 'подходящих тарифов')} у {r.provider.name}
+                    </Link>
+                  )}
+                </div>
+                <div className="res-side">
+                  <div className="res-price">{price(r.plan.priceRub)}<span> в месяц</span></div>
+                  <div className="res-terms">{termTotal(r.plan)}</div>
+                  <OutLink provider={r.provider} campaign={campaign} goalName="calc_click" className="btn btn-brass btn-block">
+                    Тарифы {r.provider.name} <span className="nowrap">от {price(r.plan.priceRub)}</span>
+                  </OutLink>
+                </div>
+              </article>
+            );
+          })}
+
+          {results.length > visible.length && (
+            <button type="button" className="btn btn-ghost btn-sm mt" onClick={() => setShowAll(true)}>
+              Показать остальных провайдеров: {results.length - visible.length}
+            </button>
+          )}
+
+          {!compact && (
+            <p className="disclosure" style={{ marginTop: 18 }}>
+              Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена
+              для вас не меняется. В списке только тарифы, которые подходят под все выбранные условия, порядок
+              задаёт выбранная сортировка,{' '}
+              <Link href="/metodologiya">как мы считаем</Link>
+            </p>
+          )}
         </div>
-
-        {visible.length === 0 && (
-          <p className="dim">
-            Под такие условия в базе ничего нет. Попробуйте ослабить требования, снять быстрые фильтры или поднять бюджет
-          </p>
-        )}
-
-        {visible.map((r) => {
-          const full = r.fit.met === r.fit.total;
-          const geoName = payload.geos.find((g) => g.code === r.plan.geo)?.name || r.plan.geo;
-          const ini = r.provider.name.replace(/[^A-Za-zА-Яа-я0-9]/g, '').slice(0, 2).toUpperCase();
-          const chips = [geoName];
-          if (r.provider.features?.hourly) chips.push('Почасовая оплата');
-          if (r.provider.features?.testPeriod) chips.push('Тестовый период');
-          if (r.provider.payments?.mir) chips.push('Карта МИР');
-          if (r.provider.payments?.sbp) chips.push('СБП');
-          if (r.provider.payments?.crypto) chips.push('Крипта');
-          return (
-            <article className="rescard" key={r.provider.slug}>
-              <span className="res-logo" style={{ background: r.provider.color }} aria-hidden="true">{ini}</span>
-              <div className="res-main">
-                <div className="res-title">
-                  <strong>{r.provider.name}</strong>
-                </div>
-                <div className="res-plan">
-                  {r.plan.name} · {r.plan.cpu} {plural(r.plan.cpu, 'ядро', 'ядра', 'ядер')} · {r.plan.ram} ГБ · {r.plan.disk} ГБ {r.plan.diskType}
-                </div>
-                <div className="res-chips">
-                  {chips.map((c) => <span key={c} className="pchip">{c}</span>)}
-                </div>
-                <div className={full ? 'res-fit' : 'res-fit res-fit-part'}>{full ? '✓ ' : ''}{fitText(r)}</div>
-              </div>
-              <div className="res-side">
-                <div className="res-price">{price(r.plan.priceRub)}<span> в месяц</span></div>
-                <div className="res-terms">{termTotal(r.plan)}</div>
-                <OutLink provider={r.provider} campaign={campaign} goalName="calc_click" className="btn btn-brass btn-block">
-                  Тарифы {r.provider.name} <span className="nowrap">от {price(r.plan.priceRub)}</span>
-                </OutLink>
-              </div>
-            </article>
-          );
-        })}
-
-        {results.length > visible.length && (
-          <button type="button" className="btn btn-ghost btn-sm mt" onClick={() => setShowAll(true)}>
-            Показать остальные {results.length - visible.length}
-          </button>
-        )}
-
-        {!compact && (
-          <p className="disclosure" style={{ marginTop: 18 }}>
-            Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена
-            для вас не меняется. Порядок в списке задают только условия запроса и цена,{' '}
-            <Link href="/metodologiya">как мы считаем</Link>
-          </p>
-        )}
-      </div>
       </div>
     </div>
   );

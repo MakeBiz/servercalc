@@ -41,7 +41,7 @@ export default function CheapLanding({ c, path }) {
       }}
       sections={c.sections.map((s) => ({ h2: s.h2, paras: s.paras.map(normPara) }))}
       midAfter={0}
-      midCta={{ title: 'Подберите под свою задачу.', text: 'Калькулятор учитывает задачу, регион и бюджет и показывает, сколько условий закрывает каждый тариф.', href: '/#podbor', label: 'Открыть подбор', second: { href: '/catalog/', label: 'Весь каталог' } }}
+      midCta={{ title: 'Подберите под свою задачу.', text: 'Калькулятор фильтрует по задаче, региону, бюджету и способу оплаты и показывает только тарифы, которые подходят под все условия.', href: '/#podbor', label: 'Открыть подбор', second: { href: '/catalog/', label: 'Весь каталог' } }}
       faq={c.faq}
       related={c.related}
       readAlso={c.read}

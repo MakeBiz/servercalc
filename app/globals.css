@@ -1743,3 +1743,40 @@ html[data-theme='dark'] .th-sort:hover, html[data-theme='dark'] .th-sort.on { co
   .theme-switch .ts-sun { right: 7px; }
   .burger { margin-left: 4px; width: 38px; height: 38px; }
 }
+
+/* ---------- подбор v2: одна строка строгих фильтров (30.10.2026) ---------- */
+.calc-main.calc-main-v2 { grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 980px) { .calc-split .calc-main.calc-main-v2 { grid-template-columns: 1fr; } }
+.flt { display: flex; flex-direction: column; gap: 12px; padding: 16px; border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--paper-card); }
+html[data-theme='dark'] .flt { background: var(--ink-700); border-color: var(--ink-line-2); }
+.flt-grid { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.flt-group { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.flt-cap { font-size: 0.88rem; color: var(--text-dim); margin-right: 2px; }
+.flt .qchip { min-height: 36px; color: var(--text); border-color: var(--line-2); }
+.flt .qchip.on { color: var(--brass); border-color: var(--brass); background: var(--brass-wash); }
+html[data-theme='dark'] .flt .qchip { color: var(--on-ink); border-color: var(--ink-line-2); }
+html[data-theme='dark'] .flt .qchip.on { color: var(--brass-bright); }
+.flt .ping-btn { margin-left: 0; text-align: left; }
+.flt-toggle { display: none; align-items: center; justify-content: space-between; width: 100%; min-height: 44px; padding: 0 14px; border: 1px solid var(--line-2); border-radius: 12px; background: transparent; color: var(--text); font: 600 0.95rem var(--font-body); cursor: pointer; }
+.flt-active { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 10px; border-top: 1px solid var(--line); }
+.achip { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border: 0; border-radius: 16px; background: var(--brass); color: #fff; font: 600 0.85rem var(--font-body); cursor: pointer; }
+.achip span { opacity: 0.8; font-size: 0.75rem; }
+.achip:hover span { opacity: 1; }
+html[data-theme='dark'] .achip { color: #17130a; }
+.flt-reset { border: 0; background: none; padding: 0 4px; color: var(--brass); font: 600 0.88rem var(--font-body); cursor: pointer; }
+html[data-theme='dark'] .flt-reset { color: var(--brass-bright); }
+.achip:focus-visible, .flt-reset:focus-visible, .flt-toggle:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.res-more { font-size: 0.85rem; font-weight: 600; color: var(--brass); text-decoration: none; }
+.res-more:hover { text-decoration: underline; }
+html[data-theme='dark'] .res-more { color: var(--brass-bright); }
+.calc-v2 .results-bar { margin-top: 0; }
+@media (max-width: 760px) {
+  .flt-toggle { display: flex; }
+  .flt-body { display: none; }
+  .flt-body.open { display: block; }
+  .flt-grid { flex-direction: column; align-items: stretch; }
+  .flt-grid .fsel { justify-content: space-between; }
+  .flt-grid .fsel select { flex: 1; max-width: 62%; }
+  .flt-active { border-top: 0; padding-top: 0; }
+  .calc-v2 .calc-main .results { order: 0; }
+}
