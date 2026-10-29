@@ -1,0 +1,174 @@
+{
+ "_note": "Способы оплаты для физлица, сверено по официальным страницам оплаты провайдеров 29.10.2026. Нет ключа = не подтверждено",
+ "checkedAt": "2026-10-29",
+ "payments": {
+  "timeweb": {
+   "mir": true,
+   "sbp": true,
+   "crypto": false,
+   "paypal": false,
+   "card": true
+  },
+  "adminvps": {
+   "mir": true,
+   "sbp": true,
+   "crypto": false,
+   "paypal": false
+  },
+  "hostman": {
+   "paypal": true,
+   "card": true
+  },
+  "ishosting": {
+   "mir": false,
+   "sbp": false,
+   "crypto": true,
+   "paypal": true,
+   "card": true
+  },
+  "regru": {
+   "mir": true,
+   "sbp": true,
+   "crypto": false,
+   "paypal": false,
+   "card": true
+  },
+  "fornex": {
+   "mir": true,
+   "sbp": true,
+   "crypto": true,
+   "paypal": false
+  },
+  "vdsina": {
+   "mir": true,
+   "crypto": true,
+   "card": true
+  },
+  "ruvds": {
+   "mir": true,
+   "sbp": true,
+   "crypto": false,
+   "paypal": false,
+   "card": false
+  },
+  "firstvds": {
+   "mir": true,
+   "sbp": true,
+   "crypto": false,
+   "paypal": false,
+   "card": true
+  },
+  "cloud4box": {
+   "mir": true,
+   "sbp": true,
+   "card": true
+  },
+  "aeza": {
+   "sbp": true,
+   "crypto": true
+  },
+  "profitserver": {
+   "sbp": true
+  },
+  "selectel": {
+   "mir": true,
+   "sbp": true,
+   "crypto": false,
+   "paypal": false
+  },
+  "vpshouse": {
+   "mir": true,
+   "sbp": false,
+   "crypto": false,
+   "paypal": false
+  },
+  "beget": {
+   "mir": true,
+   "sbp": true,
+   "crypto": false,
+   "paypal": false,
+   "card": true
+  },
+  "hostes": {
+   "mir": true,
+   "sbp": true,
+   "crypto": true
+  },
+  "racknerd": {
+   "mir": false,
+   "sbp": false,
+   "crypto": true,
+   "paypal": true,
+   "card": true
+  },
+  "vpsdime": {
+   "mir": false,
+   "sbp": false,
+   "crypto": true,
+   "paypal": true,
+   "card": true
+  },
+  "hostwinds": {
+   "mir": false,
+   "sbp": false,
+   "crypto": true,
+   "paypal": true,
+   "card": true
+  },
+  "alphavps": {
+   "mir": false,
+   "sbp": false,
+   "crypto": true,
+   "paypal": true,
+   "card": true
+  },
+  "cherryservers": {
+   "mir": false,
+   "sbp": false,
+   "crypto": true,
+   "paypal": true,
+   "card": true
+  },
+  "massivegrid": {
+   "mir": false,
+   "sbp": false,
+   "crypto": false,
+   "paypal": true,
+   "card": true
+  },
+  "ethernetservers": {
+   "mir": false,
+   "sbp": false,
+   "crypto": true,
+   "paypal": true,
+   "card": true
+  },
+  "rosehosting": {
+   "mir": false,
+   "sbp": false,
+   "crypto": false,
+   "paypal": true,
+   "card": true
+  },
+  "datapacket": {
+   "mir": false,
+   "sbp": false,
+   "crypto": false,
+   "paypal": true,
+   "card": true
+  },
+  "truehost": {
+   "mir": false,
+   "sbp": false,
+   "paypal": true,
+   "card": true
+  },
+  "vpsorg": {
+   "mir": false,
+   "sbp": false,
+   "crypto": false,
+   "paypal": true,
+   "card": true
+  }
+ }
+}

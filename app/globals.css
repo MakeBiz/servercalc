@@ -1570,3 +1570,96 @@ html[data-theme='dark'] .cookie a { color: var(--brass-bright); }
 .theme-switch[aria-checked='true'] .ts-moon { color: var(--on-ink-faint); }
 .theme-switch[aria-checked='true'] .ts-knob { box-shadow: 0 1px 3px rgba(14, 23, 38, 0.3); }
 @media (max-width: 640px) { .chips .chip { padding: 8px 10px; font-size: 0.9rem; } }
+
+/* ---------- раскладка подбора как в макете A (29.10.2026) ----------
+   задачи крупными кнопками на панели героя, ниже белая полоса:
+   слева параметры, справа фильтры, сортировка и карточки */
+.calc-tasks { margin-bottom: 28px; }
+.calc-tasks-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 12px; }
+.calc-tasks .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.calc-tasks .chips .chip { width: auto; min-height: 48px; padding: 0 18px; background: var(--ink-700); font-weight: 600; font-size: 0.98rem; }
+.calc-intent { margin: 10px 0 0; }
+.calc-main { position: relative; z-index: 0; display: grid; grid-template-columns: 1fr; gap: 24px; padding: 28px 0 8px; }
+.calc-split .calc-main::before { content: ''; position: absolute; z-index: -1; inset: 0 -100vmax; background: var(--paper); border-top: 1px solid var(--line); }
+.calc-main .calc { border: 1px solid var(--ink-line); border-radius: var(--r-lg); padding: 22px; background: var(--ink-700); }
+.calc-main .calc-head { padding-bottom: 12px; margin-bottom: 18px; }
+.calc-main .calc-head h2 { font-size: 1.05rem; }
+.calc-main .calc-cols { grid-template-columns: 1fr; gap: 20px; }
+.calc-main .calc-cols .span-2 { grid-column: auto; }
+.calc-main .calc-cols .chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.calc-main .calc-cols .chips .chip { min-height: 40px; padding: 6px 12px; }
+.calc-main .calc-foot { flex-direction: column; align-items: stretch; margin-top: 20px; padding-top: 16px; }
+.calc-main .results { background: transparent; border: 0; border-radius: 0; padding: 0; min-width: 0; }
+@media (min-width: 980px) {
+  .calc-main { grid-template-columns: 300px minmax(0, 1fr); gap: 32px; align-items: start; }
+  .calc-split .calc-main { display: grid; }
+  .calc-split .calc { border-radius: var(--r-lg); border: 1px solid var(--ink-line); border-bottom: 1px solid var(--ink-line); display: block; }
+  .calc-split .results { border-radius: 0; }
+  .calc-split { display: block; }
+}
+.results-head { align-items: center; margin-bottom: 10px; }
+.results-head .quick { margin: 0; flex: 1 1 auto; min-width: 0; }
+.results-sum { margin: 0 0 14px; font-size: 0.9rem; color: var(--text-faint); }
+.calc-main .rescard {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 230px;
+  gap: 0 20px;
+  align-items: start;
+  padding: 20px 22px;
+  margin-bottom: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--paper-card);
+  box-shadow: 0 1px 3px rgba(14, 23, 38, 0.05);
+}
+html[data-theme='dark'] .calc-main .rescard { background: var(--ink-700); border-color: var(--ink-line-2); }
+.res-logo { width: 52px; height: 52px; border-radius: 12px; display: grid; place-items: center; color: #fff; font: 800 1.05rem var(--font-display); letter-spacing: -0.03em; }
+.res-main { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.calc-main .res-title { margin: 0; }
+.calc-main .res-title strong { font-size: 1.2rem; }
+.calc-main .res-plan { margin: 0; font-family: var(--font-body); font-size: 0.92rem; color: var(--text-dim); }
+html[data-theme='dark'] .calc-main .res-plan { color: var(--on-ink-dim); }
+.res-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.calc-main .res-fit { margin: 0; }
+.calc-main .res-side { border: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.calc-main .res-price { margin: 0; text-align: right; font: 800 1.6rem var(--font-display); letter-spacing: -0.02em; }
+.calc-main .res-price span { font: 500 0.85rem var(--font-body); color: var(--text-faint); letter-spacing: 0; }
+.calc-main .res-terms { text-align: right; margin: 0 0 8px; color: var(--text-faint); }
+@media (max-width: 779px) {
+  .calc-main .rescard { grid-template-columns: 44px minmax(0, 1fr); padding: 16px; gap: 12px 14px; }
+  .res-logo { width: 44px; height: 44px; font-size: 0.95rem; }
+  .calc-main .res-side { grid-column: 1 / -1; }
+  .calc-main .res-price, .calc-main .res-terms { text-align: left; }
+}
+@media (max-width: 640px) {
+  .calc-tasks { margin-bottom: 18px; }
+  .calc-tasks .chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .calc-tasks .chips .chip { padding: 8px 10px; font-size: 0.92rem; min-height: 48px; }
+  .results-head .quick { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; scrollbar-width: none; }
+  .results-head .quick .qchip { flex: none; }
+  .calc-main { padding-top: 20px; }
+  .calc-main .calc { padding: 18px 16px; }
+}
+/* старое рекламное место убрано */
+.featured, .featured-tag, .featured-text { display: none; }
+.results-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin: 6px 0 14px; }
+.results-bar .results-sum { margin: 0; }
+.results-edit { display: none; margin-left: 8px; font-weight: 600; color: var(--brass); text-decoration: none; }
+.calc-main .res-side .btn { text-align: center; font-size: 0.95rem; padding: 12px 14px; line-height: 1.3; }
+@media (min-width: 780px) { .calc-main .rescard { grid-template-columns: 52px minmax(0, 1fr) 250px; } }
+@media (max-width: 979px) {
+  .calc-main .results { order: -1; }
+  .results-edit { display: inline; }
+  #params { scroll-margin-top: 80px; }
+}
+/* замер задержки до регионов */
+.ping-btn { margin-left: auto; padding: 0; border: 0; background: none; color: var(--brass); font: 600 0.82rem var(--font-body); cursor: pointer; text-align: right; }
+.ping-btn:disabled { color: var(--text-faint); cursor: progress; }
+.ping-btn:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.ping-v { margin-left: auto; padding-left: 8px; font-size: 0.78rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--text-faint); }
+.ping-good { color: var(--ok); }
+.ping-mid { color: var(--warn); }
+.ping-bad { color: var(--danger); }
+.ping-note { margin: 8px 0 0; font-size: 0.78rem; line-height: 1.45; color: var(--text-faint); }
+html[data-theme='dark'] .ping-btn { color: var(--brass-bright); }
+.ping-v { white-space: nowrap; }

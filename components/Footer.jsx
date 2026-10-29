@@ -34,6 +34,9 @@ export default function Footer() {
               <li><Link href="/indeks-cen-vps">Индекс цен VPS</Link></li>
               <li><Link href="/vps-dlya">Подбор под задачу</Link></li>
               <li><Link href="/vps">Подбор по географии</Link></li>
+              <li><Link href="/vps-s-oplatoj/kartoj-mir">VPS с оплатой картой МИР</Link></li>
+              <li><Link href="/vps-s-oplatoj/sbp">VPS с оплатой по СБП</Link></li>
+              <li><Link href="/vps-s-oplatoj/kriptovalyutoj">VPS за криптовалюту</Link></li>
               {HAS_PROMOS && <li><Link href="/akcii">Акции и промокоды</Link></li>}
             </ul>
           </div>

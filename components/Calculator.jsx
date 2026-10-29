@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import OutLink from './OutLink';
 import TaskIcon from './TaskIcon';
-import { runMatch, featuredResult } from '@/lib/score';
+import { runMatch } from '@/lib/score';
+import { measureGeo, PING_GEOS } from '@/lib/ping';
 import { price, plural, ruDate, termShort } from '@/lib/format';
 import { goal, GOALS } from '@/lib/metrika';
 import { CAMPAIGN } from '@/lib/utm';
@@ -36,6 +37,24 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   const [showAll, setShowAll] = useState(false);
   const [sort, setSort] = useState('fit');
   const [quick, setQuick] = useState([]);
+  const [pings, setPings] = useState({});
+  const [pinging, setPinging] = useState(false);
+  async function runPing() {
+    setPinging(true);
+    const next = {};
+    for (const code of PING_GEOS) {
+      next[code] = await measureGeo(code);
+      setPings({ ...next });
+    }
+    setPinging(false);
+    track('ping', { ru: next.ru, eu: next.eu });
+  }
+  const UNIT_MS = 'мс';
+  const pingLabel = (code) => {
+    const v = pings[code];
+    if (v === undefined) return null;
+    return <span className={v === null ? 'ping-v' : v < 80 ? 'ping-v ping-good' : v < 200 ? 'ping-v ping-mid' : 'ping-v ping-bad'}>{v === null ? '—' : `${v} ${UNIT_MS}`}</span>;
+  };
   const resourcesTouched = useRef(Boolean(presetTask));
   const started = useRef(false);
   const [copied, setCopied] = useState(false);
@@ -117,11 +136,12 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   const pool = useMemo(() => {
     if (!quick.length) return payload;
     const providers = payload.providers.filter((p) =>
-      (!quick.includes('ru') || p.country === 'RU') && (!quick.includes('win') || (p.tasks || []).includes('windows')));
+      (!quick.includes('ru') || p.country === 'RU') &&
+      (!quick.includes('win') || (p.tasks || []).includes('windows')) &&
+      ['mir', 'sbp', 'crypto'].every((k) => !quick.includes(k) || p.payments?.[k] === true));
     return { ...payload, providers };
   }, [payload, quick]);
   const results = useMemo(() => runMatch(pool, query, sort), [pool, query, sort]);
-  const featured = useMemo(() => featuredResult(runMatch(payload, query)), [payload, query]);
   const visible = showAll ? results : results.slice(0, 6);
   const taskObj = payload.tasks.find((t) => t.slug === task) || null;
   const budgetLabel = budget >= BUDGET_MAX ? 'без ограничения' : `до ${price(budget)} в месяц`;
@@ -139,10 +159,14 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     resourcesTouched.current = false;
   }
 
+  const toggleQuick = (key) => setQuick((q) => (q.includes(key) ? q.filter((x) => x !== key) : [...q, key]));
   const QUICK = [
     { key: 'b500', label: 'До 500 ₽', on: budget <= 500, toggle: () => setBudget(budget <= 500 ? 2000 : 500) },
-    { key: 'ru', label: 'Российский провайдер', on: quick.includes('ru'), toggle: () => setQuick((q) => (q.includes('ru') ? q.filter((x) => x !== 'ru') : [...q, 'ru'])) },
-    { key: 'win', label: 'С Windows', on: quick.includes('win'), toggle: () => setQuick((q) => (q.includes('win') ? q.filter((x) => x !== 'win') : [...q, 'win'])) },
+    { key: 'ru', label: 'Российский провайдер', on: quick.includes('ru'), toggle: () => toggleQuick('ru') },
+    { key: 'mir', label: 'Карта МИР', on: quick.includes('mir'), toggle: () => toggleQuick('mir') },
+    { key: 'sbp', label: 'Оплата по СБП', on: quick.includes('sbp'), toggle: () => toggleQuick('sbp') },
+    { key: 'crypto', label: 'Криптовалюта', on: quick.includes('crypto'), toggle: () => toggleQuick('crypto') },
+    { key: 'win', label: 'С Windows', on: quick.includes('win'), toggle: () => toggleQuick('win') },
     { key: 'nvme', label: 'Только NVMe', on: requirements.includes('nvme'), toggle: () => toggleRequirement('nvme') },
     { key: 'hourly', label: 'Почасовая оплата', on: requirements.includes('hourly'), toggle: () => toggleRequirement('hourly') },
   ];
@@ -157,21 +181,12 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
   return (
     <div id="podbor" className={split ? 'anchor calc-split' : 'anchor'}>
-      <div className="calc">
-        <div className="calc-head">
-          <h2>Подбор сервера</h2>
-          <span className="faint">
-            {payload.stats.plans} {plural(payload.stats.plans, 'тариф', 'тарифа', 'тарифов')} с
-            проверенной ценой, база проверена {ruDate(payload.stats.verifiedAt)}
-          </span>
+      <div className="calc-tasks">
+        <div className="calc-tasks-head">
+          <span className="label">Ваша задача</span>
+          {taskObj && <span className="field-val">рекомендуем {taskObj.cpu} × {taskObj.ram} ГБ</span>}
         </div>
-
-        <div className="field">
-          <div className="field-head">
-            <span className="label">Задача</span>
-            {taskObj && <span className="field-val">рекомендуем {taskObj.cpu} × {taskObj.ram} ГБ</span>}
-          </div>
-          <div className="chips">
+        <div className="chips">
             {payload.tasks.filter((t) => !t.hideInCalc).map((t) => (
               <button
                 key={t.slug}
@@ -185,15 +200,23 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
               </button>
             ))}
           </div>
-          {taskObj && <p className="faint" style={{ marginTop: 10 }}>{taskObj.intent}</p>}
+        {taskObj && <p className="faint calc-intent">{taskObj.intent}</p>}
+      </div>
+
+      <div className="calc-main">
+      <div className="calc" id="params">
+        <div className="calc-head">
+          <h2>Параметры</h2>
         </div>
 
         <div className="calc-cols">
           <div className="field span-2">
             <div className="field-head">
               <span className="label">География</span>
+              <button type="button" className="ping-btn" onClick={runPing} disabled={pinging}>
+                {pinging ? 'Замеряем…' : Object.keys(pings).length ? 'Замерить ещё раз' : 'Проверить задержку из вашей сети'}
+              </button>
             </div>
-            {split ? (
               <div className="chips">
                 <button
                   type="button"
@@ -211,27 +234,11 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                     aria-pressed={geo === g.slug}
                     onClick={() => { setGeo(g.slug); track('geo', { geo: g.slug }); }}
                   >
-                    {g.name}
+                    {g.name}{pingLabel(g.code)}
                   </button>
                 ))}
               </div>
-            ) : (
-              <div className="seg">
-                <button type="button" className={geo === 'any' ? 'on' : ''} onClick={() => { setGeo('any'); track('geo', { geo: 'any' }); }}>
-                  Не важна
-                </button>
-                {payload.geos.filter((g) => !g.hideInCalc).map((g) => (
-                  <button
-                    key={g.slug}
-                    type="button"
-                    className={geo === g.slug ? 'on' : ''}
-                    onClick={() => { setGeo(g.slug); track('geo', { geo: g.slug }); }}
-                  >
-                    {g.name}
-                  </button>
-                ))}
-              </div>
-            )}
+            {Object.keys(pings).length > 0 && <p className="ping-note">Время ответа по HTTPS из вашего браузера до серверов в регионе: чем меньше, тем быстрее сайт или бот будет отвечать вам и вашим клиентам рядом</p>}
           </div>
 
           <div className="field">
@@ -343,34 +350,24 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
       <div className="results">
         <div className="results-head">
-          <span className="faint">
-            {results.length} {plural(results.length, 'подходящий тариф', 'подходящих тарифа', 'подходящих тарифов')}
-          </span>
-          <div className="sortseg" role="group" aria-label="Сортировка">
-            <button type="button" className={sort === 'fit' ? 'on' : ''} aria-pressed={sort === 'fit'} onClick={() => { setSort('fit'); track('sort', { sort: 'fit' }); }}>Подходящие</button>
-            <button type="button" className={sort === 'price' ? 'on' : ''} aria-pressed={sort === 'price'} onClick={() => { setSort('price'); track('sort', { sort: 'price' }); }}>Дешёвые</button>
+          <div className="quick" aria-label="Быстрые фильтры">
+            {QUICK.map((q) => (
+              <button key={q.key} type="button" className={q.on ? 'qchip on' : 'qchip'} aria-pressed={q.on} onClick={() => { q.toggle(); setShowAll(false); track('quick', { quick: q.key }); }}>
+                {q.label}
+              </button>
+            ))}
           </div>
         </div>
-
-        <div className="quick" aria-label="Быстрые фильтры">
-          {QUICK.map((q) => (
-            <button key={q.key} type="button" className={q.on ? 'qchip on' : 'qchip'} aria-pressed={q.on} onClick={() => { q.toggle(); setShowAll(false); track('quick', { quick: q.key }); }}>
-              {q.label}
-            </button>
-          ))}
+        <div className="results-bar">
+          <p className="results-sum">
+            {results.length} {plural(results.length, 'тариф подходит', 'тарифа подходят', 'тарифов подходят')} под {cpu} {plural(cpu, 'ядро', 'ядра', 'ядер')}, {ram} ГБ{budget >= BUDGET_MAX ? '' : ` и бюджет до ${price(budget)}`}
+            <a href="#params" className="results-edit">Изменить</a>
+          </p>
+            <div className="sortseg" role="group" aria-label="Сортировка">
+              <button type="button" className={sort === 'fit' ? 'on' : ''} aria-pressed={sort === 'fit'} onClick={() => { setSort('fit'); track('sort', { sort: 'fit' }); }}>Подходящие</button>
+              <button type="button" className={sort === 'price' ? 'on' : ''} aria-pressed={sort === 'price'} onClick={() => { setSort('price'); track('sort', { sort: 'price' }); }}>Дешёвые</button>
+            </div>
         </div>
-
-        {featured && !compact && (
-          <div className="featured">
-            <span className="featured-tag">Реклама</span>
-            <span className="featured-text">
-              <strong>{featured.provider.name}</strong> · {featured.plan.name} · {featured.plan.cpu} × {featured.plan.ram} ГБ · {price(featured.plan.priceRub)} в месяц
-            </span>
-            <OutLink provider={featured.provider} campaign={`${campaign}_featured`} goalName="calc_click" className="btn btn-ghost btn-sm">
-              Перейти
-            </OutLink>
-          </div>
-        )}
 
         {visible.length === 0 && (
           <p className="dim">
@@ -378,36 +375,38 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
           </p>
         )}
 
-        {visible.map((r, i) => {
+        {visible.map((r) => {
           const full = r.fit.met === r.fit.total;
           const geoName = payload.geos.find((g) => g.code === r.plan.geo)?.name || r.plan.geo;
+          const ini = r.provider.name.replace(/[^A-Za-zА-Яа-я0-9]/g, '').slice(0, 2).toUpperCase();
+          const chips = [geoName];
+          if (r.provider.features?.hourly) chips.push('Почасовая оплата');
+          if (r.provider.features?.testPeriod) chips.push('Тестовый период');
+          if (r.provider.payments?.mir) chips.push('Карта МИР');
+          if (r.provider.payments?.sbp) chips.push('СБП');
+          if (r.provider.payments?.crypto) chips.push('Крипта');
           return (
             <article className="rescard" key={r.provider.slug}>
-              <div className="res-rank">{i + 1}</div>
-              <div className="res-body">
-                <div>
-                  <div className="res-title">
-                    <strong>{r.provider.name}</strong>
-                    {r.provider.partner ? <span className="badge">Партнёр</span> : <span className="badge badge-plain">без партнёрства</span>}
-                  </div>
-                  <div className="res-plan">
-                    {r.plan.name} · {r.plan.cpu} × {r.plan.ram} ГБ · {r.plan.disk} ГБ {r.plan.diskType} · {geoName}
-                  </div>
-                  <div className={full ? 'res-fit' : 'res-fit res-fit-part'}>{full ? '✓ ' : ''}{fitText(r)}</div>
-                  <div className="reasons">
-                    {r.reasons.filter((reason) => reason.ok && !['resources', 'budget'].includes(reason.code)).map((reason) => (
-                      <span key={reason.code} className="reason reason-ok">✓ {reason.text}</span>
-                    ))}
-                  </div>
+              <span className="res-logo" style={{ background: r.provider.color }} aria-hidden="true">{ini}</span>
+              <div className="res-main">
+                <div className="res-title">
+                  <strong>{r.provider.name}</strong>
+                  {r.provider.partner ? <span className="badge">Партнёр</span> : <span className="badge badge-plain">без партнёрства</span>}
                 </div>
-
-                <div className="res-side">
-                  <div className="res-price">{price(r.plan.priceRub)}<span className="faint"> в месяц</span></div>
-                  <div className="res-terms faint">{termTotal(r.plan)}</div>
-                  <OutLink provider={r.provider} campaign={campaign} goalName="calc_click" className="btn btn-brass btn-block">
-                    {`Тарифы ${r.provider.name}`}
-                  </OutLink>
+                <div className="res-plan">
+                  {r.plan.name} · {r.plan.cpu} {plural(r.plan.cpu, 'ядро', 'ядра', 'ядер')} · {r.plan.ram} ГБ · {r.plan.disk} ГБ {r.plan.diskType}
                 </div>
+                <div className="res-chips">
+                  {chips.map((c) => <span key={c} className="pchip">{c}</span>)}
+                </div>
+                <div className={full ? 'res-fit' : 'res-fit res-fit-part'}>{full ? '✓ ' : ''}{fitText(r)}</div>
+              </div>
+              <div className="res-side">
+                <div className="res-price">{price(r.plan.priceRub)}<span> в месяц</span></div>
+                <div className="res-terms">{termTotal(r.plan)}</div>
+                <OutLink provider={r.provider} campaign={campaign} goalName="calc_click" className="btn btn-brass btn-block">
+                  {`Тарифы ${r.provider.name} от ${price(r.plan.priceRub)}`}
+                </OutLink>
               </div>
             </article>
           );
@@ -426,6 +425,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             <Link href="/metodologiya">как мы считаем</Link>
           </p>
         )}
+      </div>
       </div>
     </div>
   );

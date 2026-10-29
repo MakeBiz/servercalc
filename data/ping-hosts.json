@@ -1,0 +1,9 @@
+{
+  "_note": "Точки замера задержки из браузера посетителя (29.10.2026). Хосты провайдеров в нужном городе, замер fetch no-cors, медиана 2-5 попыток",
+  "ru": { "city": "Москва", "cityEn": "Moscow", "host": "s3.ru-7.storage.selcloud.ru" },
+  "eu": { "city": "Франкфурт", "cityEn": "Frankfurt", "host": "fra-de-ping.vultr.com" },
+  "us": { "city": "Нью-Джерси", "cityEn": "New Jersey", "host": "nj-us-ping.vultr.com" },
+  "kz": { "city": "Алматы", "cityEn": "Almaty", "host": "s3.kz-1.srvstorage.kz" },
+  "uae": { "city": "ОАЭ", "cityEn": "UAE", "host": "dynamodb.me-central-1.amazonaws.com" },
+  "asia": { "city": "Сингапур", "cityEn": "Singapore", "host": "sgp-ping.vultr.com" }
+}
