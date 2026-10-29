@@ -1883,3 +1883,16 @@ html[data-theme='dark'] .rc-mark { background: var(--on-ink); }
   .rc-bar .rc-track { grid-column: 1 / -1; order: 3; }
   .rescard.rescard-v4 { padding: 16px; }
 }
+
+/* первый экран ниже по высоте, чтобы сразу были видны фильтры (30.10.2026) */
+@media (min-width: 641px) {
+  .hero { padding-top: 26px; }
+  .hero-head { max-width: none; margin-bottom: 16px; }
+  .hero h1 { margin-bottom: 8px; }
+  .hero-fresh { margin-bottom: 6px; }
+  .hero-head .lead { max-width: none; margin: 0; }
+  .calc-tasks { margin-bottom: 16px; }
+  .calc-tasks-head { margin-bottom: 8px; }
+  .calc-tasks .chips .chip { min-height: 44px; }
+  .calc-main { padding-top: 20px; }
+}
