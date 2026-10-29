@@ -8,11 +8,11 @@ export default function Logo({ size = 26 }) {
       fill="none"
       aria-hidden="true"
     >
-      <rect x="1" y="1" width="24" height="24" rx="6" stroke="#c6a15b" strokeWidth="1.6" />
-      <rect x="6" y="7" width="14" height="4" rx="1.4" fill="#c6a15b" opacity="0.32" />
-      <rect x="6" y="15" width="14" height="4" rx="1.4" fill="#c6a15b" opacity="0.32" />
-      <circle cx="17.5" cy="9" r="1.5" fill="#e2c489" />
-      <circle cx="17.5" cy="17" r="1.5" fill="#e2c489" />
+      <rect className="bm-bg" x="0" y="0" width="26" height="26" rx="7" />
+      <rect x="6" y="7" width="14" height="4.2" rx="1.4" fill="#fff" opacity="0.92" />
+      <rect x="6" y="14.8" width="14" height="4.2" rx="1.4" fill="#fff" opacity="0.92" />
+      <circle className="bm-dot" cx="17.3" cy="9.1" r="1.25" />
+      <circle className="bm-dot" cx="17.3" cy="16.9" r="1.25" />
     </svg>
   );
 }

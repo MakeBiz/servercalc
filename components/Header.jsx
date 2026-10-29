@@ -23,13 +23,13 @@ export default function Header({ showPromos = false }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || '/';
 
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('light');
   useEffect(() => {
-    setTheme(document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+    setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
   }, []);
   const toggleTheme = () => {
     const next = theme === 'light' ? 'dark' : 'light';
-    if (next === 'light') document.documentElement.dataset.theme = 'light';
+    if (next === 'dark') document.documentElement.dataset.theme = 'dark';
     else delete document.documentElement.dataset.theme;
     try { localStorage.setItem('sc-theme', next); } catch {}
     setTheme(next);

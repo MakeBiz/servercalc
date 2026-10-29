@@ -33,12 +33,11 @@ export default function CookieBanner() {
   return (
     <div className="cookie" role="dialog" aria-label="Использование cookie">
       <p>
-        Сайт использует cookie и Яндекс Метрику, чтобы понимать, какие страницы полезны читателям.
-        Подробности в <Link href="/cookie">разделе про cookie</Link> и{' '}
-        <Link href="/politika-konfidencialnosti">политике конфиденциальности</Link>
+        Сайт использует cookie и Яндекс Метрику.{' '}
+        <Link href="/cookie">Подробнее</Link>
       </p>
-      <button className="btn btn-brass btn-sm" onClick={accept}>
-        Принять
+      <button type="button" className="cookie-ok" onClick={accept}>
+        Ок
       </button>
     </div>
   );

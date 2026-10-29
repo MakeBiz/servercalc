@@ -109,14 +109,11 @@ export default function HomePage() {
       <section className="hero ink">
         <div className="wrap hero-in">
           <div className="hero-head">
-            <div className="eyebrow">
-              <span className="label label-brass">Справочный каталог серверов</span>
-            </div>
-            <h1 className="display">
-              Подберём VPS (ВПС) под
-              <br />
-              конкретную задачу
-            </h1>
+            <p className="hero-fresh">
+              Цены проверены {ruDate(payload.stats.verifiedAt)} · {payload.stats.plans}{' '}
+              {plural(payload.stats.plans, 'тариф', 'тарифа', 'тарифов')}
+            </p>
+            <h1 className="display">Подберём VPS под задачу за минуту</h1>
             <p className="lead">
               Подбираем виртуальный сервер (VPS, он же ВПС или VDS) по задаче, ресурсам и
               географии. Показываем не витрину, а
@@ -126,7 +123,7 @@ export default function HomePage() {
 
           <Calculator payload={payload} campaign={CAMPAIGN.calculator} split />
 
-          <div style={{ height: 72 }} />
+          <div className="hero-tail" />
         </div>
       </section>
 

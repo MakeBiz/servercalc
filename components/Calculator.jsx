@@ -168,7 +168,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
         <div className="field">
           <div className="field-head">
-            <span className="label">01 · Задача</span>
+            <span className="label">Задача</span>
             {taskObj && <span className="field-val">рекомендуем {taskObj.cpu} × {taskObj.ram} ГБ</span>}
           </div>
           <div className="chips">
@@ -191,7 +191,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
         <div className="calc-cols">
           <div className="field span-2">
             <div className="field-head">
-              <span className="label">02 · География</span>
+              <span className="label">География</span>
             </div>
             {split ? (
               <div className="chips">
@@ -236,7 +236,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
           <div className="field">
             <div className="field-head">
-              <span className="label">03 · Память</span>
+              <span className="label">Память</span>
               <span className="field-val">{ram} ГБ</span>
             </div>
             <input
@@ -259,7 +259,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
           <div className="field">
             <div className="field-head">
-              <span className="label">04 · Ядра</span>
+              <span className="label">Ядра</span>
               <span className="field-val">{cpu} {plural(cpu, 'ядро', 'ядра', 'ядер')}</span>
             </div>
             <input
@@ -282,7 +282,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
           <div className="field">
             <div className="field-head">
-              <span className="label">05 · Бюджет</span>
+              <span className="label">Бюджет</span>
               <span className="field-val">{budgetLabel}</span>
             </div>
             <input
@@ -305,7 +305,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
           <div className="field">
             <div className="field-head">
-              <span className="label">06 · Требования</span>
+              <span className="label">Требования</span>
               {requirements.length > 0 && <span className="field-val">выбрано {requirements.length}</span>}
             </div>
             <div className="chips">
