@@ -1845,3 +1845,5 @@ html[data-theme='dark'] .pchip-pay { color: var(--brass-bright); }
 html[data-theme='dark'] .rc-specs { background: var(--ink-600); }
 html[data-theme='dark'] .rc-specs div { box-shadow: inset -1px -1px 0 var(--ink-line-2); }
 .rc-cta { gap: 0.3em; }
+/* панель фильтров во всю высоту, без собственной прокрутки (30.10.2026) */
+@media (min-width: 980px) { .calc-v2 .flt { position: static; max-height: none; overflow: visible; } }
