@@ -5,7 +5,6 @@ import { PROVIDERS, STATS, minPriceOf, plansOf } from '@/lib/data';
 import { CAMPAIGN } from '@/lib/utm';
 import { plural, ruDate } from '@/lib/format';
 import { absUrl } from '@/lib/site';
-import { PRIORITY_BONUS } from '@/lib/score';
 
 export const metadata = {
   title: 'Провайдеры VPS (ВПС): сравнение и рейтинг',
@@ -17,13 +16,8 @@ export const metadata = {
 export default function ProvidersPage() {
   const ru = PROVIDERS.filter((p) => p.country === 'RU');
   const intl = PROVIDERS.filter((p) => p.country !== 'RU');
-  // Порядок каталога: сначала приоритетные партнёры по списку (больше прибавка = выше),
-  // затем остальные по цене. Единый источник приоритета — PRIORITY_BONUS из lib/score.
-  const priorityOf = (p) => PRIORITY_BONUS[p.slug] || 0;
-  const sortByPrice = (a, b) =>
-    (b.slug === 'timeweb') - (a.slug === 'timeweb') ||
-    priorityOf(b) - priorityOf(a) ||
-    (minPriceOf(a.slug) ?? Infinity) - (minPriceOf(b.slug) ?? Infinity);
+  // Порядок: по минимальной проверенной цене (с 29.10.2026 партнёрство на порядок не влияет)
+  const sortByPrice = (a, b) => (minPriceOf(a.slug) ?? Infinity) - (minPriceOf(b.slug) ?? Infinity) || a.name.localeCompare(b.name);
 
   return (
     <>
