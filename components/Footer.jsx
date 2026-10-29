@@ -32,7 +32,7 @@ export default function Footer() {
               <li><Link href="/#podbor">Калькулятор</Link></li>
               <li><Link href="/catalog">Каталог тарифов</Link></li>
               <li><Link href="/deshevye-vps">Самые дешёвые VPS</Link></li>
-              <li><Link href="/indeks-cen-vps">Индекс цен VPS</Link></li>
+              <li><Link href="/indeks-cen-vps">Цены на VPS по месяцам</Link></li>
               <li><Link href="/vps-dlya">Подбор под задачу</Link></li>
               <li><Link href="/vps">Подбор по географии</Link></li>
               <li><Link href="/vps-s-oplatoj/kartoj-mir">VPS с оплатой картой МИР</Link></li>

@@ -3,11 +3,11 @@ import PageHead from '@/components/PageHead';
 import JsonLd from '@/components/JsonLd';
 import providersRaw from '@/data/providers.json';
 import index from '@/data/price-index.json';
-import { VISIBLE_PLANS } from '@/lib/data';
+import { VISIBLE_PLANS, STATS } from '@/lib/data';
 import { CATALOG_HIDDEN } from '@/lib/catalog';
 import { num } from '@/lib/format';
 import { absUrl } from '@/lib/site';
-import { dmy, yearOf, cheapestWith, planName, priceText } from '@/lib/answer-first';
+import { dmy, yearOf, cheapestWith, planName, priceText, termNote, byPrice } from '@/lib/answer-first';
 
 /**
  * «Индекс цен VPS» (26.10.2026): как изменились цены одних и тех же тарифов между двумя
@@ -24,8 +24,10 @@ const SAME = ROWS.length - UP.length - DOWN.length;
 const WITHDRAWN = (index.withdrawn || []).filter((w) => !CATALOG_HIDDEN.has(w.providerSlug));
 const FROM = index.from;
 const TO = index.to;
-const MONTH = new Date(TO).toLocaleString('ru-RU', { month: 'long', timeZone: 'UTC' });
-const YEAR = yearOf(TO);
+// месяц страницы берётся из последней сверки каталога: после сверки 1 ноября страница сама станет «ноябрь»
+const CHECKED = STATS.verifiedAt > TO ? STATS.verifiedAt : TO;
+const MONTH = new Date(CHECKED).toLocaleString('ru-RU', { month: 'long', timeZone: 'UTC' });
+const YEAR = yearOf(CHECKED);
 
 const GEO = { ru: 'Россия', eu: 'Европа', us: 'США', asia: 'Азия', global: 'несколько стран', kz: 'Казахстан' };
 const CUR = { RUB: ' ₽', USD: ' $', EUR: ' €' };
@@ -46,6 +48,13 @@ const BY_PROVIDER = Object.values(
   .sort((a, b) => b.avg - a.avg);
 
 const RU = VISIBLE_PLANS.filter((p) => p.geo === 'ru' || (p.alsoIn || []).includes('ru'));
+// классы памяти: по три самых дешёвых провайдера в каждом (один тариф на провайдера)
+const CLASSES = [1, 2, 4, 8].map((ram) => {
+  const seen = new Set();
+  const top = RU.filter((p) => p.ram === ram).sort(byPrice).filter((p) => (seen.has(p.providerSlug) ? false : seen.add(p.providerSlug))).slice(0, 3);
+  return { ram, top };
+}).filter((c) => c.top.length);
+
 const CHEAP = [
   { label: '1 ГБ памяти', p: cheapestWith(RU, { ram: 1 }) },
   { label: '2 ГБ памяти', p: cheapestWith(RU, { ram: 2 }) },
@@ -53,7 +62,12 @@ const CHEAP = [
 ].filter((c) => c.p);
 
 const leadTop = BY_PROVIDER.slice(0, 3).map((a) => `${a.name} (в среднем ${pct(a.avg)})`).join(', ');
+const ANSWER = CLASSES.length
+  ? `На ${dmy(CHECKED)} самый дешёвый VPS с серверами в России: ` +
+    CLASSES.map((c) => `с ${c.ram} ГБ памяти ${planName(c.top[0])} за ${priceText(c.top[0])}`).join(', ') + '. '
+  : '';
 const LEAD =
+  ANSWER +
   `Из ${ROWS.length} тарифов VPS, которые мы сверяли с сайтами провайдеров и ${dmy(FROM)}, и ${dmy(TO)}, ` +
   `${SAME} не изменились в цене, ${UP.length} подорожали${DOWN.length ? `, ${DOWN.length} подешевели` : ', ни один не подешевел'}. ` +
   (leadTop ? `Сильнее всего подняли цены ${leadTop}. ` : '') +
@@ -61,8 +75,8 @@ const LEAD =
   'Сравниваем одни и те же конфигурации в валюте провайдера, поэтому курс рубля на результат не влияет.';
 
 export const metadata = {
-  title: { absolute: `Индекс цен VPS: ${MONTH} ${YEAR}. Что подорожало у провайдеров` },
-  description: `Как изменились цены ${ROWS.length} тарифов VPS с ${dmy(FROM)} по ${dmy(TO)}: ${UP.length} подорожали, ${SAME} без изменений. Сверка с сайтами провайдеров, таблица по каждому тарифу`,
+  title: { absolute: `Цены на VPS в России: ${MONTH} ${YEAR}. Самые дешёвые тарифы и что подорожало` },
+  description: `Самые дешёвые VPS в России с 1, 2, 4 и 8 ГБ памяти на ${dmy(CHECKED)} и как изменились цены ${ROWS.length} тарифов: ${UP.length} подорожали, ${SAME} без изменений. Сверка с сайтами провайдеров, обновление раз в месяц`,
   alternates: { canonical: `${PATH}/` },
 };
 
@@ -90,17 +104,17 @@ export default function PriceIndexPage() {
         data={{
           '@context': 'https://schema.org',
           '@type': 'Dataset',
-          name: `Индекс цен VPS ServerCalc, ${MONTH} ${YEAR}`,
+          name: `Цены на VPS в России, ${MONTH} ${YEAR} (ServerCalc)`,
           description: LEAD,
           url: absUrl(PATH),
           inLanguage: 'ru-RU',
-          dateModified: TO,
+          dateModified: CHECKED,
           temporalCoverage: `${FROM}/${TO}`,
           creator: { '@type': 'Organization', name: 'ServerCalc', url: absUrl('/') },
           isAccessibleForFree: true,
           license: 'https://creativecommons.org/licenses/by/4.0/',
           variableMeasured: ['цена тарифа в месяц', 'изменение цены, %'],
-          distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: absUrl('/indeks-cen-vps.json') }],
+          distribution: [{ '@type': 'DataDownload', encodingFormat: 'application/json', contentUrl: absUrl('/indeks-cen-vps.json') }, { '@type': 'DataDownload', encodingFormat: 'text/csv', contentUrl: absUrl('/indeks-cen-vps.csv') }],
         }}
       />
       <JsonLd
@@ -112,10 +126,10 @@ export default function PriceIndexPage() {
       />
 
       <PageHead
-        eyebrow={`Сверка ${dmy(FROM)} и ${dmy(TO)}`}
-        title={`Индекс цен VPS: ${MONTH} ${YEAR}`}
+        eyebrow={`Обновлено ${dmy(CHECKED)}`}
+        title={`Цены на VPS в России: ${MONTH} ${YEAR}`}
         lead={LEAD}
-        crumbs={[{ href: '/catalog', label: 'Каталог' }, { href: PATH, label: 'Индекс цен' }]}
+        crumbs={[{ href: '/catalog', label: 'Каталог' }, { href: PATH, label: `Цены на VPS: ${MONTH}` }]}
         badges={
           <>
             <span className="badge badge-brass">{ROWS.length} тарифов в сравнении</span>
@@ -125,8 +139,40 @@ export default function PriceIndexPage() {
         }
       />
 
-      {BY_PROVIDER.length > 0 && (
+      {CLASSES.length > 0 && (
         <section className="section paper">
+          <div className="wrap">
+            <h2>Самые дешёвые VPS в России по объёму памяти</h2>
+            <p className="dim">По три самых дешёвых провайдера в каждом классе, цена в месяц на {dmy(CHECKED)}. Если цена только при предоплате, это написано рядом</p>
+            <div className="tbl-wrap mt">
+              <div className="tbl-scroll">
+                <table className="tbl">
+                  <thead>
+                    <tr><th>Память</th><th>#</th><th>Провайдер и тариф</th><th>Конфигурация</th><th style={{ textAlign: 'right' }}>Цена в месяц</th><th>Сверено</th></tr>
+                  </thead>
+                  <tbody>
+                    {CLASSES.flatMap((c) =>
+                      c.top.map((p, i) => (
+                        <tr key={`${c.ram}-${p.id}`}>
+                          <td className="td-num">{i === 0 ? <strong>{c.ram} ГБ</strong> : ''}</td>
+                          <td className="td-num faint">{i + 1}</td>
+                          <td><Link href={`/provajdery/${p.providerSlug}`} style={{ textDecoration: 'none', fontWeight: 600 }}>{planName(p)}</Link></td>
+                          <td className="td-num">{p.cpu} × {p.ram} ГБ, {p.disk} ГБ {p.diskType || ''}</td>
+                          <td className="td-price" style={{ textAlign: 'right' }}>{num(Math.round(p.priceRub))} ₽{termNote(p) ? <div className="faint" style={{ fontSize: '0.8rem' }}>{termNote(p)}</div> : null}</td>
+                          <td className="td-num faint">{dmy(p.verifiedAt)}</td>
+                        </tr>
+                      )),
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {BY_PROVIDER.length > 0 && (
+        <section className="section paper-alt">
           <div className="wrap">
             <h2>Кто поднял цены</h2>
             <div className="tbl-wrap mt">
@@ -152,9 +198,9 @@ export default function PriceIndexPage() {
         </section>
       )}
 
-      <section className="section paper-alt">
+      <section className="section paper">
         <div className="wrap">
-          <h2>Все тарифы в сравнении</h2>
+          <h2>Как изменились цены с {dmy(FROM)} по {dmy(TO)}</h2>
           <p className="dim">Цена в месяц в валюте провайдера. Сначала тарифы с самым большим изменением</p>
           <div className="tbl-wrap mt">
             <div className="tbl-scroll">
@@ -187,7 +233,7 @@ export default function PriceIndexPage() {
       </section>
 
       {WITHDRAWN.length > 0 && (
-        <section className="section paper">
+        <section className="section paper-alt">
           <div className="wrap">
             <h2>Сняты с продажи или заменены</h2>
             <ul className="list-check">
@@ -201,7 +247,7 @@ export default function PriceIndexPage() {
         </section>
       )}
 
-      <section className="section paper-alt">
+      <section className="section paper">
         <div className="wrap">
           <h2>Самые дешёвые VPS в России сейчас</h2>
           <ul className="list-check">
@@ -215,7 +261,7 @@ export default function PriceIndexPage() {
             ))}
           </div>
           <p className="dim mt-lg">
-            Данные индекса открыты: <a href="/indeks-cen-vps.json">indeks-cen-vps.json</a>. При цитировании ссылка на ServerCalc обязательна (CC BY 4.0)
+            Данные открыты: изменения цен в <a href="/indeks-cen-vps.json">indeks-cen-vps.json</a>, все текущие тарифы с датой сверки в <a href="/indeks-cen-vps.csv">indeks-cen-vps.csv</a>. При цитировании ссылка на ServerCalc обязательна (CC BY 4.0)
           </p>
           <div className="row mt-lg">
             <Link href="/catalog" className="btn btn-ghost">Все тарифы с датой проверки</Link>
