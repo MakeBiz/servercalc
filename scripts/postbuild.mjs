@@ -158,3 +158,57 @@ for (const [ruPath, enPath, exact] of LANG.pairs) {
   hrefl += 1;
 }
 console.log(`[postbuild] hreflang ru/en: ${hrefl} страниц`);
+
+/* ---------- IndexNow после каждой сборки (29.10.2026) ----------
+   Считаем отпечаток текста каждой страницы (содержимое <main>, без скриптов),
+   сравниваем с манифестом прошлой выкладки на живом сайте и отправляем в IndexNow
+   (Яндекс и Bing) только изменившиеся и новые страницы. Манифест кладём в out/,
+   он уезжает на сайт вместе со сборкой. Из облака Claude сеть закрыта: тогда
+   отправка тихо пропускается и сборка не падает. Выключить: SC_NO_INDEXNOW=1 */
+import crypto from 'node:crypto';
+{
+  const SITE = 'https://servercalc.ru';
+  const KEY = 'f4c071a35fed0f6f7e7ed4ab4f43ff59';
+  const manifest = {};
+  const walkM = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) { if (e.name !== '_next') walkM(full); continue; }
+      if (e.name !== 'index.html') continue;
+      const html = fs.readFileSync(full, 'utf8');
+      if (html.includes('http-equiv="refresh"') || /name="robots" content="noindex/.test(html)) continue;
+      const rel = '/' + path.relative(OUT, path.dirname(full)).split(path.sep).join('/');
+      const url = rel === '/' ? '/' : rel + '/';
+      if (/^\/(404|_not-found)\//.test(url)) continue;
+      const main = (html.match(/<main[\s\S]*?<\/main>/) || [html])[0]
+        .replace(/<script[\s\S]*?<\/script>/g, '').replace(/<style[\s\S]*?<\/style>/g, '')
+        .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      manifest[url] = crypto.createHash('sha1').update(main).digest('hex').slice(0, 16);
+    }
+  };
+  walkM(OUT);
+  fs.writeFileSync(path.join(OUT, 'indexnow-manifest.json'), JSON.stringify(manifest));
+  console.log(`[postbuild] indexnow-manifest: ${Object.keys(manifest).length} страниц`);
+  if (process.env.SC_NO_INDEXNOW !== '1') {
+    const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
+    try {
+      const prev = await withTimeout(fetch(`${SITE}/indexnow-manifest.json?v=${Date.now()}`).then((r) => (r.ok ? r.json() : null)), 8000);
+      if (!prev) {
+        console.log('[postbuild] IndexNow: манифеста прошлой выкладки нет, отправку пропускаем до следующей сборки');
+      } else {
+        const changed = Object.keys(manifest).filter((u) => prev[u] !== manifest[u]);
+        if (!changed.length) console.log('[postbuild] IndexNow: изменений нет');
+        else {
+          const urlList = [...changed, '/sitemap.xml', '/llms.txt'].slice(0, 9000).map((u) => SITE + u);
+          const body = JSON.stringify({ host: new URL(SITE).host, key: KEY, keyLocation: `${SITE}/${KEY}.txt`, urlList });
+          for (const ep of ['https://yandex.com/indexnow', 'https://api.indexnow.org/indexnow']) {
+            const r = await withTimeout(fetch(ep, { method: 'POST', headers: { 'Content-Type': 'application/json; charset=utf-8' }, body }), 8000).catch((e) => ({ status: e.message }));
+            console.log(`[postbuild] IndexNow ${ep}: ${r.status}, адресов ${urlList.length}`);
+          }
+        }
+      }
+    } catch (e) {
+      console.log(`[postbuild] IndexNow пропущен: ${e.message}`);
+    }
+  }
+}

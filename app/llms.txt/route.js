@@ -1,6 +1,7 @@
 import { absUrl, SITE_NAME } from '@/lib/site';
 import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, plansForGeo } from '@/lib/data';
 import { PAY_METHODS, providersByPayment } from '@/lib/payments';
+import { CHEAP_SLUGS, cheapPage } from '@/lib/cheap-pages';
 import { byPrice, planSentence, cheapestWith, dmy } from '@/lib/answer-first';
 
 /**
@@ -54,6 +55,10 @@ export function GET() {
     '',
     '## Подбор по географии',
     ...GEO_PAGES.map((g) => link(g.h1, `/vps/${g.slug}`, g.note)),
+    '',
+    '## Самые дешёвые VPS',
+    link('Самые дешёвые VPS', '/deshevye-vps', 'сначала дешёвые, цены с датой проверки'),
+    ...CHEAP_SLUGS.map((s) => { const c = cheapPage(s); return link(c.h1, `/deshevye-vps/${s}`, c.first ? `от ${Math.round(c.first.priceRub)} ₽ в месяц` : null); }),
     '',
     '## Подбор по способу оплаты',
     ...PAY_METHODS.map((m) => link(m.h1, `/vps-s-oplatoj/${m.slug}`, `принимают: ${providersByPayment(m.key).map((p) => p.name).join(', ')}`)),

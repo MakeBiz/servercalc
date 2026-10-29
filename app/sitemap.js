@@ -4,6 +4,7 @@ import { HAS_PROMOS } from '@/lib/promos';
 import { PAIRS } from '@/lib/compare';
 import { absUrl } from '@/lib/site';
 import { PAY_METHODS } from '@/lib/payments';
+import { CHEAP_SLUGS } from '@/lib/cheap-pages';
 
 /**
  * Карта сайта генерируется из данных, а не поддерживается руками.
@@ -51,6 +52,13 @@ export default function sitemap() {
     { url: absUrl('/cookie'), priority: 0.3, changeFrequency: 'yearly', lastModified: docs },
   ];
 
+  const cheap = ['', ...CHEAP_SLUGS].map((s) => ({
+    url: absUrl(`/deshevye-vps${s ? `/${s}` : ''}`),
+    lastModified: updated,
+    changeFrequency: 'weekly',
+    priority: 0.85,
+  }));
+
   const pays = PAY_METHODS.map((m) => ({
     url: absUrl(`/vps-s-oplatoj/${m.slug}`),
     lastModified: updated,
@@ -93,5 +101,5 @@ export default function sitemap() {
     priority: 0.75,
   }));
 
-  return [...core, ...tasks, ...geos, ...pays, ...providers, ...compares, ...postUrls];
+  return [...core, ...tasks, ...geos, ...cheap, ...pays, ...providers, ...compares, ...postUrls];
 }

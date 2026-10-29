@@ -24,6 +24,56 @@
    true
   ],
   [
+   "/deshevye-vps/",
+   "/cheap-vps/",
+   true
+  ],
+  [
+   "/deshevye-vps/1-gb/",
+   "/cheap-vps/1gb-ram/",
+   true
+  ],
+  [
+   "/deshevye-vps/2-gb/",
+   "/cheap-vps/2gb-ram/",
+   true
+  ],
+  [
+   "/deshevye-vps/4-gb/",
+   "/cheap-vps/4gb-ram/",
+   true
+  ],
+  [
+   "/deshevye-vps/8-gb/",
+   "/cheap-vps/8gb-ram/",
+   true
+  ],
+  [
+   "/deshevye-vps/bez-predoplaty/",
+   "/cheap-vps/no-prepayment/",
+   true
+  ],
+  [
+   "/deshevye-vps/do-300-rublej/",
+   "/cheap-vps/under-3/",
+   true
+  ],
+  [
+   "/deshevye-vps/do-500-rublej/",
+   "/cheap-vps/under-5/",
+   true
+  ],
+  [
+   "/deshevye-vps/nvme/",
+   "/cheap-vps/nvme/",
+   true
+  ],
+  [
+   "/deshevye-vps/pochasovaya-oplata/",
+   "/cheap-vps/hourly-billing/",
+   true
+  ],
+  [
    "/luchshie-vps-rossii/",
    "/best-vps-hosting/",
    false
@@ -277,10 +327,11 @@
   "/novosti/": "/news/",
   "/provajdery/": "/providers/",
   "/vps-dlya/": "/vps-for/",
-  "/vps/": "/vps-in/"
+  "/vps/": "/vps-in/",
+  "/deshevye-vps/": "/cheap-vps/"
  },
  "fallbackEn": {
-  "/cheap-vps/": "/catalog/",
+  "/cheap-vps/": "/deshevye-vps/",
   "/cheap-reliable-vps/": "/catalog/",
   "/vps-payment/": "/vps-s-oplatoj/kartoj-mir/",
   "/compare-vps-providers/": "/sravnenie/",
