@@ -125,7 +125,7 @@
   "massivegrid": {
    "mir": false,
    "sbp": false,
-   "crypto": false,
+   "crypto": true,
    "paypal": true,
    "card": true
   },
@@ -153,7 +153,6 @@
   "truehost": {
    "mir": false,
    "sbp": false,
-   "paypal": true,
    "card": true
   },
   "vpsorg": {

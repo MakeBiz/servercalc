@@ -181,7 +181,7 @@
     ],
     "features": {
       "panel": true,
-      "ddos": true,
+      "ddos": false,
       "backup": true,
       "hourly": false,
       "testPeriod": false
@@ -309,9 +309,7 @@
     "url": "https://vps.org/?ref=G2EMGEI2",
     "site": "https://vps.org",
     "geos": [
-      "us",
-      "eu",
-      "global"
+      "us"
     ],
     "tasks": [
       "sajt",
@@ -325,7 +323,7 @@
     ],
     "features": {
       "panel": true,
-      "ddos": true,
+      "ddos": false,
       "backup": true,
       "hourly": false,
       "testPeriod": false
@@ -423,12 +421,12 @@
       "panel": true,
       "ddos": true,
       "backup": true,
-      "hourly": true,
+      "hourly": false,
       "testPeriod": false
     },
-    "description": "Недорогой провайдер с почасовой оплатой и понятной линейкой тарифов. Часто выбирают под небольшие сервисы и тестовые стенды.",
+    "description": "Недорогой провайдер с посуточной оплатой и понятной линейкой тарифов. Часто выбирают под небольшие сервисы и тестовые стенды.",
     "pros": [
-      "Почасовая оплата",
+      "Посуточная оплата",
       "Низкая цена входа",
       "Несколько стран на выбор"
     ],
@@ -570,9 +568,9 @@
       "hourly": false,
       "testPeriod": false
     },
-    "description": "Российский провайдер со своим дата-центром в Москве и гибким конфигуратором: ресурсы собираются под задачу, а не выбираются из фиксированной сетки тарифов",
+    "description": "Российский провайдер с размещением в московском дата-центре Contell и гибким конфигуратором: ресурсы собираются под задачу, а не выбираются из фиксированной сетки тарифов",
     "pros": [
-      "Свой дата-центр в Москве",
+      "Серверы в московском дата-центре Contell",
       "Гибкий конфигуратор вместо жёсткой тарифной сетки",
       "Есть и зарубежные площадки под проекты на Европу"
     ],
@@ -662,7 +660,7 @@
     ],
     "features": {
       "panel": true,
-      "ddos": true,
+      "ddos": false,
       "backup": false,
       "hourly": true,
       "testPeriod": false
@@ -739,7 +737,7 @@
     "slug": "ethernetservers",
     "name": "Ethernet Servers",
     "color": "#4338ca",
-    "country": "US",
+    "country": "GB",
     "affiliateStatus": "active",
     "url": "https://www.ethernetservers.com/aff.php?aff=3108",
     "site": "https://www.ethernetservers.com",
@@ -801,6 +799,7 @@
       "game"
     ],
     "virtualization": [
+      "LXC",
       "KVM"
     ],
     "features": {
@@ -1000,7 +999,7 @@
     ],
     "features": {
       "panel": true,
-      "ddos": true,
+      "ddos": false,
       "backup": false,
       "hourly": false,
       "testPeriod": false
@@ -1042,7 +1041,7 @@
       "baza-dannyh"
     ],
     "virtualization": [
-      "KVM"
+      "Hyper-V"
     ],
     "features": {
       "panel": true,
@@ -1144,7 +1143,7 @@
     ],
     "features": {
       "panel": true,
-      "ddos": true,
+      "ddos": false,
       "backup": false,
       "hourly": false,
       "testPeriod": false
@@ -1190,7 +1189,7 @@
     ],
     "features": {
       "panel": true,
-      "ddos": true,
+      "ddos": false,
       "backup": true,
       "hourly": false,
       "testPeriod": false
