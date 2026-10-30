@@ -158,14 +158,14 @@ export default function Catalog({ rows, providers, geos, requirements, presetGeo
     <div>
       <div className="cat-filters">
         <div className="cat-row" role="group" aria-label="География">
-          <button type="button" className={geo === null ? 'qchip on' : 'qchip'} aria-pressed={geo === null} onClick={() => { setGeo(null); touch('geo', 'all'); }}>
-            Все страны
-          </button>
           {geos.map((g) => (
             <button key={g.code} type="button" className={geo === g.code ? 'qchip on' : 'qchip'} aria-pressed={geo === g.code} onClick={() => { setGeo(g.code); touch('geo', g.code); }}>
               {g.name}
             </button>
           ))}
+          <button type="button" className={geo === null ? 'qchip on' : 'qchip'} aria-pressed={geo === null} onClick={() => { setGeo(null); touch('geo', 'all'); }}>
+            Все страны
+          </button>
         </div>
         <div className="cat-row" role="group" aria-label="Требования">
           {requirements.map((r) => (

@@ -27,7 +27,8 @@ const BUDGET_OPTS = [0, 300, 500, 1000, 2000, 3000, 5000];
 // ползунок бюджета: шаги слева направо, последний «без лимита»
 const BUDGET_STEPS = [300, 500, 1000, 2000, 3000, 5000, 0];
 const PAYS = [
-  { key: 'mir', label: 'Карта МИР' },
+  { key: 'mir', label: 'Карта РФ', title: 'Карта российского банка, в том числе МИР' },
+  { key: 'card', label: 'Зарубежная карта', title: 'Visa или Mastercard' },
   { key: 'sbp', label: 'СБП' },
   { key: 'crypto', label: 'Криптовалюта' },
 ];
@@ -67,7 +68,8 @@ function providerPasses(pr, f) {
     if (k === 'win') { if (!(pr.tasks || []).includes('windows')) return false; continue; }
     if (!(pr.requirements || []).includes(k)) return false;
   }
-  for (const k of f.pay) if (pr.payments?.[k] !== true) return false;
+  // оплата: подходит любой из выбранных способов
+  if (f.pay.length && !f.pay.some((k) => pr.payments?.[k] === true)) return false;
   return true;
 }
 
@@ -263,13 +265,13 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
       <div className="fblock">
         <div className="flbl">Регион</div>
         <div className="fbtns">
-          <button type="button" className={geo === 'any' ? 'fbtn on' : 'fbtn'} aria-pressed={geo === 'any'} onClick={() => { setGeo('any'); setShowAll(false); track('geo', { geo: 'any' }); }}>Любой</button>
           {geoOptions.map((g) => (
             <button key={g.slug} type="button" className={geo === g.slug ? 'fbtn on' : 'fbtn'} aria-pressed={geo === g.slug} onClick={() => { setGeo(geo === g.slug ? 'any' : g.slug); setShowAll(false); track('geo', { geo: g.slug }); }}>
               {g.name}
               {pings[g.code] !== undefined && <span className={pings[g.code] === null ? 'ping-v' : pings[g.code] < 80 ? 'ping-v ping-good' : pings[g.code] < 200 ? 'ping-v ping-mid' : 'ping-v ping-bad'}>{pings[g.code] === null ? '—' : `${pings[g.code]} мс`}</span>}
             </button>
           ))}
+          <button type="button" className={geo === 'any' ? 'fbtn on' : 'fbtn'} aria-pressed={geo === 'any'} onClick={() => { setGeo('any'); setShowAll(false); track('geo', { geo: 'any' }); }}>Любой регион</button>
         </div>
         <button type="button" className="ping-btn" onClick={runPing} disabled={pinging}>
           {pinging ? 'Замеряем задержку…' : Object.keys(pings).length ? 'Замерить ещё раз' : 'Проверить задержку из вашей сети'}
@@ -315,8 +317,9 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
       <div className="fblock">
         <div className="flbl">Оплата</div>
         <div className="fbtns">
+          <button type="button" className={pay.length === 0 ? 'fbtn on' : 'fbtn'} aria-pressed={pay.length === 0} onClick={() => { setPay([]); setShowAll(false); track('pay', { pay: 'any' }); }}>Любая</button>
           {PAYS.map((x) => (
-            <button key={x.key} type="button" className={pay.includes(x.key) ? 'fbtn on' : 'fbtn'} aria-pressed={pay.includes(x.key)} onClick={() => { setPay((v) => toggle(v, x.key)); setShowAll(false); track('pay', { pay: x.key }); }}>
+            <button key={x.key} type="button" className={pay.includes(x.key) ? 'fbtn on' : 'fbtn'} aria-pressed={pay.includes(x.key)} title={x.title} onClick={() => { setPay((v) => toggle(v, x.key)); setShowAll(false); track('pay', { pay: x.key }); }}>
               {x.label}
             </button>
           ))}
@@ -420,7 +423,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             const whereSub = m ? (cities.length > 1 ? `${cities[0]} и ещё ${cities.length - 1}` : cities[0]) : cities.length > 1 ? `и ещё ${cities.length - 1}` : '';
             const ini = pr.name.replace(/[^A-Za-zА-Яа-я0-9]/g, '').slice(0, 2).toUpperCase();
             const prepaid = p.term && p.term > 1;
-            const pays = [pr.payments?.mir && 'Карта МИР', pr.payments?.sbp && 'СБП', pr.payments?.card && 'Visa/Mastercard', pr.payments?.crypto && 'Криптовалюта'].filter(Boolean);
+            const pays = [pr.payments?.mir && 'Карта РФ', pr.payments?.card && 'Зарубежная карта', pr.payments?.sbp && 'СБП', pr.payments?.crypto && 'Криптовалюта'].filter(Boolean);
             const feats = [pr.features?.hourly && 'Почасовая оплата', pr.features?.testPeriod && 'Тест-период', pr.features?.ddos && 'Защита от DDoS'].filter(Boolean);
             // полоски «против рынка»: тот же объём памяти и цена гигабайта
             const bar = (val, base) => {
