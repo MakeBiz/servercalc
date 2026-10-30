@@ -1,5 +1,6 @@
 import { absUrl, SITE_NAME } from '@/lib/site';
-import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, plansForGeo } from '@/lib/data';
+import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, PROVIDERS, plansForGeo, minPriceOf, sortForProvidersPage } from '@/lib/data';
+import { price } from '@/lib/format';
 import { PAY_METHODS, providersByPayment } from '@/lib/payments';
 import { CHEAP_SLUGS, cheapPage } from '@/lib/cheap-pages';
 import { byPrice, planSentence, cheapestWith, dmy } from '@/lib/answer-first';
@@ -62,6 +63,9 @@ export function GET() {
     '',
     '## Подбор по способу оплаты',
     ...PAY_METHODS.map((m) => link(m.h1, `/vps-s-oplatoj/${m.slug}`, `принимают: ${providersByPayment(m.key).map((p) => p.name).join(', ')}`)),
+    '',
+    '## Обзоры провайдеров',
+    ...sortForProvidersPage(PROVIDERS).map((p) => { const min = minPriceOf(p.slug); return link(`${p.name}: обзор`, `/provajdery/${p.slug}`, min ? `тарифы от ${price(min)} в месяц, оплата, локации, частые вопросы` : 'локации, оплата, частые вопросы'); }),
     '',
     '## Новости рынка',
     link('Новости рынка', '/novosti', 'что происходит на рынке VPS, хостинга и цен'),
