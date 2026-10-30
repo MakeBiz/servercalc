@@ -148,7 +148,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     if (!restored.current) return;
     writeParams({
       task: task && task !== presetTask ? task : null,
-      geo: geo && geo !== 'any' && geo !== presetGeo ? geo : null,
+      geo: geo && geo !== presetGeo ? geo : null,
       ram: ram || null,
       cpu: cpu || null,
       budget: budget || null,

@@ -121,7 +121,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <Calculator payload={payload} campaign={CAMPAIGN.calculator} split />
+          <Calculator payload={payload} presetGeo="rossiya" campaign={CAMPAIGN.calculator} split />
 
           <div className="hero-tail" />
         </div>

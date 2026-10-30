@@ -5,6 +5,7 @@ import OutLink from '@/components/OutLink';
 import JsonLd from '@/components/JsonLd';
 import Freshness from '@/components/Freshness';
 import TaskIcon from '@/components/TaskIcon';
+import { ProviderArticle, ProviderFaqAlt } from '@/components/ProviderArticle';
 import {
   PROVIDERS,
   getProvider,
@@ -32,7 +33,7 @@ export async function generateMetadata({ params }) {
   if (!provider) return {};
   const min = minPriceOf(slug);
   return {
-    title: `${provider.name}: тарифы и цены VPS (ВПС), характеристики`,
+    title: `${provider.name}: обзор провайдера, тарифы и цены VPS (ВПС)`,
     description: `${provider.description.slice(0, 150)}${min ? ` Тарифы от ${price(min)} в месяц.` : ''} Что провайдер закрывает, а что нет, и под какие задачи подходит`,
     alternates: { canonical: `/provajdery/${slug}` },
   };
@@ -112,7 +113,7 @@ export default async function ProviderPage({ params }) {
           <OutLink provider={provider} campaign={CAMPAIGN.providerPage} className="btn btn-brass">
             {isPartner ? `Перейти на сайт ${provider.name}` : `Открыть сайт ${provider.name}`}
           </OutLink>
-          <Link href="/#podbor" className="btn btn-ghost">
+          <Link href="#sravnit" className="btn btn-ghost">
             Сравнить с другими
           </Link>
         </div>
@@ -153,6 +154,8 @@ export default async function ProviderPage({ params }) {
           </div>
         </div>
       </section>
+
+      <ProviderArticle provider={provider} />
 
       <section className="section paper-alt">
         <div className="wrap">
@@ -330,6 +333,8 @@ export default async function ProviderPage({ params }) {
           </div>
         </section>
       )}
+
+      <ProviderFaqAlt provider={provider} />
 
       <section className="section-tight paper-alt">
         <div className="wrap">

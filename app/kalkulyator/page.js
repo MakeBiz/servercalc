@@ -76,7 +76,7 @@ export default function CalcPage() {
 
       <section className="section paper">
         <div className="wrap">
-          <Calculator payload={payload} campaign="kalkulyator" />
+          <Calculator payload={payload} presetGeo="rossiya" campaign="kalkulyator" />
         </div>
       </section>
 
