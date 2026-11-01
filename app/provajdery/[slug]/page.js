@@ -22,6 +22,7 @@ import { CAMPAIGN } from '@/lib/utm';
 import { price, plural, ruDate, termShort } from '@/lib/format';
 import { absUrl } from '@/lib/site';
 import { pairsOf, pairTitle } from '@/lib/compare';
+import { servicesOf, fromLabel } from '@/lib/provider-services';
 
 export function generateStaticParams() {
   return PROVIDERS.map((p) => ({ slug: p.slug }));
@@ -156,6 +157,34 @@ export default async function ProviderPage({ params }) {
       </section>
 
       <ProviderArticle provider={provider} />
+
+      {servicesOf(slug).length > 0 && (
+        <section className="section paper" id="servisy">
+          <div className="wrap">
+            <div className="between mb">
+              <div>
+                <div className="eyebrow">
+                  <span className="label">Кроме VPS</span>
+                </div>
+                <h2>Все сервисы {provider.name} с ценами</h2>
+                <p className="lead">
+                  Разобрали {servicesOf(slug).length} сервисов из личного кабинета: серверы, базы, хранилище, сети, ИИ и почту
+                </p>
+              </div>
+              <Link href={`/provajdery/${slug}/servisy`} className="btn btn-ghost">
+                Сводная таблица
+              </Link>
+            </div>
+            <div className="chips">
+              {servicesOf(slug).map((x) => (
+                <Link key={x.slug} href={`/provajdery/${slug}/${x.slug}`} className="chip chip-light" title={fromLabel(x) || ''}>
+                  {x.menu}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="section paper-alt">
         <div className="wrap">

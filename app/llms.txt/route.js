@@ -1,9 +1,10 @@
 import { absUrl, SITE_NAME } from '@/lib/site';
-import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, PROVIDERS, plansForGeo, minPriceOf, sortForProvidersPage } from '@/lib/data';
+import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, PROVIDERS, plansForGeo, minPriceOf, sortForProvidersPage, getProvider } from '@/lib/data';
 import { price } from '@/lib/format';
 import { PAY_METHODS, providersByPayment } from '@/lib/payments';
 import { CHEAP_SLUGS, cheapPage } from '@/lib/cheap-pages';
 import { byPrice, planSentence, cheapestWith, dmy } from '@/lib/answer-first';
+import { SERVICE_PROVIDERS, servicesOf, serviceBlock, fromLabel } from '@/lib/provider-services';
 
 /**
  * llms.txt — визитка сайта для AI-поисковиков (ChatGPT, Perplexity, Яндекс Нейро).
@@ -67,6 +68,15 @@ export function GET() {
     '## Обзоры провайдеров',
     ...sortForProvidersPage(PROVIDERS).map((p) => { const min = minPriceOf(p.slug); return link(`${p.name}: обзор`, `/provajdery/${p.slug}`, min ? `тарифы от ${price(min)} в месяц, оплата, локации, частые вопросы` : 'локации, оплата, частые вопросы'); }),
     '',
+    ...SERVICE_PROVIDERS.flatMap((p) => {
+      const name = getProvider(p)?.name || p;
+      return [
+        `## Сервисы ${name} кроме VPS`,
+        link(`Все сервисы ${name} с ценами`, `/provajdery/${p}/servisy`, `сводная таблица, цены на ${dmy(serviceBlock(p).verifiedAt)}`),
+        ...servicesOf(p).map((s) => link(s.h1, `/provajdery/${p}/${s.slug}`, fromLabel(s) || 'цена по заявке')),
+        '',
+      ];
+    }),
     '## Новости рынка',
     link('Новости рынка', '/novosti', 'что происходит на рынке VPS, хостинга и цен'),
     link('Журнал', '/zhurnal', 'разборы: как выбрать VPS, сколько ресурсов нужно, налоги и документы'),

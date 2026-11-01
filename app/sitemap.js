@@ -5,6 +5,7 @@ import { PAIRS } from '@/lib/compare';
 import { absUrl } from '@/lib/site';
 import { PAY_METHODS } from '@/lib/payments';
 import { CHEAP_SLUGS } from '@/lib/cheap-pages';
+import { SERVICE_PROVIDERS, allServicePages, serviceBlock } from '@/lib/provider-services';
 
 /**
  * Карта сайта генерируется из данных, а не поддерживается руками.
@@ -101,5 +102,21 @@ export default function sitemap() {
     priority: 0.75,
   }));
 
-  return [...core, ...tasks, ...geos, ...cheap, ...pays, ...providers, ...compares, ...postUrls];
+  // сервисы провайдеров кроме VPS (с 01.11.2026): обзор и страница каждого сервиса
+  const services = [
+    ...SERVICE_PROVIDERS.map((p) => ({
+      url: absUrl(`/provajdery/${p}/servisy`),
+      lastModified: new Date(serviceBlock(p).verifiedAt),
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    })),
+    ...allServicePages().map((s) => ({
+      url: absUrl(`/provajdery/${s.provider}/${s.slug}`),
+      lastModified: new Date(serviceBlock(s.provider).verifiedAt),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    })),
+  ];
+
+  return [...core, ...tasks, ...geos, ...cheap, ...pays, ...providers, ...services, ...compares, ...postUrls];
 }

@@ -4,6 +4,7 @@ import ARTICLES from '@/data/provider-articles.json';
 import paymentsData from '@/data/payments.json';
 import { price } from '@/lib/format';
 import { byPrice, planSentence, checkedAt, dmy, taskLead, geoLead } from '@/lib/answer-first';
+import { SERVICE_PROVIDERS, servicesOf, serviceBlock } from '@/lib/provider-services';
 
 /**
  * llms-full.txt для ИИ-поисковиков (23.10.2026, метод ВИДНО): полный текст главных
@@ -79,6 +80,18 @@ export function GET() {
     if (fit) out.push(`${fit.h}: ${fit.p.join(' ')}`);
     (a.faq || []).forEach((x) => out.push(`- ${x.q} ${x.a}`));
     out.push(`Сверено с официальным сайтом ${dmy(a.checkedAt)}.`, '');
+  }
+
+  // сервисы провайдеров кроме VPS (01.11.2026): ответ, бюджет и вопросы каждой страницы
+  for (const ps of SERVICE_PROVIDERS) {
+    const block = serviceBlock(ps);
+    out.push(`## Сервисы ${block.name} кроме VPS`, absUrl(`/provajdery/${ps}/servisy/`), block.hub.answer, '');
+    for (const s of servicesOf(ps)) {
+      out.push(`### ${s.h1}`, absUrl(`/provajdery/${ps}/${s.slug}/`), s.answer);
+      s.budget.forEach((t) => out.push(t));
+      s.faq.forEach((x) => out.push(`- ${x.q} ${x.a}`));
+      out.push(`Сверено с официальным сайтом ${dmy(block.verifiedAt)}.`, '');
+    }
   }
 
   out.push(

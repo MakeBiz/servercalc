@@ -1924,3 +1924,9 @@ html[data-theme='dark'] .rc-mark { background: var(--on-ink); }
   .pa-facts { position: static; order: -1; }
 }
 #obzor { padding-top: 8px; }
+
+/* группы тарифов на страницах сервисов провайдера (01.11.2026) */
+.svc-group { border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px 16px; background: var(--paper); }
+.svc-group summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.svc-group summary::marker { color: var(--brass-deep); }
+.svc-group[open] summary { margin-bottom: 4px; }
