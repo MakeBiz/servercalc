@@ -6,6 +6,7 @@ import { absUrl } from '@/lib/site';
 import { PAY_METHODS } from '@/lib/payments';
 import { CHEAP_SLUGS } from '@/lib/cheap-pages';
 import { SERVICE_PROVIDERS, allServicePages, serviceBlock } from '@/lib/provider-services';
+import { PROXY, LLM_API } from '@/lib/partners-extra';
 
 /**
  * Карта сайта генерируется из данных, а не поддерживается руками.
@@ -118,5 +119,12 @@ export default function sitemap() {
     })),
   ];
 
-  return [...core, ...tasks, ...geos, ...cheap, ...pays, ...providers, ...services, ...compares, ...postUrls];
+  // разделы вне VPS (04.11.2026): прокси и API нейросетей
+  const extra = [
+    { url: absUrl('/proxy'), lastModified: new Date(PROXY.verifiedAt), changeFrequency: 'weekly', priority: 0.75 },
+    ...PROXY.providers.map((p) => ({ url: absUrl(`/proxy/${p.slug}`), lastModified: new Date(PROXY.verifiedAt), changeFrequency: 'weekly', priority: 0.7 })),
+    { url: absUrl('/api-nejrosetej'), lastModified: new Date(LLM_API.verifiedAt), changeFrequency: 'weekly', priority: 0.75 },
+  ];
+
+  return [...core, ...tasks, ...geos, ...cheap, ...pays, ...providers, ...services, ...extra, ...compares, ...postUrls];
 }

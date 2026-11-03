@@ -5,6 +5,7 @@ import { PAY_METHODS, providersByPayment } from '@/lib/payments';
 import { CHEAP_SLUGS, cheapPage } from '@/lib/cheap-pages';
 import { byPrice, planSentence, cheapestWith, dmy } from '@/lib/answer-first';
 import { SERVICE_PROVIDERS, servicesOf, serviceBlock, fromLabel } from '@/lib/provider-services';
+import { PROXY, LLM_API } from '@/lib/partners-extra';
 
 /**
  * llms.txt — визитка сайта для AI-поисковиков (ChatGPT, Perplexity, Яндекс Нейро).
@@ -77,6 +78,11 @@ export function GET() {
         '',
       ];
     }),
+    '## Прокси и API нейросетей',
+    link(PROXY.hub.h1, '/proxy', PROXY.hub.answer),
+    ...PROXY.providers.map((p) => link(p.h1, `/proxy/${p.slug}`, p.short)),
+    link(LLM_API.h1, '/api-nejrosetej', LLM_API.answer),
+    '',
     '## Новости рынка',
     link('Новости рынка', '/novosti', 'что происходит на рынке VPS, хостинга и цен'),
     link('Журнал', '/zhurnal', 'разборы: как выбрать VPS, сколько ресурсов нужно, налоги и документы'),
