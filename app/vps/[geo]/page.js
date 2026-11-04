@@ -1,3 +1,4 @@
+import FeaturedPartner from '@/components/FeaturedPartner';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import PageHead from '@/components/PageHead';
@@ -128,6 +129,14 @@ export default async function GeoPage({ params }) {
           </div>
         </div>
       </section>
+
+      {['ru', 'eu'].includes(geo.code) && (
+        <section className="section-tight paper">
+          <div className="wrap">
+            <FeaturedPartner place={`geo_${slug}`} compact />
+          </div>
+        </section>
+      )}
 
       <section className="section ink">
         <div className="wrap">

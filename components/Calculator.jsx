@@ -9,7 +9,7 @@
  *   рекомендуемые память и ядра видимыми плашками, их можно снять.
  * - Всё выбранное видно плашками с крестиком и снимается по одному или разом.
  * - Если ничего не нашлось, говорим, какое условие мешает, и сколько найдётся без него.
- * - Порядок: дешевле, цена за гигабайт памяти или больше памяти. Партнёрство на порядок не влияет.
+ * - Порядок: первой карточка основного партнёра с пометкой (payload.featured, 04.11.2026), дальше дешевле, цена за гигабайт или больше памяти.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -171,6 +171,10 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     if (sort === 'perGb') r.sort((a, b) => perGb(a) - perGb(b) || a.plan.priceRub - b.plan.priceRub);
     else if (sort === 'ram') r.sort((a, b) => b.plan.ram - a.plan.ram || a.plan.priceRub - b.plan.priceRub);
     else r.sort((a, b) => a.plan.priceRub - b.plan.priceRub);
+    // основной партнёр первым при любой сортировке, если проходит условия (с пометкой на карточке)
+    const fs = payload.featured?.slug;
+    const fi = fs ? r.findIndex((x) => x.provider.slug === fs) : -1;
+    if (fi > 0) r.unshift(r.splice(fi, 1)[0]);
     return r;
   }, [payload, f, sort]);
   const plansTotal = results.reduce((n, r) => n + 1 + r.more, 0);
@@ -436,8 +440,16 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             const b1 = ramBase ? bar(p.priceRub, ramBase) : null;
             const b2 = market.perGb ? bar(p.priceRub / p.ram, market.perGb) : null;
             const diffText = (b) => (b.tone === 'good' ? `на ${b.diff}% дешевле` : b.tone === 'bad' ? `на ${-b.diff}% дороже` : 'как обычно');
+            const feat = payload.featured && payload.featured.slug === pr.slug ? payload.featured : null;
+            const featWhy = feat ? ((task && feat.taskReasons?.[task]) || feat.reasons?.[0]) : null;
             return (
-              <article className="rescard rescard-v4" key={pr.slug}>
+              <article className={`rescard rescard-v4${feat ? ' rescard-featured' : ''}`} key={pr.slug}>
+                {feat && (
+                  <div className="row" style={{ gap: 10 }}>
+                    <span className="rc-featured-label">{feat.label}</span>
+                    {featWhy && <p className="rc-featured-why">{featWhy}</p>}
+                  </div>
+                )}
                 <div className="rc-head">
                   <span className="res-logo" style={{ background: pr.color }} aria-hidden="true">{ini}</span>
                   <div className="rc-who">
@@ -457,7 +469,12 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                   <div className="ric"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg><div><b>{whereMain}</b><small>{whereSub || 'где сервер'}</small></div></div>
                 </div>
 
-                {(b1 || b2) && (
+                {feat && (
+                  <ul className="featured-why">
+                    {(feat.reasons || []).filter((x) => x !== featWhy).slice(0, 2).map((x) => <li key={x}>{x}</li>)}
+                  </ul>
+                )}
+                {!feat && (b1 || b2) && (
                   <div className="rc-bars" aria-label="Сравнение с рынком">
                     {b1 && (
                       <div className="rc-bar">
@@ -480,6 +497,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                   {prepaid && <span className="pchip pchip-warn">Оплата за {p.term === 12 ? 'год' : `${p.term} мес.`} вперёд</span>}
                   {pays.map((c) => <span key={c} className="pchip pchip-pay">{c}</span>)}
                   {feats.map((c) => <span key={c} className="pchip">{c}</span>)}
+                  {feat?.promo && <span className="rc-promo" title={feat.promo.hint}>{feat.promo.text}: <b>{feat.promo.code}</b></span>}
                 </div>
 
                 <div className="rc-foot">
@@ -501,8 +519,8 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
           {!compact && (
             <p className="disclosure" style={{ marginTop: 18 }}>
               Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена
-              для вас не меняется. В списке только тарифы, которые подходят под все выбранные условия, порядок
-              задаёт выбранная сортировка,{' '}
+              для вас не меняется. В списке только тарифы, которые подходят под все выбранные условия. Первой
+              стоит карточка нашего основного партнёра с пометкой, остальные идут по выбранной сортировке,{' '}
               <Link href="/metodologiya">как мы считаем</Link>
             </p>
           )}

@@ -1,3 +1,4 @@
+import FeaturedPartner from '@/components/FeaturedPartner';
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import Catalog from '@/components/Catalog';
@@ -74,6 +75,7 @@ export default function CatalogPage() {
 
       <section className="section paper">
         <div className="wrap">
+          <FeaturedPartner place="catalog" />
           <Catalog rows={rows} providers={providers} geos={GEO_PAGES} requirements={REQUIREMENTS} />
 
           <p className="faint mt">{META.rateNote}</p>
@@ -95,8 +97,8 @@ export default function CatalogPage() {
               </Link>
             </div>
             <div className="notice">
-              <strong>Чего в таблице нет.</strong> Платных мест и закреплённых строк. Порядок задаёт
-              выбранная сортировка, размер партнёрского вознаграждения на него не влияет,{' '}
+              <strong>Что в таблице отмечено.</strong> Над таблицей карточка нашего основного партнёра. Строки
+              самой таблицы идут по выбранной сортировке, закреплённых строк в ней нет,{' '}
               <Link href="/metodologiya">методология</Link>
             </div>
           </div>

@@ -1,3 +1,4 @@
+import FeaturedPartner from '@/components/FeaturedPartner';
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import JsonLd from '@/components/JsonLd';
@@ -100,6 +101,7 @@ export default function BestRuPage() {
 
       <section className="section paper">
         <div className="wrap">
+          <FeaturedPartner place="best" />
           <h2>Рейтинг по баллам</h2>
           <div className="tbl-wrap mt">
             <div className="tbl-scroll">

@@ -1934,3 +1934,17 @@ html[data-theme='dark'] .rc-mark { background: var(--on-ink); }
 /* HTML-карта сайта (04.11.2026) */
 .sitemap-list { list-style: none; padding: 0; margin: 0; columns: 2 320px; column-gap: 32px; }
 .sitemap-list li { break-inside: avoid; padding: 4px 0; }
+
+/* основной партнёр (04.11.2026): карточка над списками и выделение первой карточки подбора */
+.featured { border: 2px solid var(--brass); border-radius: var(--r-md); background: var(--brass-wash); padding: 18px 20px; display: grid; gap: 12px; margin-bottom: 22px; }
+.featured-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 14px; }
+.featured-label, .rc-featured-label { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #fff; background: var(--brass-deep); border-radius: 999px; padding: 3px 10px; }
+.featured-name { font-size: 1.25rem; font-weight: 700; text-decoration: none; color: var(--text); }
+.featured-price { color: var(--brass-deep); font-weight: 600; }
+.featured-why { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; }
+.featured-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.featured-promo, .rc-promo { display: inline-flex; gap: 6px; align-items: center; border: 1px dashed var(--brass-deep); border-radius: 8px; padding: 6px 10px; font-size: 0.92rem; color: var(--text); background: var(--paper); }
+.featured-note { margin: 0; font-size: 0.8rem; color: var(--text-faint, #6b7280); }
+.featured-compact { padding: 14px 16px; }
+.rescard.rescard-featured { border: 2px solid var(--brass); border-radius: var(--r-md); background: var(--brass-wash); margin-bottom: 10px; }
+.rc-featured-why { margin: 0; font-size: 0.92rem; color: var(--text); }

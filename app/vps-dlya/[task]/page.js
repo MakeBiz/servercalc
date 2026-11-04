@@ -1,3 +1,4 @@
+import FeaturedPartner from '@/components/FeaturedPartner';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import PageHead from '@/components/PageHead';
@@ -169,6 +170,7 @@ export default async function TaskPage({ params }) {
       {/* тарифы */}
       <section className="section paper">
         <div className="wrap">
+          {providers.some((p) => p.slug === 'timeweb') && <FeaturedPartner task={slug} place={`task_${slug}`} compact />}
           <div className="between mb">
             <div>
               <div className="eyebrow">
