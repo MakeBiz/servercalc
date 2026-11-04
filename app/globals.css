@@ -1948,3 +1948,4 @@ html[data-theme='dark'] .rc-mark { background: var(--on-ink); }
 .featured-compact { padding: 14px 16px; }
 .rescard.rescard-featured { border: 2px solid var(--brass); border-radius: var(--r-md); background: var(--brass-wash); margin-bottom: 10px; }
 .rc-featured-why { margin: 0; font-size: 0.92rem; color: var(--text); }
+.featured-labelwhy { margin: 0; font-weight: 600; color: var(--brass-deep); }

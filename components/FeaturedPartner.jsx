@@ -3,7 +3,7 @@ import OutLink from './OutLink';
 import { featuredInfo } from '@/lib/featured';
 import { price } from '@/lib/format';
 
-/** Карточка основного партнёра над списками и таблицами (04.11.2026). Пометка «Основной партнёр» обязательна */
+/** Карточка первого места над списками и таблицами (04.11.2026): предложение с самым большим бонусом по промокоду, критерий в data/featured.json */
 export default function FeaturedPartner({ task = null, place = 'page', compact = false }) {
   const f = featuredInfo(task);
   if (!f) return null;
@@ -15,6 +15,7 @@ export default function FeaturedPartner({ task = null, place = 'page', compact =
         <Link href={`/provajdery/${p.slug}`} className="featured-name">{p.name}</Link>
         {f.min && <span className="featured-price">тарифы от {price(f.min)} в месяц</span>}
       </div>
+      {f.labelWhy && <p className="featured-labelwhy">{f.labelWhy}</p>}
       <ul className="featured-why">
         {f.reasons.map((r) => (
           <li key={r}>{r}</li>
@@ -33,9 +34,7 @@ export default function FeaturedPartner({ task = null, place = 'page', compact =
           <Link href={f.servicesHref} className="btn btn-ghost">Все сервисы</Link>
         </div>
       </div>
-      <p className="featured-note">
-        Наш основной партнёр, поэтому стоит первым. Остальные провайдеры ниже идут по условиям и цене
-      </p>
+      <p className="featured-note">{f.why}</p>
     </aside>
   );
 }

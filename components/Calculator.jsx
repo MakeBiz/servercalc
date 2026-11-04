@@ -9,7 +9,7 @@
  *   рекомендуемые память и ядра видимыми плашками, их можно снять.
  * - Всё выбранное видно плашками с крестиком и снимается по одному или разом.
  * - Если ничего не нашлось, говорим, какое условие мешает, и сколько найдётся без него.
- * - Порядок: первой карточка основного партнёра с пометкой (payload.featured, 04.11.2026), дальше дешевле, цена за гигабайт или больше памяти.
+ * - Порядок: первой карточка с самым большим бонусом по промокоду и пометкой (payload.featured, 04.11.2026), дальше дешевле, цена за гигабайт или больше памяти.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -171,7 +171,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     if (sort === 'perGb') r.sort((a, b) => perGb(a) - perGb(b) || a.plan.priceRub - b.plan.priceRub);
     else if (sort === 'ram') r.sort((a, b) => b.plan.ram - a.plan.ram || a.plan.priceRub - b.plan.priceRub);
     else r.sort((a, b) => a.plan.priceRub - b.plan.priceRub);
-    // основной партнёр первым при любой сортировке, если проходит условия (с пометкой на карточке)
+    // предложение с самым большим бонусом по промокоду первым при любой сортировке, если проходит условия (с пометкой на карточке)
     const fs = payload.featured?.slug;
     const fi = fs ? r.findIndex((x) => x.provider.slug === fs) : -1;
     if (fi > 0) r.unshift(r.splice(fi, 1)[0]);
@@ -447,7 +447,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                 {feat && (
                   <div className="row" style={{ gap: 10 }}>
                     <span className="rc-featured-label">{feat.label}</span>
-                    {featWhy && <p className="rc-featured-why">{featWhy}</p>}
+                    {feat.labelWhy && <p className="rc-featured-why">{feat.labelWhy}</p>}
                   </div>
                 )}
                 <div className="rc-head">
@@ -471,7 +471,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
                 {feat && (
                   <ul className="featured-why">
-                    {(feat.reasons || []).filter((x) => x !== featWhy).slice(0, 2).map((x) => <li key={x}>{x}</li>)}
+                    {[featWhy, ...(feat.reasons || []).filter((x) => x !== featWhy)].filter(Boolean).slice(0, 2).map((x) => <li key={x}>{x}</li>)}
                   </ul>
                 )}
                 {!feat && (b1 || b2) && (
@@ -520,7 +520,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             <p className="disclosure" style={{ marginTop: 18 }}>
               Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена
               для вас не меняется. В списке только тарифы, которые подходят под все выбранные условия. Первой
-              стоит карточка нашего основного партнёра с пометкой, остальные идут по выбранной сортировке,{' '}
+              стоит карточка с самым большим бонусом по промокоду, остальные идут по выбранной сортировке,{' '}
               <Link href="/metodologiya">как мы считаем</Link>
             </p>
           )}
