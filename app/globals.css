@@ -1949,3 +1949,8 @@ html[data-theme='dark'] .rc-mark { background: var(--on-ink); }
 .rescard.rescard-featured { border: 2px solid var(--brass); border-radius: var(--r-md); background: var(--brass-wash); margin-bottom: 10px; }
 .rc-featured-why { margin: 0; font-size: 0.92rem; color: var(--text); }
 .featured-labelwhy { margin: 0; font-weight: 600; color: var(--brass-deep); }
+
+/* рекламный блок над результатами подбора (04.11.2026) */
+.adbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; border: 1px dashed var(--brass); border-radius: var(--r-md); background: var(--brass-wash); padding: 10px 14px; margin-bottom: 12px; }
+.adbar-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-faint); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; background: var(--paper); }
+.adbar-text { flex: 1 1 260px; }

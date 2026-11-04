@@ -2,6 +2,7 @@ import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import SecHead from '@/components/SecHead';
 import { WEIGHTS_TABLE } from '@/lib/score';
+import { QUALITY_TABLE } from '@/lib/quality';
 import { STATS, REQUIREMENTS, PROVIDERS } from '@/lib/data';
 import { ruDate, plural } from '@/lib/format';
 
@@ -96,11 +97,30 @@ export default function MethodologyPage() {
               бюджет, способ оплаты и требования. В списке только тарифы, которые проходят все
               выбранные условия, у каждого провайдера показан самый дешёвый такой тариф. Порядок
               задаёт выбранная сортировка: дешевле, цена за гигабайт памяти или больше памяти.
-              Одно место отмечено: первой стоит карточка с самым большим бонусом по промокоду среди промокодов
-              каталога (сейчас Timeweb Cloud, +100% к первому пополнению), с пометкой «Лучший промокод».
-              Других закреплённых мест нет. Часть ссылок партнёрские, это сказано под
+              По умолчанию порядок «Оптимально»: 60% балла надёжность провайдера, 40% цена его тарифа
+              относительно самого дешёвого в выдаче (корень из отношения цен), минус 5 за цену только при
+              предоплате. Как считается надёжность, в таблице ниже. Над результатами может стоять один
+              рекламный блок с пометкой «Реклама», в список он не встроен. Часть ссылок партнёрские, это сказано под
               результатами подбора.
             </p>
+            <table className="tbl">
+              <thead>
+                <tr>
+                  <th>Надёжность, из 50</th>
+                  <th>Баллы</th>
+                  <th>Как считается</th>
+                </tr>
+              </thead>
+              <tbody>
+                {QUALITY_TABLE.map((row) => (
+                  <tr key={row.label}>
+                    <td style={{ fontWeight: 600 }}>{row.label}</td>
+                    <td className="td-num" style={{ color: 'var(--brass-deep)', fontWeight: 600 }}>{row.value}</td>
+                    <td className="dim">{row.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
             <SecHead n="04">Как выбирается тариф внутри провайдера</SecHead>
             <p>

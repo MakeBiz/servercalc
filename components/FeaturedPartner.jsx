@@ -3,14 +3,15 @@ import OutLink from './OutLink';
 import { featuredInfo } from '@/lib/featured';
 import { price } from '@/lib/format';
 
-/** Карточка первого места над списками и таблицами (04.11.2026): предложение с самым большим бонусом по промокоду, критерий в data/featured.json */
+/** Рекламный блок над списками и таблицами (04.11.2026): пометка «Реклама», бейдж «Лучший промокод» с критерием. Списки ниже идут честным порядком «Оптимально» */
 export default function FeaturedPartner({ task = null, place = 'page', compact = false }) {
   const f = featuredInfo(task);
   if (!f) return null;
   const p = f.provider;
   return (
-    <aside className={`featured${compact ? ' featured-compact' : ''}`} aria-label={f.label}>
+    <aside className={`featured${compact ? ' featured-compact' : ''}`} aria-label={f.adLabel || 'Реклама'}>
       <div className="featured-top">
+        <span className="adbar-label">{f.adLabel || 'Реклама'}</span>
         <span className="featured-label">{f.label}</span>
         <Link href={`/provajdery/${p.slug}`} className="featured-name">{p.name}</Link>
         {f.min && <span className="featured-price">тарифы от {price(f.min)} в месяц</span>}

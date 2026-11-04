@@ -9,7 +9,8 @@
  *   рекомендуемые память и ядра видимыми плашками, их можно снять.
  * - Всё выбранное видно плашками с крестиком и снимается по одному или разом.
  * - Если ничего не нашлось, говорим, какое условие мешает, и сколько найдётся без него.
- * - Порядок: первой карточка с самым большим бонусом по промокоду и пометкой (payload.featured, 04.11.2026), дальше дешевле, цена за гигабайт или больше памяти.
+ * - Порядок по умолчанию «Оптимально» (04.11.2026): 60% надёжность провайдера (payload.providers[].quality из lib/quality.js) и 40% цена.
+ *   Остальные: дешевле, цена за гигабайт, больше памяти. Рекламный блок payload.featured стоит над результатами отдельно, с пометкой «Реклама».
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -41,6 +42,7 @@ const EXTRAS = [
   { key: 'ru', label: 'Российский провайдер' },
 ];
 const SORTS = [
+  { key: 'opt', label: 'Оптимально' },
   { key: 'price', label: 'Дешевле' },
   { key: 'perGb', label: 'Цена за ГБ' },
   { key: 'ram', label: 'Больше памяти' },
@@ -100,7 +102,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   const [budget, setBudget] = useState(0);
   const [pay, setPay] = useState([]);
   const [extras, setExtras] = useState([]);
-  const [sort, setSort] = useState('price');
+  const [sort, setSort] = useState('opt');
   const [showAll, setShowAll] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const [pings, setPings] = useState({});
@@ -154,7 +156,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
       budget: budget || null,
       pay: pay.length ? pay.join(',') : null,
       req: extras.length ? extras.join(',') : null,
-      sort: sort !== 'price' ? sort : null,
+      sort: sort !== 'opt' ? sort : null,
     });
   }, [task, geo, ram, cpu, budget, pay, extras, sort, presetTask, presetGeo]);
 
@@ -170,11 +172,14 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     const perGb = (x) => x.plan.priceRub / x.plan.ram;
     if (sort === 'perGb') r.sort((a, b) => perGb(a) - perGb(b) || a.plan.priceRub - b.plan.priceRub);
     else if (sort === 'ram') r.sort((a, b) => b.plan.ram - a.plan.ram || a.plan.priceRub - b.plan.priceRub);
+    else if (sort === 'opt') {
+      // формула та же, что в lib/quality.js optimalScore: 60 × надёжность + 40 × √(самая низкая цена / цена) − 5 за предоплату
+      const floor = r.length ? Math.min(...r.map((x) => x.plan.priceRub)) : 0;
+      const opt = (x) => 60 * (x.provider.quality || 0) + 40 * Math.sqrt(floor / x.plan.priceRub) - (x.plan.term > 1 ? 5 : 0);
+      r.forEach((x) => { x.opt = Math.round(opt(x)); });
+      r.sort((a, b) => b.opt - a.opt || a.plan.priceRub - b.plan.priceRub);
+    }
     else r.sort((a, b) => a.plan.priceRub - b.plan.priceRub);
-    // предложение с самым большим бонусом по промокоду первым при любой сортировке, если проходит условия (с пометкой на карточке)
-    const fs = payload.featured?.slug;
-    const fi = fs ? r.findIndex((x) => x.provider.slug === fs) : -1;
-    if (fi > 0) r.unshift(r.splice(fi, 1)[0]);
     return r;
   }, [payload, f, sort]);
   const plansTotal = results.reduce((n, r) => n + 1 + r.more, 0);
@@ -417,6 +422,18 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             </div>
           )}
 
+          {payload.featured && results.length > 0 && (() => {
+            const ad = payload.providers.find((x) => x.slug === payload.featured.slug);
+            if (!ad) return null;
+            return (
+              <div className="adbar" aria-label="Реклама">
+                <span className="adbar-label">{payload.featured.adLabel || 'Реклама'}</span>
+                <span className="adbar-text"><b>{ad.name}</b>: {payload.featured.promo?.text} по промокоду <b>{payload.featured.promo?.code}</b></span>
+                <OutLink provider={ad} campaign={`${campaign}_ad`} goalName="featured_click" className="btn btn-brass btn-sm">Перейти</OutLink>
+              </div>
+            );
+          })()}
+
           {visible.map((r) => {
             const p = r.plan;
             const pr = r.provider;
@@ -495,6 +512,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
                 <div className="res-chips">
                   {prepaid && <span className="pchip pchip-warn">Оплата за {p.term === 12 ? 'год' : `${p.term} мес.`} вперёд</span>}
+                  {pr.years != null && pr.years < 1 && <span className="pchip pchip-warn">Компания на рынке меньше года</span>}
                   {pays.map((c) => <span key={c} className="pchip pchip-pay">{c}</span>)}
                   {feats.map((c) => <span key={c} className="pchip">{c}</span>)}
                   {feat?.promo && <span className="rc-promo" title={feat.promo.hint}>{feat.promo.text}: <b>{feat.promo.code}</b></span>}
@@ -519,8 +537,8 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
           {!compact && (
             <p className="disclosure" style={{ marginTop: 18 }}>
               Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена
-              для вас не меняется. В списке только тарифы, которые подходят под все выбранные условия. Первой
-              стоит карточка с самым большим бонусом по промокоду, остальные идут по выбранной сортировке,{' '}
+              для вас не меняется. В списке только тарифы, которые подходят под все выбранные условия. По умолчанию
+              порядок «Оптимально»: 60% надёжность провайдера, 40% цена. Блок с пометкой «Реклама» стоит отдельно над списком,{' '}
               <Link href="/metodologiya">как мы считаем</Link>
             </p>
           )}
