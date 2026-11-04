@@ -64,6 +64,7 @@ export default function Footer() {
               <li><Link href="/zhurnal">Журнал: как выбрать VPS</Link></li>
               <li><Link href="/politika-konfidencialnosti">Политика конфиденциальности</Link></li>
               <li><Link href="/cookie">Использование cookie</Link></li>
+              <li><Link href="/karta-sajta">Карта сайта</Link></li>
               {SITE.contactEmail && (
                 <li>
                   <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>

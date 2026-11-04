@@ -1930,3 +1930,7 @@ html[data-theme='dark'] .rc-mark { background: var(--on-ink); }
 .svc-group summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
 .svc-group summary::marker { color: var(--brass-deep); }
 .svc-group[open] summary { margin-bottom: 4px; }
+
+/* HTML-карта сайта (04.11.2026) */
+.sitemap-list { list-style: none; padding: 0; margin: 0; columns: 2 320px; column-gap: 32px; }
+.sitemap-list li { break-inside: avoid; padding: 4px 0; }
