@@ -4,6 +4,10 @@
     { "slug": "timeweb-ili-aeza", "a": "timeweb", "b": "aeza" },
     { "slug": "timeweb-ili-adminvps", "a": "timeweb", "b": "adminvps" },
     { "slug": "adminvps-ili-aeza", "a": "adminvps", "b": "aeza" },
-    { "slug": "aeza-ili-fornex", "a": "aeza", "b": "fornex" }
+    { "slug": "aeza-ili-fornex", "a": "aeza", "b": "fornex" },
+    { "slug": "timeweb-ili-fornex", "a": "timeweb", "b": "fornex" },
+    { "slug": "adminvps-ili-fornex", "a": "adminvps", "b": "fornex" },
+    { "slug": "timeweb-ili-ruvds", "a": "timeweb", "b": "ruvds" },
+    { "slug": "adminvps-ili-firstvds", "a": "adminvps", "b": "firstvds" }
   ]
 }

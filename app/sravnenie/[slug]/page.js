@@ -8,6 +8,10 @@ import PromoCode from '@/components/PromoCode';
 import { PAIRS, getPair, side, pairTitle } from '@/lib/compare';
 import { STATS } from '@/lib/data';
 import { price, ruDate } from '@/lib/format';
+import Landing from '@/components/Landing';
+import PairTable from '@/components/PairTable';
+import { checkedLine } from '@/lib/answer-first';
+import { pairPage } from '@/lib/pair-pages';
 
 /**
  * Сравнение двух провайдеров по данным каталога (24.10.2026, раздел перенесён
@@ -27,6 +31,8 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const pair = getPair(slug);
   if (!pair) return {};
+  const w = pairPage(slug);
+  if (w) return { title: { absolute: w.metaTitle }, description: w.description, alternates: { canonical: `/sravnenie/${slug}` } };
   const a = side(pair.a);
   const b = side(pair.b);
   const title = pairTitle(pair);
@@ -48,6 +54,8 @@ export default async function ComparePage({ params }) {
   const { slug } = await params;
   const pair = getPair(slug);
   if (!pair) notFound();
+  const w = pairPage(slug);
+  if (w) return <PairLanding w={w} />;
   const a = side(pair.a);
   const b = side(pair.b);
   const A = a.provider.name;
@@ -213,5 +221,54 @@ export default async function ComparePage({ params }) {
         </div>
       </section>
     </>
+  );
+}
+
+/**
+ * Сравнение по методу VIDNO (волна посадочных 04.11.2026): пары из
+ * lib/pair-pages.js, остальные пары собираются прежним шаблоном выше
+ */
+function PairLanding({ w }) {
+  const path = `/sravnenie/${w.slug}`;
+  return (
+    <Landing
+      path={path}
+      crumbs={[
+        { href: '/sravnenie', label: 'Сравнение' },
+        { href: path, label: `${w.A.name} или ${w.B.name}` },
+      ]}
+      eyebrow={checkedLine(w.checked)}
+      title={w.title}
+      lead={w.lead}
+      badges={w.badges}
+      table={{
+        label: 'Рядом',
+        h2: `${w.A.name} и ${w.B.name} на одинаковых строках`,
+        lead: 'Ближайший тариф на каждом объёме памяти, регионы, возможности и оплата по проверенным данным. Ниже все тарифы обоих провайдеров, сначала дешёвые',
+        plans: w.plans,
+        checked: w.checked,
+        campaign: w.campaign,
+      }}
+      afterTable={<PairTable A={w.A} B={w.B} campaign={w.campaign} />}
+      sections={w.sections}
+      midAfter={1}
+      midCta={{
+        title: 'Не привязаны к этим двум?',
+        text: 'Калькулятор подбирает тариф под задачу, регион и бюджет среди всех провайдеров каталога, с проверенными ценами.',
+        href: '/kalkulyator',
+        label: 'Открыть калькулятор',
+        second: { href: '/sravnenie/', label: 'Все сравнения' },
+      }}
+      endCta={{
+        title: 'Решили?',
+        text: 'Кнопки в таблице ведут на сайты провайдеров. Цена там может измениться после даты нашей проверки.',
+        plan: w.endPlan,
+        href: '/kalkulyator',
+        label: 'Подобрать в калькуляторе',
+      }}
+      faq={w.faq}
+      related={w.related}
+      readAlso={w.read}
+    />
   );
 }

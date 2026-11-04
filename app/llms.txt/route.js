@@ -6,6 +6,7 @@ import { CHEAP_SLUGS, cheapPage } from '@/lib/cheap-pages';
 import { byPrice, planSentence, cheapestWith, dmy } from '@/lib/answer-first';
 import { SERVICE_PROVIDERS, servicesOf, serviceBlock, fromLabel } from '@/lib/provider-services';
 import { PROXY, LLM_API } from '@/lib/partners-extra';
+import { PAIRS, pairTitle } from '@/lib/compare';
 
 /**
  * llms.txt — визитка сайта для AI-поисковиков (ChatGPT, Perplexity, Яндекс Нейро).
@@ -62,6 +63,10 @@ export function GET() {
     '## Самые дешёвые VPS',
     link('Самые дешёвые VPS', '/deshevye-vps', 'сначала дешёвые, цены с датой проверки'),
     ...CHEAP_SLUGS.map((s) => { const c = cheapPage(s); return link(c.h1, `/deshevye-vps/${s}`, c.first ? `от ${Math.round(c.first.priceRub)} ₽ в месяц` : null); }),
+    '',
+    '## Сравнения провайдеров',
+    link('Сравнение VPS-провайдеров', '/sravnenie', 'пары провайдеров на одинаковых строках, цены с датой проверки'),
+    ...PAIRS.map((p) => { const a = minPriceOf(p.a); const b = minPriceOf(p.b); return link(pairTitle(p), `/sravnenie/${p.slug}`, a && b ? `${getProvider(p.a).name} от ${price(a)}, ${getProvider(p.b).name} от ${price(b)} в месяц` : null); }),
     '',
     '## Подбор по способу оплаты',
     ...PAY_METHODS.map((m) => link(m.h1, `/vps-s-oplatoj/${m.slug}`, `принимают: ${providersByPayment(m.key).map((p) => p.name).join(', ')}`)),
