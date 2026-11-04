@@ -1224,7 +1224,7 @@
     "color": "#111111",
     "country": "RU",
     "affiliateStatus": "active",
-    "url": "https://my.hostes.io/auth?ref=e651f54c",
+    "url": "https://hostes.io/?ref=e651f54c",
     "site": "https://hostes.io",
     "noUtm": true,
     "geos": [
@@ -1265,7 +1265,7 @@
       "rate": "10% от оплат приведённого клиента",
       "term": "уточняется: на странице партнёрки сказано про первую покупку",
       "cookie": "—",
-      "note": "Реф-ссылка my.hostes.io/auth?ref=e651f54c, получена 29.10.2026. Ссылка уходит без UTM (noUtm), пока не проверено, что метки не ломают ref",
+      "note": "Реф-ссылка hostes.io/?ref=e651f54c (ведёт на главную), заменена 04.11.2026 вместо my.hostes.io/auth. Ссылка уходит без UTM (noUtm), пока не проверено, что метки не ломают ref",
       "payoutInternal": "—"
     },
     "verifiedAt": "2026-10-29"
