@@ -20,7 +20,7 @@ export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: `${SITE_NAME}, ${SITE.tagline}`,
-    template: `%s — ${SITE_NAME}`,
+    template: `%s | ${SITE_NAME}`,
   },
   description:
     'Справочный каталог виртуальных серверов: подбор под задачу, сравнение тарифов по цене за ресурс и дата проверки цены у каждого тарифа',

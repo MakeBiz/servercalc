@@ -174,5 +174,14 @@ for (const href of internal) {
 }
 if (!dead) console.log(`  проверено адресов: ${internal.size}, все отвечают`);
 
+// Метод журнала (с 09.11.2026): JSON-LD, дубли title и ведущих запросов, длинное тире,
+// цены против каталога, механика новых материалов. Работает по папке out/
+{
+  const { runContentCheck } = await import('./check-content.mjs');
+  const r = await runContentCheck();
+  errors += r.errors;
+  warnings += r.warnings;
+}
+
 console.log(`\nИтог: ошибок ${errors}, предупреждений ${warnings}`);
 process.exit(errors ? 1 : 0);

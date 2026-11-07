@@ -33,9 +33,13 @@ export async function generateMetadata({ params }) {
   const provider = getProvider(slug);
   if (!provider) return {};
   const min = minPriceOf(slug);
+  const count = plansOf(slug).length;
   return {
-    title: `${provider.name}: обзор провайдера, тарифы и цены VPS (ВПС)`,
-    description: `${provider.description.slice(0, 150)}${min ? ` Тарифы от ${price(min)} в месяц.` : ''} Что провайдер закрывает, а что нет, и под какие задачи подходит`,
+    // Метод журнала, замер 07.11.2026: брендовые запросы на 4-10 месте и 0 кликов. Цифра в title и в начале description
+    title: min
+      ? `${provider.name}: VPS от ${price(min)} в месяц, ${count} ${plural(count, 'тариф', 'тарифа', 'тарифов')}, обзор`
+      : `${provider.name}: обзор провайдера, тарифы и цены VPS (ВПС)`,
+    description: `${min ? `${provider.name}: VPS от ${price(min)} в месяц, ${count} ${plural(count, 'тариф', 'тарифа', 'тарифов')} с проверенной ценой. ` : ''}${provider.description.slice(0, 140)} Что провайдер закрывает, а что нет, и под какие задачи подходит`,
     alternates: { canonical: `/provajdery/${slug}` },
   };
 }
