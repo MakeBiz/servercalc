@@ -19,6 +19,7 @@ import {
   STATS,
 } from '@/lib/data';
 import { CAMPAIGN } from '@/lib/utm';
+import { PROMOS } from '@/lib/promos';
 import { price, plural, ruDate, termShort } from '@/lib/format';
 import { absUrl } from '@/lib/site';
 import { pairsOf, pairTitle } from '@/lib/compare';
@@ -47,6 +48,7 @@ export async function generateMetadata({ params }) {
 export default async function ProviderPage({ params }) {
   const { slug } = await params;
   const provider = getProvider(slug);
+  const promo = PROMOS.find((x) => x.provider && x.provider.slug === slug);
   if (!provider) notFound();
 
   const plans = plansOf(slug);
@@ -122,6 +124,11 @@ export default async function ProviderPage({ params }) {
             Сравнить с другими
           </Link>
         </div>
+        {promo && (
+          <p className="mt" style={{ maxWidth: 640, margin: '12px 0 0' }}>
+            <span className="badge badge-brass">Акция</span> {promo.title}. <Link href={`/akcii/#${promo.id}`}>Условия</Link>
+          </p>
+        )}
         <p className="disclosure" style={{ maxWidth: 640 }}>
           {isPartner
             ? 'Переход партнёрский: если вы оформите услугу, мы получим вознаграждение. Цена для вас при этом не меняется, а на позицию провайдера в подборе это не влияет'

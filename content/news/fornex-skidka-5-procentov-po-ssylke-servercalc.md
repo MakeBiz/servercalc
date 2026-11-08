@@ -2,6 +2,7 @@
 title: "Fornex: скидка 5% на VPS по ссылке ServerCalc, сколько это в рублях за год"
 date: 2026-11-08
 rubric: novosti
+provider: fornex
 kind: news
 query: "fornex скидка"
 tasks: [sajt, telegram-bot, dev]
