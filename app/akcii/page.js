@@ -70,7 +70,7 @@ export default function PromosPage() {
           ) : (
             <div className="cards cards-2">
               {PROMOS.map((p) => (
-                <div className="card" key={p.id}>
+                <div className="card" key={p.id} id={p.id}>
                   <div className="card-top">
                     <span className="badge badge-brass">{p.provider.name}</span>
                     <span className="faint mono">проверено {ruDate(p.verifiedAt)}</span>
@@ -98,7 +98,8 @@ export default function PromosPage() {
 
                   <div className="row mt">
                     <OutLink
-                      provider={p.provider}
+                      /* своя ссылка акции (поле url в promos.json): скидка привязана к ней, а не к общей реф-ссылке каталога */
+                      provider={p.url ? { ...p.provider, url: p.url } : p.provider}
                       campaign={`akcii_${p.provider.slug}`}
                       content={p.id}
                       goalName="promo_click"

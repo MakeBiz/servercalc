@@ -1880,6 +1880,45 @@
    "waveStart": "2026-12-07",
    "status": "planned",
    "note": ""
+  },
+  {
+   "id": "ru-098",
+   "cluster": "Промокоды",
+   "query": "fornex скидка",
+   "freq": 2,
+   "freqDate": "2026-11-08",
+   "freqSource": "wordstat",
+   "kind": "news",
+   "action": "new",
+   "url": "/novosti/fornex-skidka-5-procentov-po-ssylke-servercalc",
+   "top10": "повод: скидка 5% по нашей ссылке с 08.11",
+   "rubric": "Новости",
+   "target": "/akcii",
+   "cta": "Карточка Fornex со ссылкой на скидку на /akcii",
+   "wave": 1,
+   "waveStart": "2026-11-09",
+   "status": "done",
+   "published": "2026-11-08",
+   "note": "Кнопка провайдера не ставится: скидка привязана к ссылке fornex.com/code/h8jb9y из карточки акции, а не к реф-ссылке каталога"
+  },
+  {
+   "id": "ru-099",
+   "cluster": "Промокоды",
+   "query": "промокод fornex",
+   "freq": 86,
+   "freqDate": "2026-11-08",
+   "freqSource": "wordstat",
+   "kind": "landing",
+   "action": "new",
+   "url": "/akcii/fornex",
+   "top10": "купонники: место есть",
+   "rubric": "Акции и промокоды",
+   "target": "/akcii/fornex",
+   "cta": "Кнопка Fornex со скидкой 5% по ссылке акции",
+   "wave": 4,
+   "waveStart": "2026-11-30",
+   "status": "planned",
+   "note": "Ссылка акции из data/promos.json (fornex-5), не реф-ссылка каталога. Вордстат: «fornex» 5 608, «fornex промокод» 86"
   }
  ]
 }
