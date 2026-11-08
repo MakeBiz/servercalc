@@ -1,6 +1,6 @@
 {
  "note": "Паспорта тем servercalc.ru по методу журнала (07.11.2026). Регламент: content/news/README.md, раздел «Метод журнала». Таблица для людей: Google Диск AXE NEW/Royalties/ServerCalc - паспорта тем.xlsx. Один query = одна страница, проверяет scripts/check-content.mjs",
- "updated": "2026-11-07",
+ "updated": "2026-11-08",
  "waves": {
   "1": "2026-11-09",
   "2": "2026-11-16",
@@ -719,8 +719,8 @@
    "cta": "Калькулятор с задачей 1С и числом пользователей",
    "wave": 1,
    "waveStart": "2026-11-09",
-   "status": "planned",
-   "note": ""
+   "status": "done",
+   "note": "08.11 Claude: цена у конфигураций «Минимум/Рабочий/С запасом», вопрос «1С на 10 пользователей» с ценой в FAQ, число провайдеров в шапке по тарифам (опрос нейросетей: ближе всего к цитате)"
   },
   {
    "id": "ru-037",
@@ -907,10 +907,10 @@
    "rubric": "VPS под задачу",
    "target": "/vps-dlya/windows",
    "cta": "Таблица тарифов с лицензией Windows",
-   "wave": 2,
-   "waveStart": "2026-11-16",
-   "status": "planned",
-   "note": ""
+   "wave": 1,
+   "waveStart": "2026-11-09",
+   "status": "done",
+   "note": "08.11 Claude: поднято с волны 2; таблица «итог с лицензией» по провайдерам, цена с лицензией у конфигураций, вопрос «Сколько стоит Windows VPS с лицензией» в FAQ; страница в индексе Claude (Brave)"
   },
   {
    "id": "ru-047",
@@ -1097,10 +1097,10 @@
    "rubric": "Подбор",
    "target": "/provajdery",
    "cta": "Таблица всех провайдеров",
-   "wave": 5,
-   "waveStart": "2026-12-07",
-   "status": "planned",
-   "note": ""
+   "wave": 2,
+   "waveStart": "2026-11-16",
+   "status": "done",
+   "note": "08.11 Claude: поднято с волны 5; ответ первой строкой и FAQ «Где сравнить цены VPS разных провайдеров» (опрос нейросетей)"
   },
   {
    "id": "ru-057",
@@ -1534,10 +1534,10 @@
    "rubric": "Разборы",
    "target": "/vps-dlya/windows",
    "cta": "Таблица цены лицензии по провайдерам",
-   "wave": 4,
-   "waveStart": "2026-11-30",
+   "wave": 2,
+   "waveStart": "2026-11-16",
    "status": "planned",
-   "note": ""
+   "note": "08.11 Claude: поднято с волны 4, опрос нейросетей"
   },
   {
    "id": "ru-080",
@@ -1919,6 +1919,25 @@
    "waveStart": "2026-11-30",
    "status": "planned",
    "note": "Ссылка Fornex в каталоге со скидкой 5% (h8jb9y). Вордстат: «fornex» 5 608, «fornex промокод» 86"
+  },
+  {
+   "id": "ru-100",
+   "cluster": "Сравнения",
+   "query": "timeweb или aeza",
+   "freq": null,
+   "freqDate": null,
+   "freqSource": null,
+   "kind": "landing",
+   "action": "boost",
+   "url": "/sravnenie/timeweb-ili-aeza",
+   "top10": "прямого сравнения в выдаче нет, только рейтинги hostinghub и подборки аналогов Timeweb на vc.ru и dtf.ru",
+   "rubric": "Сравнения",
+   "target": "/sravnenie/timeweb-ili-aeza",
+   "cta": "Две кнопки провайдеров",
+   "wave": 1,
+   "waveStart": "2026-11-09",
+   "status": "planned",
+   "note": "08.11 Claude: страница есть с 24.10, в паспорта добавлена по опросу нейросетей (вопрос «Сравни Timeweb Cloud и Aeza по цене VPS»), в индекс Claude (Brave) не попала"
   }
  ]
 }

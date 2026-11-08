@@ -6,7 +6,7 @@ import { SITE, SITE_NAME } from '@/lib/site';
 import { ruDate, plural } from '@/lib/format';
 
 export const metadata = {
-  title: 'О проекте',
+  title: { absolute: 'Что такое ServerCalc: каталог VPS с проверенными ценами' },
   description:
     'Что такое ServerCalc, откуда берутся данные в каталоге, по каким принципам работает сервис и что планируется добавить дальше',
   alternates: { canonical: '/o-proekte' },
@@ -17,7 +17,7 @@ export default function AboutPage() {
     <>
       <PageHead
         eyebrow="О сервисе"
-        title="О проекте"
+        title="Что такое ServerCalc"
         lead={`${SITE_NAME} это справочный каталог виртуальных серверов с подбором под задачу. Мы не продаём серверы и не являемся хостинг-провайдером: мы помогаем выбрать и честно говорим, на чём зарабатываем`}
         crumbs={[{ href: '/o-proekte', label: 'О проекте' }]}
         badges={

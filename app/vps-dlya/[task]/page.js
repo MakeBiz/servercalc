@@ -12,8 +12,9 @@ import { postsForTask, rubricName } from '@/lib/news';
 import { CAMPAIGN } from '@/lib/utm';
 import { price, plural, ruDate, termShort } from '@/lib/format';
 import { taskAnswer, geoAnswer, itemListLd } from '@/lib/geo-answer';
-import { taskLead, checkedAt, checkedLine, yearOf } from '@/lib/answer-first';
+import { taskLead, checkedAt, checkedLine, yearOf, planName, provName, termNote } from '@/lib/answer-first';
 import { windowsLead, windowsFrom } from '@/lib/windows';
+import { cheapestForRow, windowsByProvider, separateLicenses } from '@/lib/sizing-prices';
 import { absUrl } from '@/lib/site';
 
 export function generateStaticParams() {
@@ -56,7 +57,14 @@ export default async function TaskPage({ params }) {
   const checked = checkedAt(suited, STATS.verifiedAt);
   const quick = taskAnswer(task, suited, providers, checked);
   const lead = slug === 'windows' ? windowsLead(suited, checked) : taskLead(task, suited, VISIBLE_PLANS, checked, { what: task.leadWhat });
-  const faqAll = [...(content?.faq || []), ...(quick ? [quick.faq] : [])];
+  // 08.11.2026: цена у каждой конфигурации и честное число провайдеров с подходящими тарифами
+  const isWin = slug === 'windows';
+  const taskPlans = VISIBLE_PLANS.filter((p) => providers.some((x) => x.slug === p.providerSlug));
+  const rowPrices = task.noTariffs ? [] : (content?.sizing || []).map((row) => cheapestForRow(row, taskPlans, { windows: isWin }));
+  const winRows = isWin && content?.sizing?.[1] ? windowsByProvider(content.sizing[1], taskPlans) : [];
+  const provCount = task.noTariffs || !suited.length ? providers.length : new Set(suited.map((p) => p.providerSlug)).size;
+  const extraFaq = sizingFaq(slug, content, rowPrices, checked);
+  const faqAll = [...(content?.faq || []), ...extraFaq, ...(quick ? [quick.faq] : [])];
   const pageUrl = absUrl(`/vps-dlya/${slug}/`);
 
   return (
@@ -88,7 +96,7 @@ export default async function TaskPage({ params }) {
         badges={
           <>
             <span className="badge badge-brass">рекомендуем {task.cpu} × {task.ram} ГБ</span>
-            <span className="badge">{providers.length} подходящих провайдеров</span>
+            <span className="badge">{provCount} {plural(provCount, 'подходящий провайдер', 'подходящих провайдера', 'подходящих провайдеров')}</span>
             {!task.noTariffs && cheapest && (slug === 'windows' && windowsFrom(suited)
               ? <span className="badge">от {price(windowsFrom(suited))} в месяц с лицензией</span>
               : <span className="badge">от {price(cheapest.priceRub)} в месяц</span>)}
@@ -130,6 +138,12 @@ export default async function TaskPage({ params }) {
                 </div>
                 <p className="faint" style={{ margin: 0 }}>диск от {row.disk} ГБ</p>
                 <p className="dim" style={{ fontSize: '0.92rem', marginTop: 6 }}>{row.note}</p>
+                {rowPrices[i] && (
+                  <p className="mono" style={{ fontSize: '0.9rem', marginTop: 8 }}>
+                    {isWin ? 'с лицензией ' : ''}от {price(rowPrices[i].total)} в месяц: {planName(rowPrices[i].p)}
+                    {termNote(rowPrices[i].p) ? `, ${termNote(rowPrices[i].p)}` : ''}
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -155,6 +169,60 @@ export default async function TaskPage({ params }) {
           </div>
         </div>
       </section>
+
+      {/* Windows: итог с лицензией по провайдерам (08.11.2026) */}
+      {isWin && winRows.length > 0 && (
+        <section className="section-tight paper">
+          <div className="wrap">
+            <div className="eyebrow">
+              <span className="label">Цена с лицензией</span>
+            </div>
+            <h2>
+              Windows VPS {content.sizing[1].cpu} × {content.sizing[1].ram} ГБ с лицензией: итог в месяц
+            </h2>
+            <p className="lead mb">
+              Голая машина дешевле, но без лицензии Windows Server на ней не запустить ни 1С, ни RDP.
+              Поэтому сравниваем итог: цена сервера плюс лицензия, если провайдер берёт её отдельно
+            </p>
+            <div className="tbl-wrap">
+              <div className="tbl-scroll">
+                <table className="tbl">
+                  <thead>
+                    <tr>
+                      <th>Провайдер</th>
+                      <th>Тариф</th>
+                      <th>CPU</th>
+                      <th>Память</th>
+                      <th>Сервер</th>
+                      <th>Лицензия</th>
+                      <th>Проверено</th>
+                      <th style={{ textAlign: 'right' }}>Итог</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {winRows.map(({ p, total, license }) => (
+                      <tr key={p.id}>
+                        <td>
+                          <Link href={`/provajdery/${p.providerSlug}`} style={{ textDecoration: 'none', fontWeight: 600 }}>
+                            {provName(p)}
+                          </Link>
+                        </td>
+                        <td>{p.name}</td>
+                        <td className="td-num">{p.cpu}</td>
+                        <td className="td-num">{p.ram} ГБ</td>
+                        <td className="td-num">{price(p.priceRub)}</td>
+                        <td className="td-num">{license ? price(license) : 'в цене'}</td>
+                        <td className="td-num faint">{ruDate(p.verifiedAt)}</td>
+                        <td className="td-num" style={{ textAlign: 'right', fontWeight: 600 }}>{price(total)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* калькулятор с предустановкой */}
       <section className="section ink">
@@ -327,4 +395,37 @@ export default async function TaskPage({ params }) {
       </section>
     </>
   );
+}
+
+const cores = (n) => `${n} ${plural(n, 'ядро', 'ядра', 'ядер')}`;
+const tn = (p) => (termNote(p) ? `, ${termNote(p)}` : '');
+
+/**
+ * Вопросы с ценой по конфигурациям (08.11.2026): «1С на 10 пользователей» и
+ * «Windows VPS с лицензией» дословно из опроса нейросетей. Ответ собирается
+ * из базы, поэтому цена и дата всегда совпадают с карточками
+ */
+function sizingFaq(slug, content, rowPrices, checked) {
+  const rows = content?.sizing || [];
+  const [min, work] = [rowPrices[0], rowPrices[1]];
+  if (slug === '1c-bitrix' && rows[1] && work) {
+    return [{
+      q: 'Какой VPS выбрать для 1С на 10 пользователей и сколько он стоит',
+      a: `На десять пользователей в клиент-серверном режиме берут рабочую конфигурацию: ${cores(rows[1].cpu)}, ${rows[1].ram} ГБ памяти и диск от ${rows[1].disk} ГБ. В нашей базе она стоит от ${price(work.total)} в месяц (${planName(work.p)}${tn(work.p)}), проверено ${ruDate(checked)}.` +
+        (min ? ` Файловой базе до пяти сеансов хватает ${rows[0].cpu} ${plural(rows[0].cpu, 'ядра', 'ядер', 'ядер')} и ${rows[0].ram} ГБ, от ${price(min.total)} в месяц (${planName(min.p)}${tn(min.p)}).` : '') +
+        ' Если сотрудники работают через RDP на Windows, к цене сервера прибавьте лицензию Windows Server',
+    }];
+  }
+  if (slug === 'windows' && rows[1] && work) {
+    const sep = separateLicenses()
+      .map((x) => `${provName({ providerSlug: x.slug })} ${price(x.licenseRub)} в месяц`)
+      .join(', ');
+    return [{
+      q: 'Сколько стоит Windows VPS с лицензией',
+      a: (min ? `С лицензией Windows Server в нашей базе от ${price(min.total)} в месяц за ${min.p.cpu} × ${min.p.ram} ГБ (${planName(min.p)}${tn(min.p)}). ` : '') +
+        `Рабочая конфигурация под 1С и RDP, ${cores(rows[1].cpu)} и ${rows[1].ram} ГБ, стоит от ${price(work.total)} в месяц (${planName(work.p)}${tn(work.p)}), проверено ${ruDate(checked)}.` +
+        (sep ? ` Где лицензия идёт отдельной строкой, мы прибавляем её к цене сервера: ${sep}` : ''),
+    }];
+  }
+  return [];
 }

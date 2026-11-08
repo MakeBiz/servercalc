@@ -2,6 +2,7 @@ import FeaturedPartner from '@/components/FeaturedPartner';
 import PageHead from '@/components/PageHead';
 import ProviderCard from '@/components/ProviderCard';
 import JsonLd from '@/components/JsonLd';
+import FaqBlock from '@/components/FaqBlock';
 import { PROVIDERS, STATS, minPriceOf, plansOf, sortForProvidersPage } from '@/lib/data';
 import { CAMPAIGN } from '@/lib/utm';
 import { plural, ruDate } from '@/lib/format';
@@ -17,6 +18,23 @@ export const metadata = {
 export default function ProvidersPage() {
   const ru = PROVIDERS.filter((p) => p.country === 'RU');
   const intl = PROVIDERS.filter((p) => p.country !== 'RU');
+  const provs = `${PROVIDERS.length} ${plural(PROVIDERS.length, 'провайдер', 'провайдера', 'провайдеров')}`;
+  const plans = `${STATS.plans} ${plural(STATS.plans, 'тариф', 'тарифа', 'тарифов')}`;
+  // 08.11.2026: вопрос «Где сравнить цены VPS разных провайдеров?» из опроса нейросетей
+  const faq = [
+    {
+      q: 'Где сравнить цены VPS разных провайдеров',
+      a: `На этой странице и в каталоге ServerCalc: ${provs} и ${plans} с ценой, проверенной ${ruDate(STATS.verifiedAt)}. В каталоге все тарифы одной таблицей с ценой за гигабайт памяти и датой проверки, калькулятор на главной подбирает тариф под задачу, ресурсы и бюджет. Цены сверяем с сайтами провайдеров раз в неделю, тариф без проверки дольше ${STATS.staleDays} дней скрываем`,
+    },
+    {
+      q: 'Чем российские провайдеры отличаются от зарубежных',
+      a: 'Российские дают договор и закрывающие документы для юрлиц и хранят данные внутри страны, это важно для 1С и персональных данных. Зарубежные нужны, когда аудитория проекта за пределами России или нужна конкретная страна размещения. Цены зарубежных пересчитаны в рубли по курсу ЦБ',
+    },
+    {
+      q: 'Почему в списке есть провайдеры без партнёрства',
+      a: 'Без них сравнение было бы неполным. Провайдер попадает в каталог, если у него есть публичный прайс, который можно проверить, и линейка виртуальных серверов. В подборе на главной партнёрство на порядок не влияет, рекламное место стоит отдельно с пометкой «Реклама»',
+    },
+  ];
 
   return (
     <>
@@ -38,7 +56,7 @@ export default function ProvidersPage() {
       <PageHead
         eyebrow="Провайдеры"
         title="Провайдеры в сравнении"
-        lead="Каталог намеренно включает провайдеров, с которыми у нас нет партнёрских отношений: без них сравнение было бы неполным, а подбор нечестным"
+        lead={`Сравнение VPS-провайдеров: ${provs} и ${plans} с ценой, проверенной ${ruDate(STATS.verifiedAt)}. Каталог намеренно включает провайдеров, с которыми у нас нет партнёрских отношений: без них сравнение было бы неполным, а подбор нечестным`}
         crumbs={[{ href: '/provajdery', label: 'Провайдеры' }]}
         badges={
           <>
@@ -94,6 +112,8 @@ export default function ProvidersPage() {
           </div>
         </div>
       </section>
+
+      <FaqBlock title="Частые вопросы о сравнении провайдеров" faq={faq} alt />
     </>
   );
 }
