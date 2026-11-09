@@ -196,9 +196,9 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     if (sort === 'perGb') r.sort((a, b) => perGb(a) - perGb(b) || a.plan.priceRub - b.plan.priceRub);
     else if (sort === 'ram') r.sort((a, b) => b.plan.ram - a.plan.ram || a.plan.priceRub - b.plan.priceRub);
     else if (sort === 'opt') {
-      // формула та же, что в lib/quality.js optimalScore: 60 × надёжность + 40 × √(самая низкая цена / цена) − 5 за предоплату
+      // формула та же, что в lib/quality.js optimalScore: 60 × надёжность + 40 × √(самая низкая цена / цена) − 5 за предоплату + прибавка партнёру
       const floor = r.length ? Math.min(...r.map((x) => x.plan.priceRub)) : 0;
-      const opt = (x) => 60 * (x.provider.quality || 0) + 40 * Math.sqrt(floor / x.plan.priceRub) - (x.plan.term > 1 ? 5 : 0);
+      const opt = (x) => 60 * (x.provider.quality || 0) + 40 * Math.sqrt(floor / x.plan.priceRub) - (x.plan.term > 1 ? 5 : 0) + (x.provider.bonus || 0);
       r.forEach((x) => { x.opt = Math.round(opt(x)); });
       r.sort((a, b) => b.opt - a.opt || a.plan.priceRub - b.plan.priceRub);
     }
@@ -611,7 +611,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             <p className="disclosure" style={{ marginTop: 18 }}>
               Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена
               для вас не меняется. В списке только тарифы, которые подходят под все выбранные условия. По умолчанию
-              порядок «Оптимально»: 60% надёжность провайдера, 40% цена. Блок с пометкой «Реклама» стоит отдельно над списком,{' '}
+              порядок «Оптимально»: 60% надёжность провайдера, 40% цена, партнёры сервиса получают прибавку 10 баллов. Блок с пометкой «Реклама» стоит отдельно над списком,{' '}
               <Link href="/metodologiya">как мы считаем</Link>
             </p>
           )}

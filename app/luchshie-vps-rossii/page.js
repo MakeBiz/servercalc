@@ -40,7 +40,7 @@ export default function BestRuPage() {
     },
     {
       q: 'Как считается рейтинг',
-      a: '60 баллов за надёжность провайдера (опыт на рынке, российская компания с документами, защита от DDoS, бэкапы, почасовая оплата, тест, панель, сервисы кроме VPS) и 40 за цену самого дешёвого тарифа с 2 ГБ памяти, минус 5, если цена в месяц только при предоплате. Партнёрство с провайдером в формулу не входит',
+      a: '60 баллов за надёжность провайдера (почасовая оплата, страны с серверами, опыт на рынке, защита от DDoS и бэкапы, российская компания с документами, NVMe, сервисы кроме VPS, канал, панель, тест) и 40 за цену самого дешёвого тарифа с 2 ГБ памяти, минус 5, если цена в месяц только при предоплате. Партнёры сервиса получают прибавку 10 баллов, подробно на странице методологии',
     },
     {
       q: 'Насколько свежие цены',
@@ -122,7 +122,7 @@ export default function BestRuPage() {
                     <tr key={r.slug}>
                       <td className="td-num faint">{String(i + 1).padStart(2, '0')}</td>
                       <td><Link href={`/provajdery/${r.slug}`} style={{ textDecoration: 'none', fontWeight: 600 }}>{r.name}</Link></td>
-                      <td className="td-num" title={`надёжность ${r.parts.quality} из 60, цена ${r.parts.price} из 40${r.parts.penalty ? `, предоплата -${r.parts.penalty}` : ''}`}><strong>{r.score}</strong></td>
+                      <td className="td-num" title={`надёжность ${r.parts.quality} из 60, цена ${r.parts.price} из 40${r.parts.penalty ? `, предоплата -${r.parts.penalty}` : ''}${r.parts.bonus ? `, партнёр сервиса +${r.parts.bonus}` : ''}`}><strong>{r.score}</strong></td>
                       <td>{r.twoGb.name}, {r.twoGb.cpu} × {r.twoGb.ram} ГБ<div className="faint" style={{ fontSize: '0.8rem' }}>{priceText(r.twoGb)}</div></td>
                       <td className="faint">{r.features.map((k) => FEATURE_NAMES[k]).join(', ') || 'нет данных'}</td>
                       <td className="td-num faint">{ruDate(r.verifiedAt)}</td>

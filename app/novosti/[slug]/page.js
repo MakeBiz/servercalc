@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { partnerBonus } from '@/lib/quality';
 import { notFound } from 'next/navigation';
 import PageHead from '@/components/PageHead';
 import JsonLd from '@/components/JsonLd';
@@ -120,7 +121,9 @@ export default async function PostPage({ params }) {
               </div>
               <p className="disclosure">
                 {provider.affiliateStatus === 'active'
-                  ? 'Переход партнёрский: если вы оформите услугу, мы получим вознаграждение. Цена для вас при этом не меняется, а на позицию провайдера в подборе это не влияет'
+                  ? (partnerBonus(provider.slug)
+              ? `Переход партнёрский: если вы оформите услугу, мы получим вознаграждение. Цена для вас при этом не меняется. ${provider.name} партнёр сервиса: в подборе «Оптимально» он получает прибавку ${partnerBonus(provider.slug)} баллов, это описано в методологии`
+              : 'Переход партнёрский: если вы оформите услугу, мы получим вознаграждение. Цена для вас при этом не меняется, а на позицию провайдера в подборе это не влияет')
                   : 'Обычная ссылка на сайт провайдера, партнёрских отношений с ним у нас нет'}
               </p>
             </div>
