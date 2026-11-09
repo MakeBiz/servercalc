@@ -10,13 +10,12 @@
  * - Всё выбранное видно плашками с крестиком и снимается по одному или разом.
  * - Если ничего не нашлось, говорим, какое условие мешает, и сколько найдётся без него.
  * - Порядок по умолчанию «Оптимально» (04.11.2026): 60% надёжность провайдера (payload.providers[].quality из lib/quality.js) и 40% цена.
- *   Остальные: дешевле, цена за гигабайт, больше памяти. Рекламные блоки стоят над результатами отдельно, с пометкой «Реклама»: «Партнёры ServerCalc» (payload.partners, 09.11.2026) и payload.featured.
+ *   Остальные: дешевле, цена за гигабайт, больше памяти. Рекламный блок payload.featured стоит над результатами отдельно, с пометкой «Реклама».
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import OutLink from './OutLink';
 import TaskIcon from './TaskIcon';
-import PartnersBlock from './PartnersBlock';
 import { measureGeo, PING_GEOS } from '@/lib/ping';
 import { price, plural, ruDateShort } from '@/lib/format';
 import { goal, GOALS } from '@/lib/metrika';
@@ -207,25 +206,6 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     return r;
   }, [payload, f, sort]);
   const plansTotal = results.reduce((n, r) => n + 1 + r.more, 0);
-  // блок «Партнёры ServerCalc» (09.11.2026): лучший тариф каждого партнёра под те же условия, внутри блока порядок «Оптимально»
-  const partnerItems = useMemo(() => {
-    const cfg = payload.partners?.providers || [];
-    if (!cfg.length) return [];
-    const all = match(payload, f);
-    // партнёр без тарифа в выбранном регионе: показываем его тариф в другом регионе с пометкой, остальные условия строгие
-    const wide = f.geoCode || f.country ? match(payload, { ...f, geoCode: null, country: null }) : [];
-    const items = cfg
-      .map((c) => {
-        const r = all.find((x) => x.provider.slug === c.slug);
-        if (r) return { provider: r.provider, plan: r.plan, why: c.why };
-        const w = wide.find((x) => x.provider.slug === c.slug);
-        return w ? { provider: w.provider, plan: w.plan, why: c.why, other: true } : null;
-      })
-      .filter(Boolean);
-    const floor = items.length ? Math.min(...items.map((x) => x.plan.priceRub)) : 0;
-    const opt = (x) => 60 * (x.provider.quality || 0) + 40 * Math.sqrt(floor / x.plan.priceRub) - (x.plan.term > 1 ? 5 : 0);
-    return items.sort((a, b) => opt(b) - opt(a) || a.plan.priceRub - b.plan.priceRub);
-  }, [payload, f]);
   // обычная цена на рынке: медиана по базе для того же объёма памяти и медиана цены гигабайта
   const market = useMemo(() => {
     const med = (arr) => {
@@ -516,10 +496,6 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             </div>
           )}
 
-          {results.length > 0 && (
-            <PartnersBlock items={partnerItems} label={payload.partners?.label} adLabel={payload.partners?.adLabel} campaign={`${campaign}_partner`} />
-          )}
-
           {payload.featured && results.length > 0 && (() => {
             const ad = payload.providers.find((x) => x.slug === payload.featured.slug);
             if (!ad) return null;
@@ -635,7 +611,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             <p className="disclosure" style={{ marginTop: 18 }}>
               Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена
               для вас не меняется. В списке только тарифы, которые подходят под все выбранные условия. По умолчанию
-              порядок «Оптимально»: 60% надёжность провайдера, 40% цена. Блоки с пометкой «Реклама» стоят отдельно над списком,{' '}
+              порядок «Оптимально»: 60% надёжность провайдера, 40% цена. Блок с пометкой «Реклама» стоит отдельно над списком,{' '}
               <Link href="/metodologiya">как мы считаем</Link>
             </p>
           )}

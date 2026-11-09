@@ -1955,22 +1955,6 @@ html[data-theme='dark'] .rc-mark { background: var(--on-ink); }
 .adbar-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-faint); border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; background: var(--paper); }
 .adbar-text { flex: 1 1 260px; }
 
-/* Блок «Партнёры ServerCalc» с пометкой «Реклама» (09.11.2026) */
-.pblock { border: 1px dashed var(--brass); border-radius: var(--r-md); background: var(--brass-wash); padding: 12px 14px 14px; margin-bottom: 14px; }
-.pblock-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 10px; }
-.pblock-head b { font-size: 0.98rem; }
-.pblock-note { font-size: 0.82rem; color: var(--text-faint); }
-.pblock-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
-.pcard { display: flex; flex-direction: column; gap: 6px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-md); padding: 10px 12px; min-width: 0; }
-.pcard-top { display: flex; align-items: center; gap: 8px; }
-.pcard-logo { width: 32px; height: 32px; border-radius: 8px; font-size: 0.8rem; flex: none; }
-.pcard-name { font-weight: 700; text-decoration: none; color: inherit; }
-.pcard-price { margin-left: auto; font-weight: 700; white-space: nowrap; }
-.pcard-price small { font-weight: 400; color: var(--text-faint); }
-.pcard-spec { font-size: 0.86rem; color: var(--text-dim); }
-.pcard-why { margin: 0; font-size: 0.86rem; }
-.pcard-cta { align-self: flex-start; margin-top: auto; }
-.pcard-other { align-self: flex-start; font-size: 0.75rem; color: var(--text-faint); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
 .flbl-sub { margin-top: 10px; font-size: 0.8rem; }
 .calc-games { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .calc-players { max-width: 420px; }

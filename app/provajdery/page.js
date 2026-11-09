@@ -1,5 +1,4 @@
 import FeaturedPartner from '@/components/FeaturedPartner';
-import PartnersStrip from '@/components/PartnersStrip';
 import PageHead from '@/components/PageHead';
 import ProviderCard from '@/components/ProviderCard';
 import JsonLd from '@/components/JsonLd';
@@ -76,7 +75,6 @@ export default function ProvidersPage() {
             Дата-центры в России, договор и закрывающие документы для юрлиц, размещение данных
             внутри страны
           </p>
-          <PartnersStrip place="providers" />
           <FeaturedPartner place="providers" />
           <div className="cards cards-2">
             {sortForProvidersPage(ru).map((p) => (

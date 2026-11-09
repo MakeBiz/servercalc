@@ -1,5 +1,4 @@
 import FeaturedPartner from '@/components/FeaturedPartner';
-import PartnersStrip from '@/components/PartnersStrip';
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import Catalog from '@/components/Catalog';
@@ -76,7 +75,6 @@ export default function CatalogPage() {
 
       <section className="section paper">
         <div className="wrap">
-          <PartnersStrip place="catalog" />
           <FeaturedPartner place="catalog" />
           <Catalog rows={rows} providers={providers} geos={GEO_PAGES} requirements={REQUIREMENTS} />
 
