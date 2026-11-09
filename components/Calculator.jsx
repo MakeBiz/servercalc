@@ -275,7 +275,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     setBudget(0);
     setPay([]);
     setExtras([]);
-    setSort('price');
+    setSort('opt');
     setShowAll(false);
     track('reset');
   }
