@@ -128,7 +128,8 @@
       "baza-dannyh",
       "ai",
       "dev",
-      "n8n"
+      "n8n",
+      "game"
     ],
     "virtualization": [
       "KVM"
@@ -367,7 +368,8 @@
       "sajt",
       "telegram-bot",
       "baza-dannyh",
-      "dev"
+      "dev",
+      "game"
     ],
     "virtualization": [
       "KVM"

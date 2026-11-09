@@ -10,12 +10,13 @@
  * - Всё выбранное видно плашками с крестиком и снимается по одному или разом.
  * - Если ничего не нашлось, говорим, какое условие мешает, и сколько найдётся без него.
  * - Порядок по умолчанию «Оптимально» (04.11.2026): 60% надёжность провайдера (payload.providers[].quality из lib/quality.js) и 40% цена.
- *   Остальные: дешевле, цена за гигабайт, больше памяти. Рекламный блок payload.featured стоит над результатами отдельно, с пометкой «Реклама».
+ *   Остальные: дешевле, цена за гигабайт, больше памяти. Рекламные блоки стоят над результатами отдельно, с пометкой «Реклама»: «Партнёры ServerCalc» (payload.partners, 09.11.2026) и payload.featured.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import OutLink from './OutLink';
 import TaskIcon from './TaskIcon';
+import PartnersBlock from './PartnersBlock';
 import { measureGeo, PING_GEOS } from '@/lib/ping';
 import { price, plural, ruDateShort } from '@/lib/format';
 import { goal, GOALS } from '@/lib/metrika';
@@ -34,13 +35,28 @@ const PAYS = [
   { key: 'crypto', label: 'Криптовалюта' },
 ];
 const EXTRAS = [
+  { key: 'ddos', label: 'Защита от DDoS' },
   { key: 'nvme', label: 'NVMe' },
   { key: 'hourly', label: 'Почасовая оплата' },
   { key: 'testPeriod', label: 'Тест-период' },
-  { key: 'ddos', label: 'Защита от DDoS' },
+  { key: 'port10', label: 'Канал от 10 Гбит/с' },
   { key: 'win', label: 'Windows' },
   { key: 'ru', label: 'Российский провайдер' },
 ];
+// страна внутри региона (09.11.2026): кнопки показываем только для стран, где тарифы есть хотя бы у двух провайдеров
+const COUNTRIES = [
+  ['nl', 'Нидерланды'], ['de', 'Германия'], ['pl', 'Польша'], ['fi', 'Финляндия'], ['se', 'Швеция'],
+  ['kz', 'Казахстан'], ['us', 'США'], ['gb', 'Великобритания'], ['tr', 'Турция'], ['sg', 'Сингапур'],
+];
+// игровой сервер (09.11.2026): ориентир памяти и ядер на ванильный сервер, моды и плагины добавляют память
+const GAMES = [
+  { key: 'mc-java', label: 'Minecraft Java', by: { 10: [4, 2], 20: [8, 2], 50: [8, 4] } },
+  { key: 'mc-bedrock', label: 'Minecraft Bedrock', by: { 10: [2, 1], 20: [2, 2], 50: [4, 2] } },
+  { key: 'cs2', label: 'CS2', by: { 10: [2, 2], 20: [4, 2], 50: [4, 4] } },
+  { key: 'rust', label: 'Rust', by: { 10: [8, 2], 20: [8, 4], 50: [16, 4] } },
+  { key: 'terraria', label: 'Terraria', by: { 10: [1, 1], 20: [2, 1], 50: [2, 2] } },
+];
+const PLAYERS = [10, 20, 50];
 const SORTS = [
   { key: 'opt', label: 'Оптимально' },
   { key: 'price', label: 'Дешевле' },
@@ -59,13 +75,15 @@ function planPasses(p, f) {
   if (f.cpu && p.cpu < f.cpu) return false;
   if (f.budget && p.priceRub > f.budget) return false;
   if (f.extras.includes('nvme') && p.diskType !== 'NVMe') return false;
+  if (f.extras.includes('port10') && !(p.portGbit >= 10)) return false;
+  if (f.country && !(p.countries || []).includes(f.country)) return false;
   return true;
 }
 
 function providerPasses(pr, f) {
   if (f.task && !(pr.tasks || []).includes(f.task)) return false;
   for (const k of f.extras) {
-    if (k === 'nvme') continue;
+    if (k === 'nvme' || k === 'port10') continue;
     if (k === 'ru') { if (pr.country !== 'RU') return false; continue; }
     if (k === 'win') { if (!(pr.tasks || []).includes('windows')) return false; continue; }
     if (!(pr.requirements || []).includes(k)) return false;
@@ -97,6 +115,9 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
   const [task, setTask] = useState(presetTask);
   const [geo, setGeo] = useState(presetGeo);
+  const [country, setCountry] = useState(null);
+  const [game, setGame] = useState(null);
+  const [players, setPlayers] = useState(10);
   const [ram, setRam] = useState(presetTaskObj?.ram ?? 0);
   const [cpu, setCpu] = useState(presetTaskObj?.cpu ?? 0);
   const [budget, setBudget] = useState(0);
@@ -131,6 +152,8 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     }
     const g = p.get('geo');
     if (g && (g === 'any' || payload.geos.some((x) => x.slug === g))) setGeo(g);
+    const ct = p.get('country');
+    if (ct && COUNTRIES.some(([c]) => c === ct)) setCountry(ct);
     const r = num(p, 'ram', null);
     if (r !== null && RAM_OPTS.includes(r)) setRam(r);
     const c = num(p, 'cpu', null);
@@ -151,6 +174,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     writeParams({
       task: task && task !== presetTask ? task : null,
       geo: geo && geo !== presetGeo ? geo : null,
+      country: country || null,
       ram: ram || null,
       cpu: cpu || null,
       budget: budget || null,
@@ -158,13 +182,13 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
       req: extras.length ? extras.join(',') : null,
       sort: sort !== 'opt' ? sort : null,
     });
-  }, [task, geo, ram, cpu, budget, pay, extras, sort, presetTask, presetGeo]);
+  }, [task, geo, country, ram, cpu, budget, pay, extras, sort, presetTask, presetGeo]);
 
   const taskObj = payload.tasks.find((t) => t.slug === task) || null;
   const geoObj = geo && geo !== 'any' ? payload.geos.find((g) => g.slug === geo) : null;
   const f = useMemo(
-    () => ({ task, geoCode: geoObj?.code || null, ram, cpu, budget, pay, extras }),
-    [task, geoObj, ram, cpu, budget, pay, extras]
+    () => ({ task, geoCode: geoObj?.code || null, country, ram, cpu, budget, pay, extras }),
+    [task, geoObj, country, ram, cpu, budget, pay, extras]
   );
 
   const results = useMemo(() => {
@@ -183,6 +207,25 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     return r;
   }, [payload, f, sort]);
   const plansTotal = results.reduce((n, r) => n + 1 + r.more, 0);
+  // блок «Партнёры ServerCalc» (09.11.2026): лучший тариф каждого партнёра под те же условия, внутри блока порядок «Оптимально»
+  const partnerItems = useMemo(() => {
+    const cfg = payload.partners?.providers || [];
+    if (!cfg.length) return [];
+    const all = match(payload, f);
+    // партнёр без тарифа в выбранном регионе: показываем его тариф в другом регионе с пометкой, остальные условия строгие
+    const wide = f.geoCode || f.country ? match(payload, { ...f, geoCode: null, country: null }) : [];
+    const items = cfg
+      .map((c) => {
+        const r = all.find((x) => x.provider.slug === c.slug);
+        if (r) return { provider: r.provider, plan: r.plan, why: c.why };
+        const w = wide.find((x) => x.provider.slug === c.slug);
+        return w ? { provider: w.provider, plan: w.plan, why: c.why, other: true } : null;
+      })
+      .filter(Boolean);
+    const floor = items.length ? Math.min(...items.map((x) => x.plan.priceRub)) : 0;
+    const opt = (x) => 60 * (x.provider.quality || 0) + 40 * Math.sqrt(floor / x.plan.priceRub) - (x.plan.term > 1 ? 5 : 0);
+    return items.sort((a, b) => opt(b) - opt(a) || a.plan.priceRub - b.plan.priceRub);
+  }, [payload, f]);
   // обычная цена на рынке: медиана по базе для того же объёма памяти и медиана цены гигабайта
   const market = useMemo(() => {
     const med = (arr) => {
@@ -207,6 +250,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     const prev = taskObj;
     const t = payload.tasks.find((x) => x.slug === next);
     setTask(next);
+    if (next !== 'game') setGame(null);
     if (t) {
       setRam(t.ram);
       setCpu(t.cpu);
@@ -223,6 +267,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   const active = [];
   if (taskObj) active.push({ key: 'task', label: taskObj.name, clear: () => chooseTask(taskObj.slug), with: { task: null } });
   if (geoObj) active.push({ key: 'geo', label: geoObj.name, clear: () => setGeo('any'), with: { geoCode: null } });
+  if (country) active.push({ key: 'country', label: COUNTRIES.find(([c]) => c === country)?.[1] || country, clear: () => setCountry(null), with: { country: null } });
   if (ram) active.push({ key: 'ram', label: `от ${ram} ГБ памяти`, clear: () => setRam(0), with: { ram: 0 } });
   if (cpu) active.push({ key: 'cpu', label: `от ${cpu} ${coresFrom(cpu)}`, clear: () => setCpu(0), with: { cpu: 0 } });
   if (budget) active.push({ key: 'budget', label: `до ${price(budget)}`, clear: () => setBudget(0), with: { budget: 0 } });
@@ -243,6 +288,8 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   function resetAll() {
     setTask(null);
     setGeo('any');
+    setCountry(null);
+    setGame(null);
     setRam(0);
     setCpu(0);
     setBudget(0);
@@ -266,6 +313,28 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   const pingText = (code) => (pings[code] === undefined ? '' : pings[code] === null ? ' · нет ответа' : ` · ${pings[code]} мс`);
 
   const geoOptions = payload.geos.filter((g) => !g.hideInCalc || g.slug === geo);
+  const countryOptions = useMemo(() => {
+    const by = new Map();
+    for (const p of payload.plans) for (const c of p.countries || []) {
+      if (!by.has(c)) by.set(c, new Set());
+      by.get(c).add(p.providerSlug);
+    }
+    return COUNTRIES.filter(([c]) => (by.get(c)?.size || 0) >= 2 || c === country);
+  }, [payload, country]);
+  const hasPort10 = useMemo(() => payload.plans.some((p) => p.portGbit >= 10), [payload]);
+  const extrasShown = EXTRAS.filter((x) => x.key !== 'port10' || hasPort10);
+  function applyGame(g, n) {
+    const def = GAMES.find((x) => x.key === g);
+    setGame(g);
+    setPlayers(n);
+    if (def) {
+      const [r, c] = def.by[n];
+      setRam(r);
+      setCpu(c);
+    }
+    setShowAll(false);
+    track('game', { game: g, players: n });
+  }
   const termTotal = (p) => (p.term && p.term > 1 ? `оплата сразу ${price(Math.round(p.priceRub * p.term))} за ${p.term === 12 ? 'год' : p.term === 24 ? '2 года' : p.term + ' мес.'}` : 'оплата помесячно');
 
   const segBtn = (on) => (on ? 'on' : '');
@@ -282,6 +351,16 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
           ))}
           <button type="button" className={geo === 'any' ? 'fbtn on' : 'fbtn'} aria-pressed={geo === 'any'} onClick={() => { setGeo('any'); setShowAll(false); track('geo', { geo: 'any' }); }}>Любой регион</button>
         </div>
+        {countryOptions.length > 0 && (
+          <>
+            <div className="flbl flbl-sub">Страна</div>
+            <div className="fbtns">
+              {countryOptions.map(([c, name]) => (
+                <button key={c} type="button" className={country === c ? 'fbtn on' : 'fbtn'} aria-pressed={country === c} onClick={() => { setCountry(country === c ? null : c); setShowAll(false); track('country', { country: c }); }}>{name}</button>
+              ))}
+            </div>
+          </>
+        )}
         <button type="button" className="ping-btn" onClick={runPing} disabled={pinging}>
           {pinging ? 'Замеряем задержку…' : Object.keys(pings).length ? 'Замерить ещё раз' : 'Проверить задержку из вашей сети'}
         </button>
@@ -338,7 +417,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
       <div className="fblock">
         <div className="flbl">Ещё</div>
         <div className="fbtns">
-          {EXTRAS.map((x) => (
+          {extrasShown.map((x) => (
             <button key={x.key} type="button" className={extras.includes(x.key) ? 'fbtn on' : 'fbtn'} aria-pressed={extras.includes(x.key)} onClick={() => { setExtras((v) => toggle(v, x.key)); setShowAll(false); track('req', { req: x.key }); }}>
               {x.label}
             </button>
@@ -365,6 +444,21 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             </button>
           ))}
         </div>
+        {task === 'game' && (
+          <div className="calc-games" aria-label="Игра и число игроков">
+            <div className="chips">
+              {GAMES.map((g) => (
+                <button key={g.key} type="button" className={game === g.key ? 'chip on' : 'chip'} aria-pressed={game === g.key} onClick={() => applyGame(g.key, players)}>{g.label}</button>
+              ))}
+            </div>
+            <div className="fseg calc-players" role="group" aria-label="Игроков на сервере">
+              {PLAYERS.map((n) => (
+                <button key={n} type="button" className={players === n ? 'on' : ''} aria-pressed={players === n} onClick={() => applyGame(game || 'mc-java', n)}>до {n} игроков</button>
+              ))}
+            </div>
+            {game && <p className="faint calc-games-note">Ориентир для сервера без модов: память от {ram} ГБ и от {cpu} {coresFrom(cpu)}. Моды и плагины добавляют память</p>}
+          </div>
+        )}
       </div>
 
       <div className="calc-main calc-main-v2">
@@ -420,6 +514,10 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                 </>
               )}
             </div>
+          )}
+
+          {results.length > 0 && (
+            <PartnersBlock items={partnerItems} label={payload.partners?.label} adLabel={payload.partners?.adLabel} campaign={`${campaign}_partner`} />
           )}
 
           {payload.featured && results.length > 0 && (() => {
@@ -512,7 +610,6 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
 
                 <div className="res-chips">
                   {prepaid && <span className="pchip pchip-warn">Оплата за {p.term === 12 ? 'год' : `${p.term} мес.`} вперёд</span>}
-                  {pr.years != null && pr.years < 1 && <span className="pchip pchip-warn">Компания на рынке меньше года</span>}
                   {pays.map((c) => <span key={c} className="pchip pchip-pay">{c}</span>)}
                   {feats.map((c) => <span key={c} className="pchip">{c}</span>)}
                   {feat?.promo && <span className="rc-promo" title={feat.promo.hint}>{feat.promo.text}: <b>{feat.promo.code}</b></span>}
@@ -538,7 +635,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
             <p className="disclosure" style={{ marginTop: 18 }}>
               Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена
               для вас не меняется. В списке только тарифы, которые подходят под все выбранные условия. По умолчанию
-              порядок «Оптимально»: 60% надёжность провайдера, 40% цена. Блок с пометкой «Реклама» стоит отдельно над списком,{' '}
+              порядок «Оптимально»: 60% надёжность провайдера, 40% цена. Блоки с пометкой «Реклама» стоят отдельно над списком,{' '}
               <Link href="/metodologiya">как мы считаем</Link>
             </p>
           )}

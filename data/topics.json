@@ -226,7 +226,7 @@
    "wave": 2,
    "waveStart": "2026-11-16",
    "status": "planned",
-   "note": "GSC: «aeza аналоги» 9 показов поз. 72"
+   "note": "GSC: «aeza аналоги» 9 показов поз. 72. Партнёр (09.11): FAQ 4-6 вопросов и блок «Кому подходит» с фактами, без «на рынке меньше года»"
   },
   {
    "id": "ru-011",
@@ -245,7 +245,7 @@
    "wave": 2,
    "waveStart": "2026-11-16",
    "status": "planned",
-   "note": ""
+   "note": "Партнёр (09.11): FAQ 4-6 вопросов и блок «Кому подходит» с фактами, без «на рынке меньше года»"
   },
   {
    "id": "ru-012",
@@ -340,7 +340,7 @@
    "wave": 1,
    "waveStart": "2026-11-09",
    "status": "planned",
-   "note": "GSC: «hostes» 67 показов поз. 6, 0 кликов: title с ценой выкатили 07.11"
+   "note": "GSC: «hostes» 67 показов поз. 6, 0 кликов: title с ценой выкатили 07.11. Партнёр (09.11): FAQ 4-6 вопросов и блок «Кому подходит» с фактами, без «на рынке меньше года»"
   },
   {
    "id": "ru-017",
@@ -359,7 +359,7 @@
    "wave": 3,
    "waveStart": "2026-11-23",
    "status": "planned",
-   "note": "GSC: «хостман» 16 показов поз. 7"
+   "note": "GSC: «хостман» 16 показов поз. 7. Партнёр (09.11): FAQ 4-6 вопросов и блок «Кому подходит» с фактами, без «на рынке меньше года»"
   },
   {
    "id": "ru-018",
@@ -858,10 +858,10 @@
   {
    "id": "ru-044",
    "cluster": "VPS под задачу: игры",
-   "query": "аренда сервера майнкрафт",
-   "freq": 1156,
-   "freqDate": "2026-11-07",
-   "freqSource": "wordstat",
+   "query": "vps для игрового сервера",
+   "freq": null,
+   "freqDate": null,
+   "freqSource": null,
    "kind": "landing",
    "action": "boost",
    "url": "/vps-dlya/game",
@@ -872,7 +872,7 @@
    "wave": 3,
    "waveStart": "2026-11-23",
    "status": "planned",
-   "note": "Вордстат 22.10: 1 156"
+   "note": "С 09.11 запрос «аренда сервера майнкрафт» перенесён на /vps-dlya/minecraft, эта страница берёт общий игровой запрос"
   },
   {
    "id": "ru-045",
@@ -1938,6 +1938,63 @@
    "waveStart": "2026-11-09",
    "status": "planned",
    "note": "08.11 Claude: страница есть с 24.10, в паспорта добавлена по опросу нейросетей (вопрос «Сравни Timeweb Cloud и Aeza по цене VPS»), в индекс Claude (Brave) не попала"
+  },
+  {
+   "id": "ru-101",
+   "cluster": "VPS под задачу: игры",
+   "query": "аренда сервера майнкрафт",
+   "freq": 1156,
+   "freqDate": "2026-10-22",
+   "freqSource": "wordstat",
+   "kind": "landing",
+   "action": "new",
+   "url": "/vps-dlya/minecraft",
+   "top10": "игровые хостинги: тяжело, хвост «vps для майнкрафт на 10 игроков»",
+   "rubric": "VPS под задачу",
+   "target": "/vps-dlya/minecraft",
+   "cta": "Калькулятор: игра Minecraft и число игроков",
+   "wave": 2,
+   "waveStart": "2026-11-16",
+   "status": "planned",
+   "note": "Фильтр игр в калькуляторе с 09.11: страница открывает его с выбранной игрой. Партнёры Aéza, Fornex, Hostman, Hostes в блоке"
+  },
+  {
+   "id": "ru-102",
+   "cluster": "Сравнения",
+   "query": "fornex или hostman",
+   "freq": null,
+   "freqDate": null,
+   "freqSource": null,
+   "kind": "landing",
+   "action": "new",
+   "url": "/sravnenie/fornex-ili-hostman",
+   "top10": "выдача пустая, хвост",
+   "rubric": "Сравнения",
+   "target": "/sravnenie/fornex-ili-hostman",
+   "cta": "Две кнопки",
+   "wave": 3,
+   "waveStart": "2026-11-23",
+   "status": "planned",
+   "note": "Партнёры"
+  },
+  {
+   "id": "ru-103",
+   "cluster": "Сравнения",
+   "query": "hostes или hostman",
+   "freq": null,
+   "freqDate": null,
+   "freqSource": null,
+   "kind": "landing",
+   "action": "new",
+   "url": "/sravnenie/hostes-ili-hostman",
+   "top10": "выдача пустая, хвост",
+   "rubric": "Сравнения",
+   "target": "/sravnenie/hostes-ili-hostman",
+   "cta": "Две кнопки",
+   "wave": 3,
+   "waveStart": "2026-11-23",
+   "status": "planned",
+   "note": "Партнёры"
   }
  ]
 }
