@@ -25,6 +25,18 @@ import { absUrl } from '@/lib/site';
 import { pairsOf, pairTitle } from '@/lib/compare';
 import { servicesOf, fromLabel } from '@/lib/provider-services';
 
+// Обрезка описания провайдера для description: по концу предложения, иначе по слову с многоточием.
+// До 09.11.2026 резали slice(0, 140) посреди слова («…базовая защ Что провайдер…»)
+function clipSentence(text, max) {
+  const t = String(text || '').trim();
+  if (t.length <= max) return /[.!?…]$/.test(t) ? t : `${t}.`;
+  const cut = t.slice(0, max);
+  const dot = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '));
+  if (dot > 40) return cut.slice(0, dot + 1);
+  const space = cut.lastIndexOf(' ');
+  return `${(space > 40 ? cut.slice(0, space) : cut).replace(/[,;:\s]+$/, '')}…`;
+}
+
 export function generateStaticParams() {
   return PROVIDERS.map((p) => ({ slug: p.slug }));
 }
@@ -40,7 +52,7 @@ export async function generateMetadata({ params }) {
     title: min
       ? `${provider.name}: VPS от ${price(min)} в месяц, ${count} ${plural(count, 'тариф', 'тарифа', 'тарифов')}, обзор`
       : `${provider.name}: обзор провайдера, тарифы и цены VPS (ВПС)`,
-    description: `${min ? `${provider.name}: VPS от ${price(min)} в месяц, ${count} ${plural(count, 'тариф', 'тарифа', 'тарифов')} с проверенной ценой. ` : ''}${provider.description.slice(0, 140)} Что провайдер закрывает, а что нет, и под какие задачи подходит`,
+    description: `${min ? `${provider.name}: VPS от ${price(min)} в месяц, ${count} ${plural(count, 'тариф', 'тарифа', 'тарифов')} с проверенной ценой. ` : ''}${clipSentence(provider.description, 140)} Что провайдер закрывает, а что нет, и под какие задачи подходит`,
     alternates: { canonical: `/provajdery/${slug}` },
   };
 }
