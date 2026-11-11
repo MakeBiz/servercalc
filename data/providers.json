@@ -1228,7 +1228,7 @@
     "color": "#111111",
     "country": "RU",
     "affiliateStatus": "active",
-    "url": "https://hostes.io/?ref=e651f54c",
+    "url": "https://hostes.io/services/vps-vds/?ref=e651f54c",
     "site": "https://hostes.io",
     "noUtm": true,
     "geos": [
@@ -1269,7 +1269,7 @@
       "rate": "10% от оплат приведённого клиента",
       "term": "уточняется: на странице партнёрки сказано про первую покупку",
       "cookie": "—",
-      "note": "Реф-ссылка hostes.io/?ref=e651f54c (ведёт на главную), заменена 04.11.2026 вместо my.hostes.io/auth. Ссылка уходит без UTM (noUtm), пока не проверено, что метки не ломают ref",
+      "note": "Реф-ссылка от Антона 11.11.2026: hostes.io/services/vps-vds/?ref=e651f54c ведёт сразу на VPS, она стоит на кнопках. Запасная на главную: hostes.io/?ref=e651f54c (код тот же). Ссылка уходит без UTM (noUtm), пока не проверено, что метки не ломают ref",
       "payoutInternal": "—"
     },
     "verifiedAt": "2026-10-29"
