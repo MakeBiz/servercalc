@@ -358,7 +358,7 @@
     "color": "#2b7a78",
     "country": "INT",
     "affiliateStatus": "active",
-    "url": "https://fornex.com/code/h8jb9y/",
+    "url": "https://fornex.com/c/ftx382/",
     "site": "https://ru.fornex.com",
     "geos": [
       "eu",
@@ -396,7 +396,7 @@
       "rate": "15-25% на VPS",
       "term": "lifetime",
       "cookie": "60 дней",
-      "note": "С 08.11.2026 ссылка каталога fornex.com/code/h8jb9y: клиенту скидка 5% на VPS, она идёт из нашей комиссии (VPS 15% на старте, по этой ссылке 10%). Ведёт только на главную, глубокие пути дают 404. Общая ссылка без скидки fornex.com/c/ftx382. Прежняя запись «скидка 15%» была ошибкой: 15% это наша комиссия",
+      "note": "С 12.11.2026 ссылка каталога fornex.com/c/ftx382 (от Антона): полная комиссия, без скидки клиенту. Ссылка со скидкой 5% fornex.com/code/h8jb9y оставлена только в карточке акции (promos.json), по ней наша комиссия 10% вместо 15%",
       "payoutInternal": "баланс или USDT"
     },
     "verifiedAt": "2026-08-02"
