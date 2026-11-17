@@ -94,7 +94,7 @@ export default function BestRuPage() {
           <>
             <span className="badge badge-brass">{ROWS.length} провайдеров</span>
             <span className="badge">открытая формула</span>
-            <span className="badge">партнёрство показано, в баллы не входит</span>
+            <span className="badge">партнёрам сервиса +10 баллов, раскрыто в методологии</span>
           </>
         }
       />
