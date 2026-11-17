@@ -1385,7 +1385,8 @@
    "cta": "Калькулятор «бот на 5 000 пользователей»",
    "wave": 1,
    "waveStart": "2026-11-09",
-   "status": "planned",
+   "status": "done",
+   "published": "2026-11-17",
    "note": ""
   },
   {
