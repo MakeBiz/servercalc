@@ -1,6 +1,6 @@
 {
  "note": "Паспорта тем servercalc.ru по методу журнала (07.11.2026). Регламент: content/news/README.md, раздел «Метод журнала». Таблица для людей: Google Диск AXE NEW/Royalties/ServerCalc - паспорта тем.xlsx. Один query = одна страница, проверяет scripts/check-content.mjs",
- "updated": "2026-11-08",
+ "updated": "2026-11-18",
  "waves": {
   "1": "2026-11-09",
   "2": "2026-11-16",
@@ -1998,6 +1998,65 @@
    "waveStart": "2026-11-23",
    "status": "planned",
    "note": "Партнёры"
+  },
+  {
+   "id": "ru-104",
+   "cluster": "Провайдеры: новости",
+   "query": "spaceweb vps",
+   "freq": null,
+   "freqDate": null,
+   "freqSource": null,
+   "kind": "news",
+   "action": "new",
+   "url": "/novosti/spaceweb-vps-ceny-promokod-15-procentov",
+   "top10": "повод: SpaceWeb добавлен в каталог 18.11, промокод edufahib -15%",
+   "rubric": "Новости",
+   "target": "/provajdery/spaceweb",
+   "cta": "Кнопка SpaceWeb и карточка промокода на /akcii",
+   "wave": 2,
+   "waveStart": "2026-11-16",
+   "status": "done",
+   "published": "2026-11-18",
+   "note": "Антон 18.11.2026: SpaceWeb нам важен. Частоту снять в Вордстате"
+  },
+  {
+   "id": "ru-105",
+   "cluster": "Провайдеры: отзывы и факты",
+   "query": "spaceweb отзывы",
+   "freq": null,
+   "freqDate": null,
+   "freqSource": null,
+   "kind": "landing",
+   "action": "new",
+   "url": "/provajdery/spaceweb",
+   "top10": "частоту и выдачу проверить",
+   "rubric": "Провайдеры",
+   "target": "/provajdery/spaceweb",
+   "cta": "Кнопка SpaceWeb",
+   "wave": 2,
+   "waveStart": "2026-11-16",
+   "status": "done",
+   "published": "2026-11-18",
+   "note": "Страница провайдера создана 18.11.2026 вместе с добавлением в каталог"
+  },
+  {
+   "id": "ru-106",
+   "cluster": "Промокоды",
+   "query": "промокод spaceweb",
+   "freq": null,
+   "freqDate": null,
+   "freqSource": null,
+   "kind": "landing",
+   "action": "new",
+   "url": "/akcii/spaceweb",
+   "top10": "частоту и выдачу проверить",
+   "rubric": "Акции и промокоды",
+   "target": "/akcii/spaceweb",
+   "cta": "Карточка SpaceWeb с промокодом edufahib",
+   "wave": 3,
+   "waveStart": "2026-11-23",
+   "status": "planned",
+   "note": "Пока карточка на /akcii/#spaceweb-15; отдельная страница вместе с остальными /akcii/<провайдер>"
   }
  ]
 }

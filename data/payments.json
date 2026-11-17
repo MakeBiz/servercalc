@@ -161,6 +161,9 @@
    "crypto": false,
    "paypal": true,
    "card": true
+  },
+  "spaceweb": {
+   "mir": true
   }
  }
 }

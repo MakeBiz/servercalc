@@ -1273,5 +1273,57 @@
       "payoutInternal": "—"
     },
     "verifiedAt": "2026-10-29"
+  },
+  {
+    "slug": "spaceweb",
+    "name": "SpaceWeb",
+    "color": "#1F4E8C",
+    "country": "RU",
+    "affiliateStatus": "active",
+    "url": "https://sweb.ru/?utm_term=edufahib",
+    "site": "https://sweb.ru",
+    "noUtm": true,
+    "geos": [
+      "ru"
+    ],
+    "tasks": [
+      "sajt",
+      "magazin",
+      "telegram-bot",
+      "baza-dannyh",
+      "dev",
+      "n8n"
+    ],
+    "virtualization": [
+      "KVM"
+    ],
+    "features": {
+      "panel": true,
+      "ddos": true,
+      "backup": true,
+      "hourly": true,
+      "testPeriod": true
+    },
+    "description": "Петербургский хостинг с 2001 года. Облачные VPS на NVMe в Москве и Санкт-Петербурге от 562 ₽ в месяц с почасовой оплатой, 3 дня бесплатного теста, защита от DDoS L3-L4 бесплатно, ispmanager первый месяц в подарок. По промокоду edufahib скидка 15%",
+    "pros": [
+      "На рынке с 2001 года, своя панель управления",
+      "Почасовая оплата: остановленный сервер стоит только диск и IP",
+      "3 дня бесплатного теста без оплаты",
+      "Все тарифы на NVMe, неограниченный трафик",
+      "Скидка 15% по промокоду edufahib"
+    ],
+    "cons": [
+      "Канал 300 Мбит/с на всех тарифах",
+      "Тарифы «Турбо» на 5 ГГц и серверы в Амстердаме сейчас распроданы",
+      "Резервные копии платные, от 1,5 ₽ в день"
+    ],
+    "affiliate": {
+      "rate": "уточняется",
+      "term": "уточняется",
+      "cookie": "—",
+      "note": "Реф-ссылка от Антона 18.11.2026: sweb.ru/?utm_term=edufahib. Промокод edufahib даёт клиенту скидку 15% (Антон, 18.11.2026). Ссылка уходит без UTM (noUtm), чтобы метки не перебили utm_term",
+      "payoutInternal": "—"
+    },
+    "verifiedAt": "2026-11-18"
   }
 ]

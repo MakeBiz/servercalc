@@ -76,6 +76,22 @@
    "validUntil": null,
    "verifiedAt": "2026-11-08",
    "verifiedBy": "Антон прислал ссылку и условие 08.11.2026"
+  },
+  {
+   "id": "spaceweb-15",
+   "provider": "spaceweb",
+   "title": "SpaceWeb: скидка 15% по промокоду",
+   "benefit": "Промокод edufahib снижает цену на 15%. VPS Облако Плюс (2 ядра, 4 ГБ, 40 ГБ NVMe) обходится около 813 ₽ в месяц вместо 956 ₽",
+   "code": "edufahib",
+   "mechanics": "введите промокод edufahib при заказе в SpaceWeb",
+   "conditions": [
+    "скидка 15%",
+    "промокод вводится при оформлении заказа",
+    "итоговую сумму SpaceWeb показывает перед оплатой"
+   ],
+   "validUntil": null,
+   "verifiedAt": "2026-11-18",
+   "verifiedBy": "Антон прислал промокод и условие 18.11.2026"
   }
  ]
 }
