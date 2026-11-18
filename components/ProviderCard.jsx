@@ -2,6 +2,7 @@ import Link from 'next/link';
 import OutLink from './OutLink';
 import { price } from '@/lib/format';
 import { getGeoByCode } from '@/lib/data';
+import { logoOf } from '@/lib/logos';
 
 /**
  * Карточка провайдера. Подача строго одинаковая у всех: ни закрепления,
@@ -16,9 +17,15 @@ export default function ProviderCard({ provider, minPrice, campaign, geoLabel })
   return (
     <article className="prov">
       <div className="prov-head">
-        <span className="prov-mark" style={{ background: provider.color }}>
-          {initials}
-        </span>
+        {logoOf(provider.slug) ? (
+          <span className={logoOf(provider.slug).dark ? 'prov-mark prov-img rc5-dark' : 'prov-mark prov-img'} aria-hidden="true">
+            <img src={logoOf(provider.slug).src} alt="" width="28" height="28" loading="lazy" decoding="async" />
+          </span>
+        ) : (
+          <span className="prov-mark" style={{ background: provider.color }}>
+            {initials}
+          </span>
+        )}
         <div style={{ minWidth: 0, flex: 1 }}>
           <Link href={`/provajdery/${provider.slug}`} className="prov-name">
             {provider.name}

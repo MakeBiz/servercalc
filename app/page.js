@@ -5,6 +5,7 @@ import JsonLd from '@/components/JsonLd';
 import { FreshnessRule } from '@/components/Freshness';
 import { calculatorPayload, TASKS, GEO_PAGES, PROVIDERS, STATS, VISIBLE_PLANS, minPriceOf, plansOf, plansForGeo, sortProvidersByPriority, getProvider } from '@/lib/data';
 import { qualityOf } from '@/lib/quality';
+import { logoOf } from '@/lib/logos';
 import { PAY_METHODS } from '@/lib/payments';
 import { allPosts, rubricName } from '@/lib/news';
 import { price, plural, ruDate, num } from '@/lib/format';
@@ -276,7 +277,10 @@ export default function HomePage() {
               const locs = [...new Set(plansOf(p.slug).map((x) => (x.location || '').replace(/\s*\(.*\)$/, '').trim()).filter(Boolean))].slice(0, 3);
               return (
                 <Link key={p.slug} href={`/provajdery/${p.slug}`} className="pv-tile" style={{ '--c': p.color }}>
-                  <span className="pv-tile-name">{p.name}</span>
+                  <span className="pv-tile-top">
+                    {logoOf(p.slug) && <span className={logoOf(p.slug).dark ? 'pv-tile-logo rc5-dark' : 'pv-tile-logo'} aria-hidden="true"><img src={logoOf(p.slug).src} alt="" width="28" height="28" loading="lazy" decoding="async" /></span>}
+                    <span className="pv-tile-name">{p.name}</span>
+                  </span>
                   <span className="pv-tile-meta">от {price(minPriceOf(p.slug))} в месяц{locs.length ? ` · ${locs.join(', ')}` : ''}</span>
                   <span className="pv-tile-rel"><span className="rc5-meter" aria-hidden="true"><i style={{ width: `${Math.round(q * 100)}%` }} /></span>Надёжность {(q * 10).toFixed(1).replace('.', ',')}</span>
                 </Link>

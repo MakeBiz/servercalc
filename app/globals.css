@@ -2176,3 +2176,26 @@ html[data-theme='dark'] .cv5-count { color: #17130a; }
 table.tbl.tbl-answer { min-width: 0; }
 table.tbl.tbl-answer td, table.tbl.tbl-answer th { padding-left: 14px; padding-right: 14px; }
 @media (max-width: 480px) { table.tbl.tbl-answer { font-size: 0.82rem; } table.tbl.tbl-answer td, table.tbl.tbl-answer th { padding-left: 10px; padding-right: 10px; } }
+
+/* кнопки подбора ровными блоками (18.11.2026, Антон): задачи сеткой в 2 колонки одной ширины, регионы равной ширины */
+.cv5-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.cv5-chip { justify-content: flex-start; width: 100%; min-height: 48px; padding: 0 14px; border-radius: 12px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cv5-seg { flex-wrap: nowrap; }
+.cv5-seg button { flex: 1 1 0; min-width: 0; padding: 0 6px; }
+.calc-games .cv5-chips { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+@media (max-width: 640px) {
+  .cv5-chip { min-height: 44px; padding: 0 8px; }
+  .cv5-seg button { font-size: 0.8rem; padding: 0 2px; }
+}
+
+/* логотипы провайдеров (18.11.2026): белая плашка с рамкой, белые иконки на тёмной */
+.rc5-img { background: #fff; border: 1px solid var(--line); }
+.rc5-img img { width: 40px; height: 40px; object-fit: contain; display: block; }
+html[data-theme='dark'] .rc5-img { background: #fff; }
+.rc5-dark, html[data-theme='dark'] .rc5-dark { background: #111318; border-color: #111318; }
+@media (max-width: 760px) { .rc5-img img { width: 30px; height: 30px; } }
+.prov-img { background: #fff; border: 1px solid var(--line); display: grid; place-items: center; }
+.prov-img img { width: 28px; height: 28px; object-fit: contain; }
+.pv-tile-top { display: flex; align-items: center; gap: 10px; }
+.pv-tile-logo { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: #fff; border: 1px solid var(--line); }
+.pv-tile-logo img { width: 28px; height: 28px; object-fit: contain; }

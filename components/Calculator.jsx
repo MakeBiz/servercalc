@@ -571,7 +571,13 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
               <li key={pr.slug}>
                 <article className={`rc5${top ? ' rc5-top' : ''}${feat ? ' rc5-feat' : ''}`}>
                   {feat && <span className="rc5-ribbon">{feat.label} · {feat.promo?.text}</span>}
-                  <span className="rc5-logo" style={{ '--c': pr.color }} aria-hidden="true">{ini}</span>
+                  {pr.logo ? (
+                    <span className={pr.logo.dark ? 'rc5-logo rc5-img rc5-dark' : 'rc5-logo rc5-img'} aria-hidden="true">
+                      <img src={pr.logo.src} alt="" width="40" height="40" loading={i < 3 ? 'eager' : 'lazy'} decoding="async" />
+                    </span>
+                  ) : (
+                    <span className="rc5-logo" style={{ '--c': pr.color }} aria-hidden="true">{ini}</span>
+                  )}
                   <div className="rc5-body">
                     <div className="rc5-l1">
                       <Link href={`/provajdery/${pr.slug}`} className="rc5-name">{pr.name}</Link>
