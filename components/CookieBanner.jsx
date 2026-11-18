@@ -28,6 +28,13 @@ export default function CookieBanner() {
     setShow(false);
   }
 
+  // липкая кнопка подбора на телефоне поднимается над полосой cookie
+  useEffect(() => {
+    const root = document.documentElement;
+    if (show) root.style.setProperty('--cookie-h', '44px');
+    else root.style.removeProperty('--cookie-h');
+  }, [show]);
+
   if (!show) return null;
 
   return (

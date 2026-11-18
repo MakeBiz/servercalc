@@ -38,6 +38,16 @@ export function GET() {
       const two = cheapestWith(all, { ram: 2 });
       if (two) out.push(`- Самый дешёвый VPS с 2 ГБ памяти: ${planSentence(two)}`);
       if (ru[0]) out.push(`- Самый дешёвый VPS в России: ${planSentence(ru[0], 'ru')}. Подробно: ${absUrl('/vps/rossiya')}`);
+      // 18.11.2026: обычная цена по объёму памяти, та же таблица стоит на главной
+      const med = (r) => {
+        const v = VISIBLE_PLANS.filter((p) => p.ram === r).map((p) => p.priceRub).sort((a, b) => a - b);
+        if (!v.length) return null;
+        const m = Math.floor(v.length / 2);
+        return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2;
+      };
+      const m2 = med(2);
+      const m4 = med(4);
+      if (m2 && m4) out.push(`- Обычная цена VPS (медиана по базе): с 2 ГБ памяти ${price(m2)}, с 4 ГБ ${price(m4)} в месяц. Таблица цен по объёму памяти: ${absUrl('/')}`);
       const tg = cheapestWith(all, { ram: 1, cpu: 1 });
       if (tg) out.push(`- VPS для Telegram-бота недорого: ${planSentence(tg)}. Подробно: ${absUrl('/vps-dlya/telegram-bot')}`);
       return out;

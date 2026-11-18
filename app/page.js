@@ -1,19 +1,45 @@
 import Link from 'next/link';
 import Calculator from '@/components/Calculator';
-import ProviderCard from '@/components/ProviderCard';
 import TaskIcon from '@/components/TaskIcon';
 import JsonLd from '@/components/JsonLd';
 import { FreshnessRule } from '@/components/Freshness';
-import { calculatorPayload, TASKS, GEO_PAGES, PROVIDERS, STATS, minPriceOf, plansOf, sortProvidersByPriority } from '@/lib/data';
+import { calculatorPayload, TASKS, GEO_PAGES, PROVIDERS, STATS, VISIBLE_PLANS, minPriceOf, plansOf, plansForGeo, sortProvidersByPriority, getProvider } from '@/lib/data';
+import { qualityOf } from '@/lib/quality';
+import { PAY_METHODS } from '@/lib/payments';
 import { allPosts, rubricName } from '@/lib/news';
 import { price, plural, ruDate, num } from '@/lib/format';
+import { dmy } from '@/lib/answer-first';
 import { CAMPAIGN } from '@/lib/utm';
 import { absUrl, SITE_NAME, SITE_URL } from '@/lib/site';
 
+/* ---------- живые цифры для заголовков, ответа и разметки (18.11.2026) ---------- */
+const byPrice = (a, b) => a.priceRub - b.priceRub;
+// для «самый дешёвый» берём тарифы с помесячной оплатой: цена при оплате за год вперёд вводит в заблуждение
+const monthly = (p) => !(p.term && p.term > 1);
+const ALL = [...VISIBLE_PLANS].filter(monthly).sort(byPrice);
+const RU = plansForGeo('ru').filter(monthly);
+const MIN_ALL = ALL[0]?.priceRub;
+const MIN_RU = RU[0]?.priceRub;
+const median = (arr) => {
+  if (!arr.length) return null;
+  const s = [...arr].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+};
+// таблица «цена по объёму памяти»: самый дешёвый в России, в мире и обычная цена
+const RAM_ROWS = [1, 2, 4, 8].map((ram) => ({
+  ram,
+  ru: RU.find((p) => p.ram >= ram) || null,
+  any: ALL.find((p) => p.ram >= ram) || null,
+  med: median(VISIBLE_PLANS.filter((p) => p.ram === ram).map((p) => p.priceRub)),
+}));
+const provName = (p) => getProvider(p.providerSlug)?.name || p.providerSlug;
+const tar = (n) => `${n} ${plural(n, 'тариф', 'тарифа', 'тарифов')}`;
+const prv = (n) => `${n} ${plural(n, 'провайдера', 'провайдеров', 'провайдеров')}`;
+
 export const metadata = {
-  title: 'Аренда VPS (ВПС) и VDS: подбор под задачу | ServerCalc',
-  description:
-    'Аренда VPS (ВПС) и VDS: подбор виртуального сервера по задаче, ресурсам и географии. Тарифы провайдеров с проверенной ценой и датой сверки у каждой',
+  title: `Аренда VPS (ВПС) и VDS от ${price(MIN_ALL)}/мес: подбор под задачу | ServerCalc`,
+  description: `Аренда VPS (ВПС) и VDS: подбор сервера под задачу, регион и бюджет. ${tar(STATS.plans)} от ${prv(STATS.providers)}, в России от ${price(MIN_RU)} в месяц, у каждой цены дата проверки (${dmy(STATS.verifiedAt)})`,
   alternates: { canonical: '/' },
 };
 
@@ -24,20 +50,25 @@ const FAQ = [
     a: `ServerCalc (servercalc.ru) это независимый справочный каталог виртуальных серверов (VPS, ВПС, VDS) с подбором под задачу. В базе ${STATS.plans} ${plural(STATS.plans, 'тариф', 'тарифа', 'тарифов')} от ${STATS.providers} ${plural(STATS.providers, 'провайдера', 'провайдеров', 'провайдеров')}, у каждой цены дата проверки, сверка с сайтами провайдеров раз в неделю. Мы не хостинг-провайдер и серверы не продаём: зарабатываем на партнёрских переходах, а вознаграждение в формулу подбора не входит`,
   },
   {
+    // 18.11.2026: прямой ответ с цифрами из базы, обновляется при каждой сборке
+    q: 'Сколько стоит самый дешёвый VPS сейчас',
+    a: `По нашей базе на ${dmy(STATS.verifiedAt)} самый дешёвый VPS с помесячной оплатой стоит ${price(MIN_ALL)} (${ALL[0] ? `${provName(ALL[0])}, ${ALL[0].cpu} ${plural(ALL[0].cpu, 'ядро', 'ядра', 'ядер')} и ${ALL[0].ram} ГБ памяти` : ''}), с сервером в России от ${price(MIN_RU)}${RU[0] ? ` (${provName(RU[0])})` : ''}. Обычная цена сервера с 2 ГБ памяти около ${price(RAM_ROWS[1].med)} в месяц. Цены сверяем с сайтами провайдеров раз в неделю, перед оплатой проверьте цену у провайдера`,
+  },
+  {
     q: 'Чем VPS отличается от виртуального хостинга и что такое VDS',
-    a: 'На виртуальном хостинге вы делите один сервер и его настройки с другими сайтами. VPS — это изолированный виртуальный сервер с собственной операционной системой, root-доступом и выделенными ресурсами: ядрами, памятью и диском. VPS и VDS на практике означают одно и то же, аббревиатуры прижились у разных провайдеров, а различий в технологии за ними обычно нет. Отдельный сервер берут, когда обычного хостинга уже мало: нужен свой софт, фоновые процессы или полный контроль над окружением',
+    a: 'На виртуальном хостинге вы делите один сервер и его настройки с другими сайтами. VPS это изолированный виртуальный сервер с собственной операционной системой, root-доступом и выделенными ресурсами: ядрами, памятью и диском. VPS и VDS на практике означают одно и то же, аббревиатуры прижились у разных провайдеров, а различий в технологии за ними обычно нет. Отдельный сервер берут, когда обычного хостинга уже мало: нужен свой софт, фоновые процессы или полный контроль над окружением',
   },
   {
     q: 'Как выбрать VPS под свою задачу',
-    a: 'Отталкивайтесь от задачи, а не от тарифа. Сайту на WordPress обычно хватает 1–2 ядер и 2 ГБ памяти, интернет-магазину или 1С — 2–4 ядер и 4 ГБ, базе данных под нагрузкой — от 8 ГБ. Дальше определитесь с географией: для аудитории внутри России это локация в стране и меньшая задержка. Учтите тип диска — NVMe быстрее обычного SSD. Калькулятор на этой странице подбирает тарифы под заданные параметры и показывает, насколько каждый провайдер им соответствует',
+    a: 'Отталкивайтесь от задачи, а не от тарифа. Сайту на WordPress обычно хватает 1–2 ядер и 2 ГБ памяти, интернет-магазину или 1С 2–4 ядра и 4 ГБ, базе данных под нагрузкой от 8 ГБ. Дальше определитесь с географией: для аудитории внутри России это локация в стране и меньшая задержка. Учтите тип диска: NVMe быстрее обычного SSD. Калькулятор на этой странице подбирает тарифы под заданные параметры и показывает, насколько каждый провайдер им соответствует',
   },
   {
     q: 'Сколько стоит аренда VPS',
-    a: 'Простой сервер под сайт или бота начинается от нескольких сотен рублей в месяц, конфигурации под базы данных и нагруженные сервисы — от полутора-двух тысяч. Цена зависит от числа ядер, объёма памяти, диска и локации: серверы в России за те же ресурсы обычно дороже европейских. В каталоге у каждого тарифа указана проверенная цена с датой сверки и пересчётом в рубли по курсу ЦБ',
+    a: 'Простой сервер под сайт или бота начинается от нескольких сотен рублей в месяц, конфигурации под базы данных и нагруженные сервисы от полутора-двух тысяч. Цена зависит от числа ядер, объёма памяти, диска и локации: серверы в России за те же ресурсы обычно дороже европейских. В каталоге у каждого тарифа указана проверенная цена с датой сверки и пересчётом в рубли по курсу ЦБ',
   },
   {
     q: 'Как подбор решает, какой тариф выше',
-    a: 'Все условия подбора строгие: задача, регион, память, ядра, бюджет, способ оплаты и требования. В списке остаются только тарифы, которые проходят все выбранные условия, по каждому провайдеру самый дешёвый. Порядок задаёт сортировка: дешевле, цена за гигабайт памяти или больше памяти. Если ничего не нашлось, подбор подскажет, какое условие мешает. По умолчанию подбор сортирует «Оптимально»: 60% балла надёжность провайдера (опыт, договор для юрлиц, защита, бэкапы, оплата, сервисы кроме VPS), 40% цена. Рекламный блок с пометкой «Реклама» стоит отдельно над списком. Другие сортировки: дешевле, цена за гигабайт памяти, больше памяти',
+    a: 'Все условия подбора строгие: задача, регион, память, ядра, бюджет, способ оплаты и требования. В списке остаются только тарифы, которые проходят все выбранные условия, по каждому провайдеру самый дешёвый. Порядок задаёт сортировка: дешевле, цена за гигабайт памяти или больше памяти. Если ничего не нашлось, подбор подскажет, какое условие мешает. По умолчанию подбор сортирует «Оптимально»: 60% балла надёжность провайдера (опыт, договор для юрлиц, защита, бэкапы, оплата, сервисы кроме VPS), 40% цена. Надёжность видна на каждой карточке числом из 10 вместе с причинами. Рекламный блок с пометкой «Реклама» стоит отдельно над списком. Другие сортировки: дешевле, цена за гигабайт памяти, больше памяти',
   },
   {
     q: 'Почему в подборе есть провайдеры, с которыми у вас нет партнёрства',
@@ -56,7 +87,23 @@ const FAQ = [
 export default function HomePage() {
   const payload = calculatorPayload();
   const posts = allPosts().slice(0, 3);
-  const providers = sortProvidersByPriority(PROVIDERS);
+  const providers = sortProvidersByPriority(PROVIDERS).filter((p) => minPriceOf(p.slug) != null).slice(0, 8);
+  const top = ALL.length ? sortProvidersByPriority(PROVIDERS).filter((p) => RU.some((x) => x.providerSlug === p.slug)).slice(0, 10) : [];
+  const ruCount = (code) => payload.plans.filter((p) => p.geo === code || (p.alsoIn || []).includes(code)).length;
+
+  const intro = (
+    <div className="cv5-intro">
+      <p className="cv5-fresh">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+        Цены проверены {ruDate(STATS.verifiedAt)} · {tar(STATS.plans)}
+      </p>
+      <h1>Подберём VPS под вашу задачу</h1>
+      <p className="lead">
+        Аренда VPS (ВПС) и VDS у {prv(STATS.providers)}: показываем только тарифы, которые проходят все
+        условия, с проверенной ценой и датой проверки у каждого. В России от {price(MIN_RU)} в месяц
+      </p>
+    </div>
+  );
 
   return (
     <>
@@ -64,11 +111,12 @@ export default function HomePage() {
         data={{
           '@context': 'https://schema.org',
           '@type': 'Organization',
+          '@id': `${SITE_URL}/#org`,
           name: SITE_NAME,
           alternateName: 'ServerCalc.ru',
           url: SITE_URL,
+          logo: absUrl('/icon.svg'),
           email: 'info@servercalc.ru',
-          inLanguage: 'ru-RU',
           description:
             'Независимый справочный каталог виртуальных серверов (VPS/ВПС) с подбором под задачу по открытой формуле и проверенной ценой у каждого тарифа',
           areaServed: 'RU',
@@ -78,9 +126,11 @@ export default function HomePage() {
         data={{
           '@context': 'https://schema.org',
           '@type': 'WebSite',
+          '@id': `${SITE_URL}/#site`,
           name: SITE_NAME,
           url: SITE_URL,
           inLanguage: 'ru-RU',
+          publisher: { '@id': `${SITE_URL}/#org` },
           description:
             'Справочный каталог виртуальных серверов с подбором под задачу и датой проверки у каждой цены',
         }}
@@ -88,8 +138,35 @@ export default function HomePage() {
       <JsonLd
         data={{
           '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          '@id': `${SITE_URL}/#page`,
+          url: SITE_URL,
+          name: 'Аренда VPS (ВПС) и VDS: подбор под задачу',
+          inLanguage: 'ru-RU',
+          isPartOf: { '@id': `${SITE_URL}/#site` },
+          about: { '@type': 'Thing', name: 'Аренда VPS (виртуального сервера)' },
+          dateModified: STATS.verifiedAt,
+          mainEntity: {
+            '@type': 'ItemList',
+            name: `Провайдеры VPS в России: самый дешёвый тариф на ${dmy(STATS.verifiedAt)}`,
+            numberOfItems: top.length,
+            itemListElement: top.map((p, i) => {
+              const plan = RU.find((x) => x.providerSlug === p.slug);
+              return {
+                '@type': 'ListItem',
+                position: i + 1,
+                url: absUrl(`/provajdery/${p.slug}`),
+                name: `${p.name}: VPS от ${price(plan.priceRub)} в месяц`,
+              };
+            }),
+          },
+        }}
+      />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
           '@type': 'WebApplication',
-          name: `Калькулятор подбора VPS — ${SITE_NAME}`,
+          name: `Калькулятор подбора VPS ${SITE_NAME}`,
           url: SITE_URL,
           applicationCategory: 'BusinessApplication',
           operatingSystem: 'Web',
@@ -111,221 +188,147 @@ export default function HomePage() {
         }}
       />
 
-      {/* ---------- герой и калькулятор ---------- */}
-      <section className="hero ink">
-        <div className="wrap hero-in">
-          <div className="hero-head">
-            <p className="hero-fresh">
-              Цены проверены {ruDate(payload.stats.verifiedAt)} · {payload.stats.plans}{' '}
-              {plural(payload.stats.plans, 'тариф', 'тарифа', 'тарифов')}
+      {/* ---------- герой: подбор слева, ответ справа ---------- */}
+      <section className="hero hero-v5 ink">
+        <div className="wrap">
+          <Calculator payload={payload} presetGeo="rossiya" campaign={CAMPAIGN.calculator} intro={intro} hero />
+        </div>
+      </section>
+
+      {/* ---------- доверие одной полосой ---------- */}
+      <section className="trust" aria-label="Почему подбору можно верить">
+        <div className="wrap trust-grid">
+          <div className="trust-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4" /></svg>
+            <div><b>Дата у каждой цены</b><span>Сверяем с прайсами раз в неделю, тариф без проверки {STATS.staleDays} дней скрываем</span></div>
+          </div>
+          <div className="trust-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M6 16V9M10 16V5M14 16v-6M18 16V8" /></svg>
+            <div><b>Открытая формула</b><span>Комиссия провайдера в подбор не входит, прибавка партнёрам раскрыта. <Link href="/metodologiya">Методология</Link></span></div>
+          </div>
+          <div className="trust-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="6" rx="1.5" /><rect x="4" y="14" width="16" height="6" rx="1.5" /><path d="M8 7h.01M8 17h.01" /></svg>
+            <div><b>{STATS.providers} {plural(STATS.providers, 'провайдер', 'провайдера', 'провайдеров')}, {tar(STATS.plans)}</b><span>В том числе без партнёрства: без них каталог неполный</span></div>
+          </div>
+          <div className="trust-item">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12h4l3-8 4 16 3-8h6" /></svg>
+            <div><b>Задержка из вашей сети</b><span>Замер до дата-центров прямо в браузере. <a href="#region">Измерить</a></span></div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- короткий ответ с цифрами: для поиска и нейросетей ---------- */}
+      <section className="section paper" aria-labelledby="otvet">
+        <div className="wrap answer">
+          <div className="answer-text">
+            <h2 id="otvet">Сколько стоит аренда VPS в {new Date(STATS.verifiedAt).getUTCFullYear()} году</h2>
+            <p>
+              <strong>Коротко:</strong> по нашей базе на {dmy(STATS.verifiedAt)} самый дешёвый VPS с помесячной оплатой стоит{' '}
+              <strong>{price(MIN_ALL)} в месяц</strong>, с сервером в России от <strong>{price(MIN_RU)}</strong>.
+              Обычная цена сервера с 2 ГБ памяти около {price(RAM_ROWS[1].med)}, с 4 ГБ около {price(RAM_ROWS[2].med)} в месяц.
+              Сравниваем {tar(STATS.plans)} от {prv(STATS.providers)}.
             </p>
-            <h1 className="display">Подберём VPS (ВПС) под задачу за минуту</h1>
-            <p className="lead">
-              ServerCalc подбирает виртуальный сервер (VPS, он же ВПС или VDS) по задаче, ресурсам,
-              региону, бюджету и способу оплаты. Показываем только тарифы, которые подходят под
-              все условия, с проверенной ценой и датой проверки
+            <p>
+              Сайту на WordPress и Telegram-боту обычно хватает 1 ядра и 1–2 ГБ памяти, интернет-магазину и 1С нужно
+              2–4 ядра и 4 ГБ, базе данных под нагрузкой от 8 ГБ. Для аудитории в России берите сервер в России:
+              меньше задержка и оплата картой РФ. Подробнее в <Link href="/novosti/kak-vybrat-vps-hosting">чек-листе выбора VPS</Link>{' '}
+              и <Link href="/indeks-cen-vps">индексе цен по месяцам</Link>
             </p>
           </div>
-
-          <Calculator payload={payload} presetGeo="rossiya" campaign={CAMPAIGN.calculator} split />
-
-          <div className="hero-tail" />
-        </div>
-      </section>
-
-      {/* ---------- три принципа ---------- */}
-      <section className="section paper">
-        <div className="wrap">
-          <div className="eyebrow">
-            <span className="label">Как устроен сервис</span>
-          </div>
-          <div className="cards cards-3" style={{ marginTop: 8 }}>
-            <div className="card">
-              <div className="card-top">
-                <h3>Дата у каждой цены</h3>
-                <span className="badge badge-brass">главное отличие</span>
-              </div>
-              <p className="dim" style={{ fontSize: '0.95rem' }}>
-                У 11 из 13 проверенных нами каталогов даты проверки цен нет вообще. У нас она стоит
-                у каждого тарифа, а устаревшие уходят с витрины автоматически
-              </p>
-              <div className="card-foot">
-                <span className="faint">база проверена</span>
-                <span className="mono">{ruDate(STATS.verifiedAt)}</span>
-              </div>
+          <div className="tbl-wrap">
+            <div className="tbl-scroll">
+              <table className="tbl tbl-answer">
+                <thead>
+                  <tr><th>Память</th><th>В России от</th><th>Везде от</th><th style={{ textAlign: 'right' }}>Обычно</th></tr>
+                </thead>
+                <tbody>
+                  {RAM_ROWS.map((r) => (
+                    <tr key={r.ram}>
+                      <td className="td-num"><Link href={`/deshevye-vps/${r.ram}-gb`} style={{ fontWeight: 600, textDecoration: 'none' }}>{r.ram} ГБ</Link></td>
+                      <td>{r.ru ? <><b>{price(r.ru.priceRub)}</b> <span className="faint">{provName(r.ru)}</span></> : '—'}</td>
+                      <td>{r.any ? <><b>{price(r.any.priceRub)}</b> <span className="faint">{provName(r.any)}</span></> : '—'}</td>
+                      <td className="td-num" style={{ textAlign: 'right' }}>{r.med ? price(r.med) : '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-
-            <div className="card">
-              <div className="card-top">
-                <h3>Открытая формула</h3>
-              </div>
-              <p className="dim" style={{ fontSize: '0.95rem' }}>
-                Веса подбора опубликованы: видно, сколько баллов даёт задача, география, требования
-                и бюджет. Комиссия провайдера в расчёт не входит
-              </p>
-              <div className="card-foot">
-                <Link href="/metodologiya" className="link-arrow">
-                  Методология
-                </Link>
-              </div>
-            </div>
-
-            <div className="card">
-              <div className="card-top">
-                <h3>Одинаковая подача</h3>
-              </div>
-              <p className="dim" style={{ fontSize: '0.95rem' }}>
-                Порядок «Оптимально»: надёжность провайдера и цена, прибавка партнёрам раскрыта в методологии.
-                Реклама только отдельным блоком с пометкой. В обзорах есть раздел с ограничениями
-              </p>
-              <div className="card-foot">
-                <Link href="/provajdery" className="link-arrow">
-                  Обзоры провайдеров
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- задачи ---------- */}
-      <section className="section paper-alt">
-        <div className="wrap">
-          <div className="between mb">
-            <div>
-              <div className="eyebrow">
-                <span className="label">Подбор под задачу</span>
-              </div>
-              <h2>С чем должен справляться сервер</h2>
-              <p className="lead">
-                На каждой странице собрана рекомендуемая конфигурация с объяснением, почему именно
-                столько ресурсов, и подходящие тарифы
-              </p>
-            </div>
-          </div>
-          <div className="cards cards-4">
-            {TASKS.map((task) => (
-              <Link key={task.slug} href={`/vps-dlya/${task.slug}`} className="card">
-                <div className="card-top">
-                  <span className="card-ico"><TaskIcon slug={task.slug} size={24} /></span>
-                </div>
-                <h3 style={{ fontSize: '1.05rem' }}>{task.name}</h3>
-                <p className="faint" style={{ margin: 0 }}>
-                  {task.cpu} × {task.ram} ГБ рекомендуем
-                </p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- география ---------- */}
-      <section className="section paper">
-        <div className="wrap">
-          <div className="eyebrow">
-            <span className="label">География</span>
-          </div>
-          <h2>Где разместить сервер</h2>
-          <div className="cards cards-4 mt">
-            {GEO_PAGES.map((geo) => (
-              <Link key={geo.slug} href={`/vps/${geo.slug}`} className="card">
-                <h3 style={{ fontSize: '1.05rem' }}>{geo.name}</h3>
-                <p className="faint" style={{ margin: 0 }}>{geo.note}</p>
-                <div className="card-foot">
-                  <span className="faint">тарифов</span>
-                  <span className="mono">{payload.plans.filter((p) => p.geo === geo.code).length}</span>
-                </div>
-              </Link>
-            ))}
+            <p className="faint" style={{ margin: '10px 4px 0', fontSize: '0.8rem' }}>
+              Цены в месяц на {dmy(STATS.verifiedAt)} при помесячной оплате: самый дешёвый тариф с памятью не меньше указанной. «Обычно»: медиана по базе
+            </p>
           </div>
         </div>
       </section>
 
       {/* ---------- провайдеры ---------- */}
-      <section className="section paper-alt">
+      <section className="section paper-alt" aria-labelledby="providers-h">
         <div className="wrap">
           <div className="between mb">
             <div>
-              <div className="eyebrow">
-                <span className="label">Провайдеры</span>
-              </div>
-              <h2>Кто участвует в сравнении</h2>
-              <p className="lead">
-                По минимальной проверенной цене, от дешёвых к дорогим. В сравнение включены и провайдеры без партнёрских отношений с
-                нами: каталог без них был бы неполным
-              </p>
+              <h2 id="providers-h">Кто участвует в сравнении</h2>
+              <p className="lead" style={{ margin: 0 }}>Обзор каждого провайдера: цены, лимиты, оплата из России и ограничения</p>
             </div>
-            <Link href="/provajdery" className="btn btn-ghost">
-              Все провайдеры
-            </Link>
+            <Link href="/provajdery" className="btn btn-ghost">Все провайдеры</Link>
           </div>
-          <div className="cards cards-2">
-            {providers.slice(0, 6).map((p) => (
-              <ProviderCard key={p.slug} provider={p} minPrice={minPriceOf(p.slug)} campaign={CAMPAIGN.providers} />
-            ))}
+          <div className="pv-grid">
+            {providers.map((p) => {
+              const q = qualityOf(p).score;
+              const locs = [...new Set(plansOf(p.slug).map((x) => (x.location || '').replace(/\s*\(.*\)$/, '').trim()).filter(Boolean))].slice(0, 3);
+              return (
+                <Link key={p.slug} href={`/provajdery/${p.slug}`} className="pv-tile" style={{ '--c': p.color }}>
+                  <span className="pv-tile-name">{p.name}</span>
+                  <span className="pv-tile-meta">от {price(minPriceOf(p.slug))} в месяц{locs.length ? ` · ${locs.join(', ')}` : ''}</span>
+                  <span className="pv-tile-rel"><span className="rc5-meter" aria-hidden="true"><i style={{ width: `${Math.round(q * 100)}%` }} /></span>Надёжность {(q * 10).toFixed(1).replace('.', ',')}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* ---------- каталог ---------- */}
-      <section className="section ink">
-        <div className="wrap">
-          <div className="grid-2">
-            <div>
-              <div className="eyebrow">
-                <span className="label label-brass">Каталог</span>
-              </div>
-              <h2>Все тарифы одной таблицей</h2>
-              <p className="lead">
-                Фильтры по географии, памяти, ядрам и требованиям. Сортировка по цене, по объёму
-                памяти и по цене за гигабайт памяти: нормализованная метрика, которая показывает,
-                где вы переплачиваете за бренд
-              </p>
-              <div className="row mt">
-                <Link href="/catalog" className="btn btn-brass">
-                  Открыть каталог
-                </Link>
-                <Link href="/metodologiya" className="btn btn-ghost">
-                  Как считаем
-                </Link>
-              </div>
+      {/* ---------- готовые подборы ---------- */}
+      <section className="section paper" aria-label="Готовые подборы">
+        <div className="wrap pick-grid">
+          <div className="pick-card">
+            <h2>Готовые подборы под задачу</h2>
+            <div className="pick-links">
+              {TASKS.map((t) => (
+                <Link key={t.slug} href={`/vps-dlya/${t.slug}`}><TaskIcon slug={t.slug} />{t.name}</Link>
+              ))}
             </div>
-            <div>
-              <div className="notice">
-                <strong>Правило свежести.</strong> Тариф, который не проверялся дольше{' '}
-                {STATS.staleDays} дней, автоматически скрывается с витрины, а не показывается со
-                старой ценой. Сейчас в базе {num(STATS.plansTotal)}{' '}
-                {plural(STATS.plansTotal, 'тариф', 'тарифа', 'тарифов')}, из них скрыто{' '}
-                {STATS.hidden}
-              </div>
+          </div>
+          <div className="pick-card">
+            <h2>Где разместить и как оплатить</h2>
+            <div className="pick-links">
+              {GEO_PAGES.map((g) => (
+                <Link key={g.slug} href={`/vps/${g.slug}`}>{g.name} <small>{ruCount(g.code)}</small></Link>
+              ))}
+              {PAY_METHODS.map((m) => (
+                <Link key={m.slug} href={`/vps-s-oplatoj/${m.slug}`}>Оплата {m.name}</Link>
+              ))}
+              <Link href="/deshevye-vps">Самые дешёвые VPS</Link>
+              <Link href="/luchshie-vps-rossii">Лучшие VPS в России</Link>
+              <Link href="/catalog">Все тарифы таблицей</Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* ---------- материалы ---------- */}
-      <section className="section paper">
+      <section className="section paper-alt">
         <div className="wrap">
           <div className="between mb">
-            <div>
-              <div className="eyebrow">
-                <span className="label">Разборы и новости</span>
-              </div>
-              <h2>Что почитать перед выбором</h2>
-            </div>
-            <Link href="/novosti" className="btn btn-ghost">
-              Все материалы
-            </Link>
+            <h2 style={{ margin: 0 }}>Что почитать перед выбором</h2>
+            <Link href="/novosti" className="btn btn-ghost">Все материалы</Link>
           </div>
-          <div className="cards cards-2">
+          <div className="cards cards-3">
             {posts.map((post) => (
               <Link key={post.slug} href={`/novosti/${post.slug}`} className="card">
                 <div className="card-top">
                   <span className="badge">{rubricName(post.rubric)}</span>
-                  <span className="faint mono">{ruDate(post.date)}</span>
+                  <span className="faint">{ruDate(post.date)}</span>
                 </div>
                 <h3 style={{ fontSize: '1.1rem' }}>{post.title}</h3>
-                <p className="faint" style={{ margin: 0 }}>{post.description}</p>
                 <div className="card-foot">
                   <span className="faint">{post.minutes} мин чтения</span>
                   <span className="link-arrow" />
@@ -336,25 +339,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ---------- вопросы ---------- */}
-      <section className="section paper-alt">
-        <div className="wrap-narrow" style={{ padding: 0 }}>
-          <div className="wrap">
-            <div className="eyebrow">
-              <span className="label">Частые вопросы</span>
-            </div>
-            <h2>Что спрашивают чаще всего</h2>
-            <div className="stack-lg mt">
-              {FAQ.map((item) => (
-                <div key={item.q}>
-                  <h3>{item.q}</h3>
-                  <p className="dim">{item.a}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-lg">
-              <FreshnessRule />
-            </div>
+      {/* ---------- вопросы аккордеоном ---------- */}
+      <section className="section paper" aria-labelledby="faq-h">
+        <div className="wrap-narrow">
+          <h2 id="faq-h">Что спрашивают чаще всего</h2>
+          <div className="faq5 mt">
+            {FAQ.map((item, i) => (
+              <details key={item.q} open={i < 3}>
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
+          <div className="mt-lg">
+            <FreshnessRule />
           </div>
         </div>
       </section>

@@ -16,6 +16,7 @@ export default function OutLink({
   children,
   className = 'btn btn-brass btn-sm',
   showDisclosure = false,
+  ariaLabel,
 }) {
   const { href, rel, partner } = providerLink(provider, { campaign, content });
   if (!href) return null;
@@ -27,6 +28,7 @@ export default function OutLink({
         rel={rel}
         target="_blank"
         className={className}
+        aria-label={ariaLabel}
         onClick={() => {
           // общая цель с параметрами: по ней считается вся воронка
           goal(GOALS.providerClick, {

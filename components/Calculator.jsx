@@ -109,7 +109,7 @@ function match(payload, f) {
   return out;
 }
 
-export default function Calculator({ payload, presetTask = null, presetGeo = 'any', campaign = CAMPAIGN.calculator, compact = false, split = false }) {
+export default function Calculator({ payload, presetTask = null, presetGeo = 'any', campaign = CAMPAIGN.calculator, compact = false, intro = null, hero = false }) {
   const presetTaskObj = payload.tasks.find((t) => t.slug === presetTask) || null;
 
   const [task, setTask] = useState(presetTask);
@@ -124,7 +124,6 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   const [extras, setExtras] = useState([]);
   const [sort, setSort] = useState('opt');
   const [showAll, setShowAll] = useState(false);
-  const [panelOpen, setPanelOpen] = useState(false);
   const [pings, setPings] = useState({});
   const [pinging, setPinging] = useState(false);
   const started = useRef(false);
@@ -223,7 +222,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     for (const [k, v] of byRam) if (v.length >= 3) ram.set(k, med(v));
     return { ram, perGb: med(payload.plans.map((p) => p.priceRub / p.ram)) };
   }, [payload]);
-  const visible = showAll ? results : results.slice(0, 8);
+  const visible = showAll ? results : results.slice(0, 5);
 
   function chooseTask(slug) {
     const next = task === slug ? null : slug;
@@ -318,305 +317,350 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
   const termTotal = (p) => (p.term && p.term > 1 ? `оплата сразу ${price(Math.round(p.priceRub * p.term))} за ${p.term === 12 ? 'год' : p.term === 24 ? '2 года' : p.term + ' мес.'}` : 'оплата помесячно');
 
   const segBtn = (on) => (on ? 'on' : '');
-  const controls = (
-    <div className="flt-side">
-      <div className="fblock">
-        <div className="flbl">Регион</div>
-        <div className="fbtns">
-          {geoOptions.map((g) => (
-            <button key={g.slug} type="button" className={geo === g.slug ? 'fbtn on' : 'fbtn'} aria-pressed={geo === g.slug} onClick={() => { setGeo(geo === g.slug ? 'any' : g.slug); setShowAll(false); track('geo', { geo: g.slug }); }}>
-              {g.name}
-              {pings[g.code] !== undefined && <span className={pings[g.code] === null ? 'ping-v' : pings[g.code] < 80 ? 'ping-v ping-good' : pings[g.code] < 200 ? 'ping-v ping-mid' : 'ping-v ping-bad'}>{pings[g.code] === null ? '—' : `${pings[g.code]} мс`}</span>}
-            </button>
-          ))}
-          <button type="button" className={geo === 'any' ? 'fbtn on' : 'fbtn'} aria-pressed={geo === 'any'} onClick={() => { setGeo('any'); setShowAll(false); track('geo', { geo: 'any' }); }}>Любой регион</button>
-        </div>
-        {countryOptions.length > 0 && (
-          <>
-            <div className="flbl flbl-sub">Страна</div>
-            <div className="fbtns">
-              {countryOptions.map(([c, name]) => (
-                <button key={c} type="button" className={country === c ? 'fbtn on' : 'fbtn'} aria-pressed={country === c} onClick={() => { setCountry(country === c ? null : c); setShowAll(false); track('country', { country: c }); }}>{name}</button>
-              ))}
+
+  // ---------- вариант 1 главной (18.11.2026): подбор слева, ответ справа, компактные карточки ----------
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [showBar, setShowBar] = useState(false);
+  const resRef = useRef(null);
+
+  // мобильная липкая кнопка: видна, пока результаты ниже экрана
+  useEffect(() => {
+    const el = resRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver(([e]) => setShowBar(!e.isIntersecting && e.boundingClientRect.top > 0), { threshold: 0, rootMargin: '0px 0px -45% 0px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const moreCount = (country ? 1 : 0) + (ram ? 1 : 0) + (cpu ? 1 : 0) + pay.length + extras.length;
+  const resultsTitle = `Лучшие VPS${taskObj ? ` ${TASK_FOR[taskObj.slug] || `для задачи «${taskObj.name}»`}` : ''}${geoObj ? ` ${GEO_IN[geoObj.code] || `: ${geoObj.name}`}` : ''}`;
+  const cheapest = results.length > 1 ? Math.min(...results.map((x) => x.plan.priceRub)) : null;
+  const sumText = results.length
+    ? `${plansTotal} ${plural(plansTotal, 'тариф', 'тарифа', 'тарифов')} у ${results.length} ${plural(results.length, 'провайдера', 'провайдеров', 'провайдеров')}`
+    : 'Под все условия тарифов нет';
+
+  function scrollToResults() {
+    resRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    track('jump_results');
+  }
+
+  const pingBadge = (code) =>
+    pings[code] !== undefined && (
+      <span className={pings[code] === null ? 'ping-v' : pings[code] < 80 ? 'ping-v ping-good' : pings[code] < 200 ? 'ping-v ping-mid' : 'ping-v ping-bad'}>
+        {pings[code] === null ? '—' : `${pings[code]} мс`}
+      </span>
+    );
+
+  const side = (
+    <div className="cv5-side">
+      {intro}
+      <div className="cv5-panel" aria-label="Условия подбора">
+        <div className="cv5-step">
+          <div className="cv5-lbl">
+            <span>1. Что запускаем</span>
+            {taskObj && ram === taskObj.ram && cpu === taskObj.cpu && <small>подставили от {taskObj.ram} ГБ и {taskObj.cpu} {coresFrom(taskObj.cpu)}</small>}
+          </div>
+          <div className="cv5-chips">
+            {payload.tasks.filter((t) => !t.hideInCalc || t.slug === task).map((t) => (
+              <button key={t.slug} type="button" className={task === t.slug ? 'cv5-chip on' : 'cv5-chip'} aria-pressed={task === t.slug} onClick={() => chooseTask(t.slug)}>
+                <TaskIcon slug={t.slug} />
+                {t.name}
+              </button>
+            ))}
+          </div>
+          {task === 'game' && (
+            <div className="calc-games" aria-label="Игра и число игроков">
+              <div className="cv5-chips">
+                {GAMES.map((g) => (
+                  <button key={g.key} type="button" className={game === g.key ? 'cv5-chip on' : 'cv5-chip'} aria-pressed={game === g.key} onClick={() => applyGame(g.key, players)}>{g.label}</button>
+                ))}
+              </div>
+              <div className="cv5-seg" role="group" aria-label="Игроков на сервере">
+                {PLAYERS.map((n) => (
+                  <button key={n} type="button" className={players === n ? 'on' : ''} aria-pressed={players === n} onClick={() => applyGame(game || 'mc-java', n)}>до {n} игроков</button>
+                ))}
+              </div>
+              {game && <p className="faint calc-games-note">Ориентир для сервера без модов: память от {ram} ГБ и от {cpu} {coresFrom(cpu)}. Моды и плагины добавляют память</p>}
             </div>
-          </>
+          )}
+        </div>
+
+        <div className="cv5-step" id="region">
+          <div className="cv5-lbl">
+            <span>2. Где сервер</span>
+            <button type="button" className="ping-btn" onClick={runPing} disabled={pinging}>
+              {pinging ? 'Замеряем…' : Object.keys(pings).length ? 'Замерить ещё раз' : 'Проверить задержку'}
+            </button>
+          </div>
+          <div className="cv5-seg" role="group" aria-label="Регион">
+            {geoOptions.map((g) => (
+              <button key={g.slug} type="button" className={geo === g.slug ? 'on' : ''} aria-pressed={geo === g.slug} onClick={() => { setGeo(geo === g.slug ? 'any' : g.slug); setCountry(null); setShowAll(false); track('geo', { geo: g.slug }); }}>
+                {g.name}
+                {pingBadge(g.code)}
+              </button>
+            ))}
+            <button type="button" className={geo === 'any' ? 'on' : ''} aria-pressed={geo === 'any'} onClick={() => { setGeo('any'); setShowAll(false); track('geo', { geo: 'any' }); }}>Любой</button>
+          </div>
+        </div>
+
+        <div className="cv5-step">
+          <div className="cv5-lbl">
+            <label htmlFor="cv5-budget">3. Бюджет в месяц</label>
+            <b>{budget ? `до ${price(budget)}` : 'без лимита'}</b>
+          </div>
+          <input
+            id="cv5-budget"
+            className="range"
+            type="range"
+            min={0}
+            max={BUDGET_STEPS.length - 1}
+            step={1}
+            value={Math.max(0, BUDGET_STEPS.indexOf(budget))}
+            onChange={(e) => { setBudget(BUDGET_STEPS[Number(e.target.value)]); setShowAll(false); }}
+            onMouseUp={() => track('budget', { budget })}
+            onTouchEnd={() => track('budget', { budget })}
+            aria-valuetext={budget ? `до ${price(budget)}` : 'без лимита'}
+          />
+          <div className="cv5-scale" aria-hidden="true">
+            {BUDGET_STEPS.map((v) => <span key={v}>{v ? (v >= 1000 ? `${v / 1000} тыс` : v) : '∞'}</span>)}
+          </div>
+        </div>
+
+        <div className="cv5-more">
+          <button type="button" className="cv5-more-btn" aria-expanded={moreOpen} aria-controls="cv5-more-body" onClick={() => { setMoreOpen((v) => !v); track('more', { open: !moreOpen }); }}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" /></svg>
+            <span>Ещё фильтры: память, ядра, оплата, NVMe</span>
+            {moreCount > 0 && <b className="cv5-count">{moreCount}</b>}
+            <svg className="cv5-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          </button>
+          <div id="cv5-more-body" className={moreOpen ? 'cv5-more-body open' : 'cv5-more-body'}>
+            {countryOptions.length > 0 && (
+              <div className="fblock">
+                <div className="flbl">Страна</div>
+                <div className="fbtns">
+                  {countryOptions.map(([c, name]) => (
+                    <button key={c} type="button" className={country === c ? 'fbtn on' : 'fbtn'} aria-pressed={country === c} onClick={() => { setCountry(country === c ? null : c); setShowAll(false); track('country', { country: c }); }}>{name}</button>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div className="fblock">
+              <div className="flbl">Память, ГБ</div>
+              <div className="fseg" role="group" aria-label="Память">
+                {RAM_OPTS.map((v) => (
+                  <button key={v} type="button" className={segBtn(ram === v)} aria-pressed={ram === v} onClick={() => { setRam(v); setShowAll(false); track('ram', { ram: v }); }}>{v || 'все'}</button>
+                ))}
+              </div>
+            </div>
+            <div className="fblock">
+              <div className="flbl">Ядра</div>
+              <div className="fseg" role="group" aria-label="Ядра">
+                {CPU_OPTS.map((v) => (
+                  <button key={v} type="button" className={segBtn(cpu === v)} aria-pressed={cpu === v} onClick={() => { setCpu(v); setShowAll(false); track('cpu', { cpu: v }); }}>{v || 'все'}</button>
+                ))}
+              </div>
+            </div>
+            <div className="fblock">
+              <div className="flbl">Оплата</div>
+              <div className="fbtns">
+                <button type="button" className={pay.length === 0 ? 'fbtn on' : 'fbtn'} aria-pressed={pay.length === 0} onClick={() => { setPay([]); setShowAll(false); track('pay', { pay: 'any' }); }}>Любая</button>
+                {PAYS.map((x) => (
+                  <button key={x.key} type="button" className={pay.includes(x.key) ? 'fbtn on' : 'fbtn'} aria-pressed={pay.includes(x.key)} title={x.title} onClick={() => { setPay((v) => toggle(v, x.key)); setShowAll(false); track('pay', { pay: x.key }); }}>
+                    {x.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="fblock">
+              <div className="flbl">Условия</div>
+              <div className="fbtns">
+                {extrasShown.map((x) => (
+                  <button key={x.key} type="button" className={extras.includes(x.key) ? 'fbtn on' : 'fbtn'} aria-pressed={extras.includes(x.key)} onClick={() => { setExtras((v) => toggle(v, x.key)); setShowAll(false); track('req', { req: x.key }); }}>
+                    {x.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="cv5-sum">
+        <p><span className="cv5-dot" aria-hidden="true" /><b>{sumText}</b>{results.length > 0 && active.length > 0 ? ' подходят под все условия' : ''}</p>
+        {active.length > 0 && (
+          <div className="cv5-active" aria-label="Выбранные условия">
+            {active.map((a) => (
+              <button key={a.key} type="button" className="achip" onClick={() => { a.clear(); setShowAll(false); track('clear', { what: a.key }); }} aria-label={`Убрать: ${a.label}`}>
+                {a.label} <span aria-hidden="true">✕</span>
+              </button>
+            ))}
+            <button type="button" className="flt-reset" onClick={resetAll}>Сбросить</button>
+          </div>
         )}
-        <button type="button" className="ping-btn" onClick={runPing} disabled={pinging}>
-          {pinging ? 'Замеряем задержку…' : Object.keys(pings).length ? 'Замерить ещё раз' : 'Проверить задержку из вашей сети'}
-        </button>
       </div>
-
-      <div className="fblock">
-        <div className="flbl">Память, ГБ</div>
-        <div className="fseg" role="group" aria-label="Память">
-          {RAM_OPTS.map((v) => (
-            <button key={v} type="button" className={segBtn(ram === v)} aria-pressed={ram === v} onClick={() => { setRam(v); setShowAll(false); track('ram', { ram: v }); }}>{v || 'все'}</button>
-          ))}
-        </div>
-      </div>
-
-      <div className="fblock">
-        <div className="flbl">Ядра</div>
-        <div className="fseg" role="group" aria-label="Ядра">
-          {CPU_OPTS.map((v) => (
-            <button key={v} type="button" className={segBtn(cpu === v)} aria-pressed={cpu === v} onClick={() => { setCpu(v); setShowAll(false); track('cpu', { cpu: v }); }}>{v || 'все'}</button>
-          ))}
-        </div>
-      </div>
-
-      <div className="fblock">
-        <div className="flbl">Бюджет в месяц <b>{budget ? `до ${price(budget)}` : 'без лимита'}</b></div>
-        <input
-          className="range"
-          type="range"
-          min={0}
-          max={BUDGET_STEPS.length - 1}
-          step={1}
-          value={Math.max(0, BUDGET_STEPS.indexOf(budget))}
-          onChange={(e) => { setBudget(BUDGET_STEPS[Number(e.target.value)]); setShowAll(false); }}
-          onMouseUp={() => track('budget', { budget })}
-          onTouchEnd={() => track('budget', { budget })}
-          aria-label="Бюджет в месяц"
-          aria-valuetext={budget ? `до ${price(budget)}` : 'без лимита'}
-        />
-        <div className="range-scale"><span>300 ₽</span><span>без лимита</span></div>
-      </div>
-
-      <div className="fblock">
-        <div className="flbl">Оплата</div>
-        <div className="fbtns">
-          <button type="button" className={pay.length === 0 ? 'fbtn on' : 'fbtn'} aria-pressed={pay.length === 0} onClick={() => { setPay([]); setShowAll(false); track('pay', { pay: 'any' }); }}>Любая</button>
-          {PAYS.map((x) => (
-            <button key={x.key} type="button" className={pay.includes(x.key) ? 'fbtn on' : 'fbtn'} aria-pressed={pay.includes(x.key)} title={x.title} onClick={() => { setPay((v) => toggle(v, x.key)); setShowAll(false); track('pay', { pay: x.key }); }}>
-              {x.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="fblock">
-        <div className="flbl">Ещё</div>
-        <div className="fbtns">
-          {extrasShown.map((x) => (
-            <button key={x.key} type="button" className={extras.includes(x.key) ? 'fbtn on' : 'fbtn'} aria-pressed={extras.includes(x.key)} onClick={() => { setExtras((v) => toggle(v, x.key)); setShowAll(false); track('req', { req: x.key }); }}>
-              {x.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {active.length > 0 && <button type="button" className="flt-reset" onClick={resetAll}>Сбросить все фильтры</button>}
     </div>
   );
 
   return (
-    <div id="podbor" className={split ? 'anchor calc-split calc-v2' : 'anchor calc-v2'}>
-      <div className="calc-tasks">
-        <div className="calc-tasks-head">
-          <span className="label">Ваша задача</span>
-          {taskObj && ram === taskObj.ram && cpu === taskObj.cpu && <span className="field-val">подставили память от {taskObj.ram} ГБ и от {taskObj.cpu} {coresFrom(taskObj.cpu)}, можно изменить</span>}
+    <div id="podbor" className={hero ? 'anchor calc-v5 calc-v5-hero' : 'anchor calc-v5'}>
+      {side}
+
+      <section className="cv5-res" ref={resRef} id="rezultaty" aria-label="Результаты подбора">
+        <div className="cv5-res-head">
+          <h2>{resultsTitle}</h2>
+          <div className="sortseg" role="group" aria-label="Сортировка">
+            {SORTS.map((s) => (
+              <button key={s.key} type="button" className={sort === s.key ? 'on' : ''} aria-pressed={sort === s.key} onClick={() => { setSort(s.key); track('sort', { sort: s.key }); }}>{s.label}</button>
+            ))}
+          </div>
         </div>
-        <div className="chips">
-          {payload.tasks.filter((t) => !t.hideInCalc || t.slug === task).map((t) => (
-            <button key={t.slug} type="button" className={task === t.slug ? 'chip on' : 'chip'} aria-pressed={task === t.slug} onClick={() => chooseTask(t.slug)}>
-              <TaskIcon slug={t.slug} />
-              {t.name}
-            </button>
-          ))}
-        </div>
-        {task === 'game' && (
-          <div className="calc-games" aria-label="Игра и число игроков">
-            <div className="chips">
-              {GAMES.map((g) => (
-                <button key={g.key} type="button" className={game === g.key ? 'chip on' : 'chip'} aria-pressed={game === g.key} onClick={() => applyGame(g.key, players)}>{g.label}</button>
-              ))}
-            </div>
-            <div className="fseg calc-players" role="group" aria-label="Игроков на сервере">
-              {PLAYERS.map((n) => (
-                <button key={n} type="button" className={players === n ? 'on' : ''} aria-pressed={players === n} onClick={() => applyGame(game || 'mc-java', n)}>до {n} игроков</button>
-              ))}
-            </div>
-            {game && <p className="faint calc-games-note">Ориентир для сервера без модов: память от {ram} ГБ и от {cpu} {coresFrom(cpu)}. Моды и плагины добавляют память</p>}
+
+        {results.length === 0 && (
+          <div className="notice">
+            {blocker ? (
+              <>
+                <strong>Мешает условие «{blocker.label}».</strong> Без него найдётся {blocker.n}{' '}
+                {plural(blocker.n, 'провайдер', 'провайдера', 'провайдеров')}, тарифы от {price(blocker.from)} в месяц
+                <div className="row mt">
+                  <button type="button" className="btn btn-brass btn-sm" onClick={() => { blocker.clear(); track('clear', { what: blocker.key }); }}>Убрать «{blocker.label}»</button>
+                  <button type="button" className="btn btn-ghost btn-sm" onClick={resetAll}>Сбросить всё</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <strong>Ничего не нашлось.</strong> Снимите пару условий или начните заново
+                <div className="row mt">
+                  <button type="button" className="btn btn-brass btn-sm" onClick={resetAll}>Сбросить всё</button>
+                </div>
+              </>
+            )}
           </div>
         )}
-      </div>
 
-      <div className="calc-main calc-main-v2">
-        <aside className="flt" id="params" aria-label="Фильтры подбора">
-          <button type="button" className="flt-toggle" aria-expanded={panelOpen} onClick={() => setPanelOpen((v) => !v)}>
-            Фильтры{active.length ? ` · ${active.length}` : ''}
-            <span aria-hidden="true">{panelOpen ? '▲' : '▼'}</span>
-          </button>
-          <div className={panelOpen ? 'flt-body open' : 'flt-body'}>{controls}</div>
-        </aside>
-
-        <div className="results">
-          {active.length > 0 && (
-            <div className="flt-active" aria-label="Выбранные условия">
-              {active.map((a) => (
-                <button key={a.key} type="button" className="achip" onClick={() => { a.clear(); setShowAll(false); track('clear', { what: a.key }); }} aria-label={`Убрать: ${a.label}`}>
-                  {a.label} <span aria-hidden="true">✕</span>
-                </button>
-              ))}
-              <button type="button" className="flt-reset" onClick={resetAll}>Сбросить всё</button>
+        {payload.featured && results.length > 0 && (() => {
+          const ad = payload.providers.find((x) => x.slug === payload.featured.slug);
+          if (!ad) return null;
+          return (
+            <div className="adbar" aria-label="Реклама">
+              <span className="adbar-label">{payload.featured.adLabel || 'Реклама'}</span>
+              <span className="adbar-text"><b>{ad.name}</b>: {payload.featured.promo?.text} по промокоду <code className="cv5-code">{payload.featured.promo?.code}</code></span>
+              <OutLink provider={ad} campaign={`${campaign}_ad`} goalName="featured_click" className="btn btn-ghost btn-sm">Перейти</OutLink>
             </div>
-          )}
-          <div className="results-bar">
-            <p className="results-sum">
-              {results.length
-                ? `${plansTotal} ${plural(plansTotal, 'тариф', 'тарифа', 'тарифов')} у ${results.length} ${plural(results.length, 'провайдера', 'провайдеров', 'провайдеров')}${active.length ? ' подходят под все условия' : ''}`
-                : 'Под все условия тарифов нет'}
-            </p>
-            <div className="sortseg" role="group" aria-label="Сортировка">
-              {SORTS.map((s) => (
-                <button key={s.key} type="button" className={sort === s.key ? 'on' : ''} aria-pressed={sort === s.key} onClick={() => { setSort(s.key); track('sort', { sort: s.key }); }}>{s.label}</button>
-              ))}
-            </div>
-          </div>
+          );
+        })()}
 
-          {results.length === 0 && (
-            <div className="notice">
-              {blocker ? (
-                <>
-                  <strong>Мешает условие «{blocker.label}».</strong> Без него найдётся {blocker.n}{' '}
-                  {plural(blocker.n, 'провайдер', 'провайдера', 'провайдеров')}, тарифы от {price(blocker.from)} в месяц
-                  <div className="row mt">
-                    <button type="button" className="btn btn-brass btn-sm" onClick={() => { blocker.clear(); track('clear', { what: blocker.key }); }}>Убрать «{blocker.label}»</button>
-                    <button type="button" className="btn btn-ghost btn-sm" onClick={resetAll}>Сбросить всё</button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <strong>Ничего не нашлось.</strong> Снимите пару условий или начните заново
-                  <div className="row mt">
-                    <button type="button" className="btn btn-brass btn-sm" onClick={resetAll}>Сбросить всё</button>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-
-          {payload.featured && results.length > 0 && (() => {
-            const ad = payload.providers.find((x) => x.slug === payload.featured.slug);
-            if (!ad) return null;
-            return (
-              <div className="adbar" aria-label="Реклама">
-                <span className="adbar-label">{payload.featured.adLabel || 'Реклама'}</span>
-                <span className="adbar-text"><b>{ad.name}</b>: {payload.featured.promo?.text} по промокоду <b>{payload.featured.promo?.code}</b></span>
-                <OutLink provider={ad} campaign={`${campaign}_ad`} goalName="featured_click" className="btn btn-brass btn-sm">Перейти</OutLink>
-              </div>
-            );
-          })()}
-
-          {visible.map((r) => {
+        <ol className="cv5-list">
+          {visible.map((r, i) => {
             const p = r.plan;
             const pr = r.provider;
             const whereFull = (p.cityByRu && geoObj && p.cityByRu[geoObj.code]) || p.location || payload.geos.find((g) => g.code === p.geo)?.name || (p.geo === 'global' ? 'несколько регионов' : p.geo);
             const m = String(whereFull).match(/^(.*?)\s*\((.*)\)$/);
             const cities = (m ? m[2] : whereFull).split(',').map((x) => x.trim()).filter(Boolean);
-            const whereMain = m ? m[1] : cities.length > 1 ? cities[0] : whereFull;
-            const whereSub = m ? (cities.length > 1 ? `${cities[0]} и ещё ${cities.length - 1}` : cities[0]) : cities.length > 1 ? `и ещё ${cities.length - 1}` : '';
-            const ini = pr.name.replace(/[^A-Za-zА-Яа-я0-9]/g, '').slice(0, 2).toUpperCase();
+            const where = m ? (cities.length === 1 ? cities[0] : m[1]) : cities.length > 1 ? `${cities[0]} и ещё ${cities.length - 1}` : whereFull;
+            const ini = pr.name.replace(/[^A-Za-zА-Яа-яÉé0-9]/g, '').slice(0, 2);
             const prepaid = p.term && p.term > 1;
-            const pays = [pr.payments?.mir && 'Карта РФ', pr.payments?.card && 'Зарубежная карта', pr.payments?.sbp && 'СБП', pr.payments?.crypto && 'Криптовалюта'].filter(Boolean);
-            const feats = [pr.features?.hourly && 'Почасовая оплата', pr.features?.testPeriod && 'Тест-период', pr.features?.ddos && 'Защита от DDoS'].filter(Boolean);
-            // полоски «против рынка»: тот же объём памяти и цена гигабайта
-            const bar = (val, base) => {
-              const max = Math.max(val, base) * 1.08;
-              const diff = Math.round((1 - val / base) * 100);
-              const tone = diff >= 5 ? 'good' : diff <= -5 ? 'bad' : 'even';
-              return { fill: (val / max) * 100, mark: (base / max) * 100, diff, tone };
-            };
+            const q = Math.max(0, Math.min(1, pr.quality || 0));
+            const qText = (q * 10).toFixed(1).replace('.', ',');
+            const why = reasonsOf(pr).slice(0, 3);
             const ramBase = market.ram.get(p.ram);
-            const b1 = ramBase ? bar(p.priceRub, ramBase) : null;
-            const b2 = market.perGb ? bar(p.priceRub / p.ram, market.perGb) : null;
-            const diffText = (b) => (b.tone === 'good' ? `на ${b.diff}% дешевле` : b.tone === 'bad' ? `на ${-b.diff}% дороже` : 'как обычно');
+            const diff = ramBase ? Math.round((1 - p.priceRub / ramBase) * 100) : 0;
+            const tag = cheapest != null && p.priceRub === cheapest ? 'самая низкая цена в подборе' : diff >= 5 ? `на ${diff}% дешевле рынка за ${p.ram} ГБ` : null;
             const feat = payload.featured && payload.featured.slug === pr.slug ? payload.featured : null;
-            const featWhy = feat ? ((task && feat.taskReasons?.[task]) || feat.reasons?.[0]) : null;
+            const top = i === 0;
             return (
-              <article className={`rescard rescard-v4${feat ? ' rescard-featured' : ''}`} key={pr.slug}>
-                {feat && (
-                  <div className="row" style={{ gap: 10 }}>
-                    <span className="rc-featured-label">{feat.label}</span>
-                    {feat.labelWhy && <p className="rc-featured-why">{feat.labelWhy}</p>}
+              <li key={pr.slug}>
+                <article className={`rc5${top ? ' rc5-top' : ''}${feat ? ' rc5-feat' : ''}`}>
+                  {feat && <span className="rc5-ribbon">{feat.label} · {feat.promo?.text}</span>}
+                  <span className="rc5-logo" style={{ '--c': pr.color }} aria-hidden="true">{ini}</span>
+                  <div className="rc5-body">
+                    <div className="rc5-l1">
+                      <Link href={`/provajdery/${pr.slug}`} className="rc5-name">{pr.name}</Link>
+                      <span className="rc5-tag">{pr.country === 'RU' ? 'Российская компания' : 'Зарубежная компания'}</span>
+                      {tag && <span className="rc5-tag rc5-good">{tag}</span>}
+                      {prepaid && <span className="rc5-tag rc5-warn">оплата за {p.term === 12 ? 'год' : `${p.term} мес.`} вперёд</span>}
+                    </div>
+                    <div className="rc5-cfg">
+                      {p.cpu} {coresWord(p.cpu)} · {p.ram} ГБ · {p.disk} ГБ {p.diskType}{p.trafficTb != null ? ` · ${p.trafficTb} ТБ трафика` : ''} · {where}
+                    </div>
+                    <div className="rc5-rel">
+                      <span className="rc5-meter" aria-hidden="true"><i style={{ width: `${Math.round(q * 100)}%` }} /></span>
+                      <span>
+                        <b>Надёжность {qText}</b>
+                        {why.length > 0 && <> · {why.join(', ')}</>} · цена проверена {ruDateShort(p.verifiedAt)}
+                      </span>
+                    </div>
+                    {feat?.promo && <div className="rc5-promo">Промокод <code className="cv5-code">{feat.promo.code}</code>: {feat.promo.text}</div>}
                   </div>
-                )}
-                <div className="rc-head">
-                  <span className="res-logo" style={{ background: pr.color }} aria-hidden="true">{ini}</span>
-                  <div className="rc-who">
-                    <Link href={`/provajdery/${pr.slug}`} className="rc-name">{pr.name}</Link>
-                    <div className="rc-meta">{pr.country === 'RU' ? 'Российская компания' : 'Зарубежная компания'}{pr.virtualization?.length ? ` · ${pr.virtualization.join(', ')}` : ''} · {p.name}</div>
+                  <div className="rc5-side">
+                    <div className="rc5-price">{price(p.priceRub)}<span> в месяц</span></div>
+                    {prepaid && <div className="rc5-term">{termTotal(p)}</div>}
+                    <OutLink provider={pr} campaign={campaign} goalName="calc_click" className={top ? 'btn btn-brass rc5-cta' : 'btn btn-line rc5-cta'} ariaLabel={`К тарифу ${pr.name} за ${price(p.priceRub)} в месяц`}>
+                      К тарифу
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                    </OutLink>
+                    <Link href={`/provajdery/${pr.slug}`} className="rc5-more">
+                      {r.more > 0 ? `Обзор и ещё ${r.more} ${plural(r.more, 'тариф', 'тарифа', 'тарифов')}` : 'Обзор провайдера'}
+                    </Link>
                   </div>
-                  <div className="rc-price">
-                    <div className="res-price">{price(p.priceRub)}<span> в месяц</span></div>
-                    <div className="res-terms">{termTotal(p)}</div>
-                  </div>
-                </div>
-
-                <div className="rc-icons">
-                  <div className="ric"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" /></svg><div><b>{p.cpu} {coresWord(p.cpu)}</b><small>процессор</small></div></div>
-                  <div className="ric"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="2" /><path d="M7 11v2M11 11v2M15 11v2M7 17v3M17 17v3" /></svg><div><b>{p.ram} ГБ</b><small>память</small></div></div>
-                  <div className="ric"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3" /><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" /></svg><div><b>{p.disk} ГБ {p.diskType}</b><small>{p.trafficTb != null ? `диск, ${p.trafficTb} ТБ трафика` : 'диск'}</small></div></div>
-                  <div className="ric"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg><div><b>{whereMain}</b><small>{whereSub || 'где сервер'}</small></div></div>
-                </div>
-
-                {feat && (
-                  <ul className="featured-why">
-                    {[featWhy, ...(feat.reasons || []).filter((x) => x !== featWhy)].filter(Boolean).slice(0, 2).map((x) => <li key={x}>{x}</li>)}
-                  </ul>
-                )}
-                {!feat && (b1 || b2) && (
-                  <div className="rc-bars" aria-label="Сравнение с рынком">
-                    {b1 && (
-                      <div className="rc-bar">
-                        <span className="rc-bl">Цена за {p.ram} ГБ</span>
-                        <div className="rc-track"><div className={`rc-fill rc-${b1.tone}`} style={{ width: `${b1.fill}%` }} /><div className="rc-mark" style={{ left: `${b1.mark}%` }} title={`обычно ${price(ramBase)}`} /></div>
-                        <span className={`rc-bv rc-${b1.tone}-t`}>{diffText(b1)}<small>обычно {price(ramBase)}</small></span>
-                      </div>
-                    )}
-                    {b2 && (
-                      <div className="rc-bar">
-                        <span className="rc-bl">Цена гигабайта</span>
-                        <div className="rc-track"><div className={`rc-fill rc-${b2.tone}`} style={{ width: `${b2.fill}%` }} /><div className="rc-mark" style={{ left: `${b2.mark}%` }} /></div>
-                        <span className={`rc-bv rc-${b2.tone}-t`}>{price(p.priceRub / p.ram)} за ГБ<small>обычно {price(market.perGb)}</small></span>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                <div className="res-chips">
-                  {prepaid && <span className="pchip pchip-warn">Оплата за {p.term === 12 ? 'год' : `${p.term} мес.`} вперёд</span>}
-                  {pays.map((c) => <span key={c} className="pchip pchip-pay">{c}</span>)}
-                  {feats.map((c) => <span key={c} className="pchip">{c}</span>)}
-                  {feat?.promo && <span className="rc-promo" title={feat.promo.hint}>{feat.promo.text}: <b>{feat.promo.code}</b></span>}
-                </div>
-
-                <div className="rc-foot">
-                  <span className="rc-checked">Цена проверена {ruDateShort(p.verifiedAt)}{r.more > 0 && <> · <Link href={`/provajdery/${pr.slug}`} className="res-more">ещё {r.more} {plural(r.more, 'подходящий тариф', 'подходящих тарифа', 'подходящих тарифов')}</Link></>}</span>
-                  <OutLink provider={pr} campaign={campaign} goalName="calc_click" className="btn btn-brass rc-cta">
-                    Тарифы {pr.name} <span className="nowrap">от {price(p.priceRub)}</span>
-                  </OutLink>
-                </div>
-              </article>
+                </article>
+              </li>
             );
           })}
+        </ol>
 
-          {results.length > visible.length && (
-            <button type="button" className="btn btn-ghost btn-sm mt" onClick={() => setShowAll(true)}>
-              Показать остальных провайдеров: {results.length - visible.length}
-            </button>
-          )}
+        {results.length > visible.length && (
+          <button type="button" className="btn btn-ghost btn-sm cv5-showall" onClick={() => { setShowAll(true); track('show_all'); }}>
+            Показать ещё {results.length - visible.length} {plural(results.length - visible.length, 'провайдера', 'провайдеров', 'провайдеров')}
+          </button>
+        )}
 
-          {!compact && (
-            <p className="disclosure" style={{ marginTop: 18 }}>
-              Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена
-              для вас не меняется. В списке только тарифы, которые подходят под все выбранные условия. По умолчанию
-              порядок «Оптимально»: 60% надёжность провайдера, 40% цена, партнёры сервиса получают прибавку 10 баллов. Блок с пометкой «Реклама» стоит отдельно над списком,{' '}
-              <Link href="/metodologiya">как мы считаем</Link>
-            </p>
-          )}
+        {!compact && (
+          <p className="disclosure cv5-disc">
+            Часть ссылок партнёрские: при оформлении услуги по ним мы можем получить вознаграждение, цена для вас не меняется.
+            Порядок «Оптимально»: 60% надёжность провайдера, 40% цена, партнёры сервиса получают прибавку 10 баллов.
+            Надёжность из 10 считается по одинаковым для всех критериям. <Link href="/metodologiya">Как мы считаем</Link>
+          </p>
+        )}
+      </section>
+
+      {results.length > 0 && (
+        <div className={showBar ? 'cv5-bar show' : 'cv5-bar'} aria-hidden={!showBar}>
+          <span>{sumText}</span>
+          <button type="button" onClick={scrollToResults} tabIndex={showBar ? 0 : -1}>
+            Смотреть
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" /></svg>
+          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 }
+
+/** Почему провайдеру можно доверять: факты из карточки провайдера, одинаковые для всех */
+function reasonsOf(pr) {
+  const f = pr.features || {};
+  const out = [];
+  if (f.ddos) out.push('защита от DDoS');
+  if (f.backup) out.push('бэкапы');
+  if (f.hourly) out.push('почасовая оплата');
+  if (pr.years != null && pr.years >= 10) out.push(`${pr.years} ${plural(pr.years, 'год', 'года', 'лет')} на рынке`);
+  if (f.testPeriod) out.push('тест-период');
+  if (pr.payments?.mir) out.push('карта РФ');
+  if (pr.payments?.sbp) out.push('СБП');
+  return out;
+}
+
+const TASK_FOR = {
+  sajt: 'под сайт',
+  magazin: 'под интернет-магазин',
+  '1c-bitrix': 'под 1С и Битрикс',
+  'telegram-bot': 'под Telegram-бота',
+  'baza-dannyh': 'под базу данных',
+  ai: 'под AI и ML',
+  game: 'под игровой сервер',
+  dev: 'для разработки',
+  n8n: 'под n8n',
+  windows: 'на Windows',
+  gpu: 'с GPU',
+};
+const GEO_IN = { ru: 'в России', eu: 'в Европе', us: 'в США', asia: 'в Азии', kz: 'в Казахстане', uae: 'в ОАЭ', global: 'по всему миру' };
