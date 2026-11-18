@@ -595,6 +595,12 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                         {why.length > 0 && <> · {why.join(', ')}</>} · цена проверена {ruDateShort(p.verifiedAt)}
                       </span>
                     </div>
+                    {payList(pr).length > 0 && (
+                      <div className="rc5-pay" aria-label="Способы оплаты">
+                        <span>Оплата:</span>
+                        {payList(pr).map((x) => <span key={x} className="rc5-paychip">{x}</span>)}
+                      </div>
+                    )}
                     {feat?.promo && <div className="rc5-promo">Промокод <code className="cv5-code">{feat.promo.code}</code>: {feat.promo.text}</div>}
                   </div>
                   <div className="rc5-side">
@@ -651,9 +657,14 @@ function reasonsOf(pr) {
   if (f.hourly) out.push('почасовая оплата');
   if (pr.years != null && pr.years >= 10) out.push(`${pr.years} ${plural(pr.years, 'год', 'года', 'лет')} на рынке`);
   if (f.testPeriod) out.push('тест-период');
-  if (pr.payments?.mir) out.push('карта РФ');
-  if (pr.payments?.sbp) out.push('СБП');
+  if (f.panel) out.push('своя панель');
   return out;
+}
+
+/** Способы оплаты на карточке (18.11.2026, Антон): для посетителя из России часто решающий фактор */
+function payList(pr) {
+  const p = pr.payments || {};
+  return [p.mir && 'Карта РФ', p.sbp && 'СБП', p.crypto && 'Криптовалюта', p.card && 'Зарубежная карта'].filter(Boolean);
 }
 
 const TASK_FOR = {

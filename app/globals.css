@@ -2199,3 +2199,8 @@ html[data-theme='dark'] .rc5-img { background: #fff; }
 .pv-tile-top { display: flex; align-items: center; gap: 10px; }
 .pv-tile-logo { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: #fff; border: 1px solid var(--line); }
 .pv-tile-logo img { width: 28px; height: 28px; object-fit: contain; }
+
+/* способы оплаты на карточке подбора (18.11.2026) */
+.rc5-pay { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-faint); }
+.rc5-paychip { display: inline-flex; align-items: center; min-height: 24px; padding: 0 9px; border-radius: 6px; background: var(--brass-wash); color: var(--brass); font-weight: 600; font-size: 0.78rem; }
+html[data-theme='dark'] .rc5-paychip { color: var(--brass-bright); }
