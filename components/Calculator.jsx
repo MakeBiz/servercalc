@@ -597,8 +597,8 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                     </div>
                     {payList(pr).length > 0 && (
                       <div className="rc5-pay" aria-label="Способы оплаты">
-                        <span>Оплата:</span>
-                        {payList(pr).map((x) => <span key={x} className="rc5-paychip">{x}</span>)}
+                        <span>Оплата: </span>
+                        {payList(pr).map((x, k, arr) => <span key={x} className="rc5-paychip">{x}{k < arr.length - 1 && <span className="vh">, </span>}</span>)}
                       </div>
                     )}
                     {feat?.promo && <div className="rc5-promo">Промокод <code className="cv5-code">{feat.promo.code}</code>: {feat.promo.text}</div>}

@@ -2204,3 +2204,4 @@ html[data-theme='dark'] .rc5-img { background: #fff; }
 .rc5-pay { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-faint); }
 .rc5-paychip { display: inline-flex; align-items: center; min-height: 24px; padding: 0 9px; border-radius: 6px; background: var(--brass-wash); color: var(--brass); font-weight: 600; font-size: 0.78rem; }
 html[data-theme='dark'] .rc5-paychip { color: var(--brass-bright); }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
