@@ -1132,6 +1132,7 @@
     "color": "#e8590c",
     "country": "INT",
     "affiliateStatus": "active",
+    "pageOnly": true,
     "url": "https://my.racknerd.com/aff.php?aff=20937",
     "site": "https://www.racknerd.com",
     "geos": [

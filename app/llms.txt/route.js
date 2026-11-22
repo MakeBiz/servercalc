@@ -1,5 +1,5 @@
 import { absUrl, SITE_NAME } from '@/lib/site';
-import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, PROVIDERS, plansForGeo, minPriceOf, sortForProvidersPage, getProvider } from '@/lib/data';
+import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, PROVIDERS, PAGE_PROVIDERS, plansForGeo, minPriceOf, sortForProvidersPage, getProvider } from '@/lib/data';
 import { price } from '@/lib/format';
 import { PAY_METHODS, providersByPayment } from '@/lib/payments';
 import { CHEAP_SLUGS, cheapPage } from '@/lib/cheap-pages';
@@ -25,7 +25,7 @@ export function GET() {
     '> Независимый подбор и каталог виртуальных серверов (VPS/VDS) по задаче, ресурсам, ' +
       'географии и бюджету. У каждого тарифа проверенная цена с датой сверки, суммы ' +
       'пересчитаны в рубли по курсу ЦБ. Порядок по умолчанию «Оптимально»: 60% надёжность провайдера, 40% цена; ' +
-      'партнёры сервиса (Aéza, Fornex, Hostman, Hostes, SpaceWeb) получают прибавку 10 баллов, реклама только отдельным блоком с пометкой «Реклама».',
+      'партнёры сервиса (AdminVPS, Timeweb Cloud, Aéza) получают прибавку 10 баллов, реклама только отдельным блоком с пометкой «Реклама».',
     '',
     `Цены проверены ${dmy(STATS.verifiedAt)}: сверяем с сайтами провайдеров раз в неделю, тариф без проверки дольше ${STATS.staleDays} дней скрываем.`,
     '',
@@ -82,7 +82,7 @@ export function GET() {
     ...PAY_METHODS.map((m) => link(m.h1, `/vps-s-oplatoj/${m.slug}`, `принимают: ${providersByPayment(m.key).map((p) => p.name).join(', ')}`)),
     '',
     '## Обзоры провайдеров',
-    ...sortForProvidersPage(PROVIDERS).map((p) => { const min = minPriceOf(p.slug); return link(`${p.name}: обзор`, `/provajdery/${p.slug}`, min ? `тарифы от ${price(min)} в месяц, оплата, локации, частые вопросы` : 'локации, оплата, частые вопросы'); }),
+    ...sortForProvidersPage(PAGE_PROVIDERS).map((p) => { const min = minPriceOf(p.slug); return link(`${p.name}: обзор`, `/provajdery/${p.slug}`, min ? `тарифы от ${price(min)} в месяц, оплата, локации, частые вопросы` : 'локации, оплата, частые вопросы'); }),
     '',
     ...SERVICE_PROVIDERS.flatMap((p) => {
       const name = getProvider(p)?.name || p;

@@ -1,5 +1,5 @@
 import { absUrl, SITE_NAME } from '@/lib/site';
-import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, PROVIDERS, providersForTask, plansForGeo, minPriceOf, sortForProvidersPage } from '@/lib/data';
+import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, PROVIDERS, PAGE_PROVIDERS, providersForTask, plansForGeo, minPriceOf, sortForProvidersPage } from '@/lib/data';
 import ARTICLES from '@/data/provider-articles.json';
 import paymentsData from '@/data/payments.json';
 import { price } from '@/lib/format';
@@ -20,7 +20,7 @@ export function GET() {
   const out = [
     `# ${SITE_NAME}: полный текст главных страниц`,
     '',
-    `> Подбор VPS/VDS по задаче, ресурсам, географии и бюджету. Цены сверены с сайтами провайдеров ${dmy(STATS.verifiedAt)}, сверка раз в неделю, тариф без проверки дольше ${STATS.staleDays} дней скрыт. Суммы в рублях по курсу ЦБ. Партнёры сервиса (Aéza, Fornex, Hostman, Hostes, SpaceWeb) получают в формуле подбора прибавку 10 баллов.`,
+    `> Подбор VPS/VDS по задаче, ресурсам, географии и бюджету. Цены сверены с сайтами провайдеров ${dmy(STATS.verifiedAt)}, сверка раз в неделю, тариф без проверки дольше ${STATS.staleDays} дней скрыт. Суммы в рублях по курсу ЦБ. Партнёры сервиса (AdminVPS, Timeweb Cloud, Aéza) получают в формуле подбора прибавку 10 баллов.`,
     '',
     `Краткая карта сайта: ${absUrl('/llms.txt')}`,
     '',
@@ -59,7 +59,7 @@ export function GET() {
   // обзоры провайдеров (30.10.2026): справка, суть обзора и ответы на частые вопросы, со ссылкой на страницу
   const PAY_RU = { mir: 'карта российского банка', card: 'Visa/Mastercard', sbp: 'СБП', crypto: 'криптовалюта', paypal: 'PayPal' };
   out.push('## Обзоры провайдеров', '');
-  for (const p of sortForProvidersPage(PROVIDERS)) {
+  for (const p of sortForProvidersPage(PAGE_PROVIDERS)) {
     const a = ARTICLES[p.slug];
     if (!a) continue;
     const f = a.facts || {};

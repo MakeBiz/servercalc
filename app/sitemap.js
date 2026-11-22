@@ -1,4 +1,4 @@
-import { PROVIDERS, TASKS, GEO_PAGES, STATS } from '@/lib/data';
+import { PROVIDERS, PAGE_PROVIDERS, TASKS, GEO_PAGES, STATS } from '@/lib/data';
 import { allPosts } from '@/lib/news';
 import { HAS_PROMOS } from '@/lib/promos';
 import { PAIRS } from '@/lib/compare';
@@ -82,7 +82,7 @@ export default function sitemap() {
     priority: 0.85,
   }));
 
-  const providers = PROVIDERS.map((p) => ({
+  const providers = PAGE_PROVIDERS.map((p) => ({
     url: absUrl(`/provajdery/${p.slug}`),
     lastModified: updated,
     changeFrequency: 'weekly',

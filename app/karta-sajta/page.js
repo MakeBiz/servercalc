@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import sitemap from '../sitemap';
-import { PROVIDERS, TASKS, GEO_PAGES } from '@/lib/data';
+import { PROVIDERS, PAGE_PROVIDERS, TASKS, GEO_PAGES } from '@/lib/data';
 import { allPosts } from '@/lib/news';
 import { PAIRS, pairTitle } from '@/lib/compare';
 import { PAY_METHODS } from '@/lib/payments';
@@ -47,7 +47,7 @@ const FIXED = {
 
 function labels() {
   const m = { ...FIXED };
-  PROVIDERS.forEach((p) => (m[`/provajdery/${p.slug}`] = `${p.name}: обзор`));
+  PAGE_PROVIDERS.forEach((p) => (m[`/provajdery/${p.slug}`] = `${p.name}: обзор`));
   TASKS.forEach((t) => (m[`/vps-dlya/${t.slug}`] = t.h1 || t.name));
   GEO_PAGES.forEach((g) => (m[`/vps/${g.slug}`] = g.h1 || g.name));
   PAY_METHODS.forEach((x) => (m[`/vps-s-oplatoj/${x.slug}`] = x.h1));

@@ -1065,6 +1065,168 @@
     "source": "https://adminvps.ru/vps/vps_russia.php"
   },
   {
+    "id": "adminvps-eu-1",
+    "providerSlug": "adminvps",
+    "name": "Promo",
+    "cpu": 1,
+    "ram": 2,
+    "disk": 15,
+    "diskType": "NVMe",
+    "trafficTb": 5,
+    "geo": "eu",
+    "price": 499,
+    "currency": "RUB",
+    "priceRub": 499,
+    "billing": "month",
+    "ipv4": true,
+    "verifiedAt": "2026-11-23",
+    "dataStatus": "live",
+    "source": "https://adminvps.ru/vps/vps_holland.php",
+    "cityBy": {
+      "eu": "Netherlands, Germany, Finland or Poland"
+    },
+    "cityByRu": {
+      "eu": "Нидерланды, Германия, Финляндия или Польша"
+    },
+    "location": "Нидерланды, Германия, Финляндия, Польша",
+    "locationEn": "Netherlands, Germany, Finland, Poland"
+  },
+  {
+    "id": "adminvps-eu-2",
+    "providerSlug": "adminvps",
+    "name": "Micro",
+    "cpu": 2,
+    "ram": 4,
+    "disk": 30,
+    "diskType": "NVMe",
+    "trafficTb": 10,
+    "geo": "eu",
+    "price": 799,
+    "currency": "RUB",
+    "priceRub": 799,
+    "billing": "month",
+    "ipv4": true,
+    "verifiedAt": "2026-11-23",
+    "dataStatus": "live",
+    "source": "https://adminvps.ru/vps/vps_holland.php",
+    "cityBy": {
+      "eu": "Netherlands, Germany, Finland or Poland"
+    },
+    "cityByRu": {
+      "eu": "Нидерланды, Германия, Финляндия или Польша"
+    },
+    "location": "Нидерланды, Германия, Финляндия, Польша",
+    "locationEn": "Netherlands, Germany, Finland, Poland"
+  },
+  {
+    "id": "adminvps-eu-3",
+    "providerSlug": "adminvps",
+    "name": "Start",
+    "cpu": 4,
+    "ram": 8,
+    "disk": 60,
+    "diskType": "NVMe",
+    "trafficTb": 10,
+    "geo": "eu",
+    "price": 1289,
+    "currency": "RUB",
+    "priceRub": 1289,
+    "billing": "month",
+    "ipv4": true,
+    "verifiedAt": "2026-11-23",
+    "dataStatus": "live",
+    "source": "https://adminvps.ru/vps/vps_holland.php",
+    "cityBy": {
+      "eu": "Netherlands, Germany, Finland or Poland"
+    },
+    "cityByRu": {
+      "eu": "Нидерланды, Германия, Финляндия или Польша"
+    },
+    "location": "Нидерланды, Германия, Финляндия, Польша",
+    "locationEn": "Netherlands, Germany, Finland, Poland"
+  },
+  {
+    "id": "adminvps-eu-4",
+    "providerSlug": "adminvps",
+    "name": "Standart",
+    "cpu": 8,
+    "ram": 12,
+    "disk": 100,
+    "diskType": "NVMe",
+    "trafficTb": 10,
+    "geo": "eu",
+    "price": 2149,
+    "currency": "RUB",
+    "priceRub": 2149,
+    "billing": "month",
+    "ipv4": true,
+    "verifiedAt": "2026-11-23",
+    "dataStatus": "live",
+    "source": "https://adminvps.ru/vps/vps_holland.php",
+    "cityBy": {
+      "eu": "Netherlands, Germany, Finland or Poland"
+    },
+    "cityByRu": {
+      "eu": "Нидерланды, Германия, Финляндия или Польша"
+    },
+    "location": "Нидерланды, Германия, Финляндия, Польша",
+    "locationEn": "Netherlands, Germany, Finland, Poland"
+  },
+  {
+    "id": "adminvps-eu-5",
+    "providerSlug": "adminvps",
+    "name": "Pro",
+    "cpu": 8,
+    "ram": 16,
+    "disk": 160,
+    "diskType": "NVMe",
+    "trafficTb": 10,
+    "geo": "eu",
+    "price": 3379,
+    "currency": "RUB",
+    "priceRub": 3379,
+    "billing": "month",
+    "ipv4": true,
+    "verifiedAt": "2026-11-23",
+    "dataStatus": "live",
+    "source": "https://adminvps.ru/vps/vps_holland.php",
+    "cityBy": {
+      "eu": "Netherlands, Germany, Finland or Poland"
+    },
+    "cityByRu": {
+      "eu": "Нидерланды, Германия, Финляндия или Польша"
+    },
+    "location": "Нидерланды, Германия, Финляндия, Польша",
+    "locationEn": "Netherlands, Germany, Finland, Poland"
+  },
+  {
+    "id": "adminvps-eu-6",
+    "providerSlug": "adminvps",
+    "name": "Vip",
+    "cpu": 12,
+    "ram": 16,
+    "disk": 200,
+    "diskType": "NVMe",
+    "trafficTb": 10,
+    "geo": "eu",
+    "price": 5349,
+    "currency": "RUB",
+    "priceRub": 5349,
+    "billing": "month",
+    "ipv4": true,
+    "verifiedAt": "2026-11-23",
+    "dataStatus": "live",
+    "source": "https://adminvps.ru/vps/vps_holland.php",
+    "cityBy": {
+      "eu": "Netherlands, Germany, Finland or Poland"
+    },
+    "cityByRu": {
+      "eu": "Нидерланды, Германия, Финляндия или Польша"
+    },
+    "location": "Нидерланды, Германия, Финляндия, Польша",
+    "locationEn": "Netherlands, Germany, Finland, Poland"
+  },
+  {
     "id": "firstvds-1",
     "providerSlug": "firstvds",
     "name": "Прогрев SSD",

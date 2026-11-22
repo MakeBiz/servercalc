@@ -9,6 +9,7 @@ import TaskIcon from '@/components/TaskIcon';
 import { ProviderArticle, ProviderFaqAlt } from '@/components/ProviderArticle';
 import {
   PROVIDERS,
+  PAGE_PROVIDERS,
   getProvider,
   plansOf,
   allPlansOf,
@@ -39,7 +40,7 @@ function clipSentence(text, max) {
 }
 
 export function generateStaticParams() {
-  return PROVIDERS.map((p) => ({ slug: p.slug }));
+  return PAGE_PROVIDERS.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }) {
