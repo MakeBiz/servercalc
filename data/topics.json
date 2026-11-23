@@ -1,6 +1,6 @@
 {
  "note": "Паспорта тем servercalc.ru по методу журнала (07.11.2026). Регламент: content/news/README.md, раздел «Метод журнала». Таблица для людей: Google Диск AXE NEW/Royalties/ServerCalc - паспорта тем.xlsx. Один query = одна страница, проверяет scripts/check-content.mjs",
- "updated": "2026-11-18",
+ "updated": "2026-11-23",
  "waves": {
   "1": "2026-11-09",
   "2": "2026-11-16",
@@ -1291,7 +1291,8 @@
    "wave": 2,
    "waveStart": "2026-11-16",
    "status": "done",
-   "note": ""
+   "note": "",
+   "published": "2026-11-20"
   },
   {
    "id": "ru-067",
