@@ -3,6 +3,7 @@ import { partnerBonus } from '@/lib/quality';
 import { notFound } from 'next/navigation';
 import PageHead from '@/components/PageHead';
 import OutLink from '@/components/OutLink';
+import { withRef, refRel } from '@/lib/reflink';
 import JsonLd from '@/components/JsonLd';
 import Freshness from '@/components/Freshness';
 import TaskIcon from '@/components/TaskIcon';
@@ -280,9 +281,9 @@ export default async function ProviderPage({ params }) {
                             <>
                               {' '}
                               <a
-                                href={p.source}
+                                href={withRef(provider, p.source).href}
                                 target="_blank"
-                                rel="nofollow noopener"
+                                rel={refRel(withRef(provider, p.source).ref)}
                                 className="link-brass"
                                 title="Страница прайса, с которой сверялась цена"
                               >

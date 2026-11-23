@@ -6,6 +6,7 @@ import { PROVIDERS, GEOS, minPriceOf, PROVIDER_ORDER } from '@/lib/data';
 import { absUrl } from '@/lib/site';
 import { pairsOf } from '@/lib/compare';
 import { price } from '@/lib/format';
+import { withRef, refRel } from '@/lib/reflink';
 const fmt = (r) => price(r);
 
 const LANG = 'ru';
@@ -70,7 +71,7 @@ export function ProviderArticle({ provider }) {
             <p className="pa-checked">{T.checked} {fmtDay(a.checkedAt)}</p>
             <details className="pa-src">
               <summary>{T.sources} · {a.sources.length}</summary>
-              <ol>{a.sources.map((u) => <li key={u}><a href={u} target="_blank" rel="nofollow noopener">{u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}</a></li>)}</ol>
+              <ol>{a.sources.map((u) => { const r = withRef(provider, u); return <li key={u}><a href={r.href} target="_blank" rel={refRel(r.ref)}>{u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}</a></li>; })}</ol>
             </details>
           </div>
         </aside>
