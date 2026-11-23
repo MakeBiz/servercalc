@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Logo from './Logo';
 import { SITE, SITE_NAME } from '@/lib/site';
-import { STATS } from '@/lib/data';
+import { STATS, bonusDisclosure } from '@/lib/data';
 import { HAS_PROMOS } from '@/lib/promos';
 import { ruDate } from '@/lib/format';
 
@@ -81,7 +81,7 @@ export default function Footer() {
           <span style={{ maxWidth: 620 }}>
             Сервис публикует справочную информацию о тарифах сторонних провайдеров. Часть переходов
             к провайдерам партнёрские: если вы оформите услугу, мы получим вознаграждение, цена для
-            вас при этом не меняется. Порядок в подборе «Оптимально» (надёжность и цена) от вознаграждения не зависит, реклама только блоком с пометкой,{' '}
+            вас при этом не меняется. Порядок «Оптимально» считается по надёжности и цене, {bonusDisclosure()}, реклама только блоком с пометкой,{' '}
             <Link href="/metodologiya" style={{ textDecoration: 'underline' }}>
               формула открыта
             </Link>

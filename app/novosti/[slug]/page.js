@@ -27,6 +27,9 @@ export async function generateMetadata({ params }) {
       description: post.description,
       publishedTime: post.date,
       modifiedTime: post.updated || post.date,
+      // 24.11.2026: свой openGraph страницы затирает картинку из app/opengraph-image.png,
+      // поэтому у 40 статей не было og:image. Ставим общую картинку сайта явно
+      images: [{ url: '/opengraph-image.png', width: 1200, height: 630, alt: post.title }],
     },
   };
 }

@@ -3,7 +3,7 @@ import Calculator from '@/components/Calculator';
 import TaskIcon from '@/components/TaskIcon';
 import JsonLd from '@/components/JsonLd';
 import { FreshnessRule } from '@/components/Freshness';
-import { calculatorPayload, TASKS, GEO_PAGES, PROVIDERS, STATS, VISIBLE_PLANS, minPriceOf, plansOf, plansForGeo, sortProvidersByPriority, getProvider } from '@/lib/data';
+import { calculatorPayload, TASKS, GEO_PAGES, PROVIDERS, STATS, VISIBLE_PLANS, minPriceOf, plansOf, plansForGeo, sortProvidersByPriority, getProvider, bonusDisclosure } from '@/lib/data';
 import { qualityOf } from '@/lib/quality';
 import { logoOf } from '@/lib/logos';
 import { PAY_METHODS } from '@/lib/payments';
@@ -48,7 +48,7 @@ const FAQ = [
   {
     // 08.11.2026: брендовый вопрос из опроса нейросетей, ответ из базы
     q: 'Что такое ServerCalc',
-    a: `ServerCalc (servercalc.ru) это независимый справочный каталог виртуальных серверов (VPS, ВПС, VDS) с подбором под задачу. В базе ${STATS.plans} ${plural(STATS.plans, 'тариф', 'тарифа', 'тарифов')} от ${STATS.providers} ${plural(STATS.providers, 'провайдера', 'провайдеров', 'провайдеров')}, у каждой цены дата проверки, сверка с сайтами провайдеров раз в неделю. Мы не хостинг-провайдер и серверы не продаём: зарабатываем на партнёрских переходах, а вознаграждение в формулу подбора не входит`,
+    a: `ServerCalc (servercalc.ru) это независимый справочный каталог виртуальных серверов (VPS, ВПС, VDS) с подбором под задачу. В базе ${STATS.plans} ${plural(STATS.plans, 'тариф', 'тарифа', 'тарифов')} от ${STATS.providers} ${plural(STATS.providers, 'провайдера', 'провайдеров', 'провайдеров')}, у каждой цены дата проверки, сверка с сайтами провайдеров раз в неделю. Мы не хостинг-провайдер и серверы не продаём: зарабатываем на партнёрских переходах. Порядок «Оптимально» считается по надёжности и цене, ${bonusDisclosure()}`,
   },
   {
     // 18.11.2026: прямой ответ с цифрами из базы, обновляется при каждой сборке
