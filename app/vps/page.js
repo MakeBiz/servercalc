@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import JsonLd from '@/components/JsonLd';
-import { GEO_PAGES, providersForGeo, plansForGeo } from '@/lib/data';
+import { ALL_GEO_PAGES as GEO_PAGES, providersForGeoPage, plansForGeoPage } from '@/lib/data';
 import { geoContent } from '@/lib/geo-content';
 import { price, plural } from '@/lib/format';
 import { absUrl } from '@/lib/site';
@@ -43,8 +43,8 @@ export default function GeosPage() {
         <div className="wrap">
           <div className="cards cards-2">
             {GEO_PAGES.map((geo) => {
-              const plans = plansForGeo(geo.code);
-              const providers = providersForGeo(geo.code);
+              const plans = plansForGeoPage(geo);
+              const providers = providersForGeoPage(geo);
               const content = geoContent(geo.slug);
               return (
                 <Link key={geo.slug} href={`/vps/${geo.slug}`} className="card">

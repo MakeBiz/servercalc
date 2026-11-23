@@ -5,7 +5,8 @@ import PageHead from '@/components/PageHead';
 import Calculator from '@/components/Calculator';
 import ProviderCard from '@/components/ProviderCard';
 import JsonLd from '@/components/JsonLd';
-import { GEO_PAGES, getGeo, providersForGeo, plansForGeo, minPriceOf, calculatorPayload, STATS } from '@/lib/data';
+import { ALL_GEO_PAGES, getGeoPage, providersForGeoPage, plansForGeoPage, minPriceOf, calculatorPayload, STATS } from '@/lib/data';
+import { PAYMENTS } from '@/lib/payments';
 import { geoContent } from '@/lib/geo-content';
 import { CAMPAIGN } from '@/lib/utm';
 import { price, plural, ruDate, termShort } from '@/lib/format';
@@ -14,14 +15,36 @@ import { geoLead, checkedAt, checkedLine, yearOf } from '@/lib/answer-first';
 import { absUrl } from '@/lib/site';
 
 export function generateStaticParams() {
-  return GEO_PAGES.map((g) => ({ geo: g.slug }));
+  return ALL_GEO_PAGES.map((g) => ({ geo: g.slug }));
+}
+
+const listRu = (a) => (a.length > 1 ? `${a.slice(0, -1).join(', ')} и ${a[a.length - 1]}` : a.join(''));
+
+/**
+ * Вопрос об оплате для страницы страны (24.11.2026): кто из провайдеров с этой локацией
+ * принимает карту МИР или СБП и у кого цена в рублях. Считается из payments.json и
+ * валюты тарифов, поэтому меняется вместе с каталогом
+ */
+function payFaq(geo, plans, providers) {
+  if (!geo.country || !plans.length) return null;
+  const name = (slug) => providers.find((x) => x.slug === slug)?.name || slug;
+  const slugs = [...new Set(plans.map((p) => p.providerSlug))];
+  const ru = slugs.filter((s) => PAYMENTS[s]?.mir || PAYMENTS[s]?.sbp).map(name);
+  const rub = slugs.filter((s) => plans.some((p) => p.providerSlug === s && p.currency === 'RUB')).map(name);
+  const fx = slugs.filter((s) => !plans.some((p) => p.providerSlug === s && p.currency === 'RUB')).map(name);
+  const parts = [];
+  if (ru.length) parts.push(`Картой МИР или по СБП оплатить сервер ${geo.inName} можно у ${listRu(ru)}.`);
+  if (rub.length) parts.push(`Цена в рублях, без привязки к курсу, у ${listRu(rub)}.`);
+  if (fx.length) parts.push(`${listRu(fx)} ${fx.length > 1 ? 'выставляют' : 'выставляет'} цену в валюте, в таблице она пересчитана в рубли по курсу ЦБ на дату сверки`);
+  if (!parts.length) return null;
+  return { q: `Как оплатить VPS ${geo.inName} из России`, a: parts.join(' ').replace(/\.$/, '') };
 }
 
 export async function generateMetadata({ params }) {
   const { geo: slug } = await params;
-  const geo = getGeo(slug);
+  const geo = getGeoPage(slug);
   if (!geo) return {};
-  const plans = plansForGeo(geo.code);
+  const plans = plansForGeoPage(geo);
   const year = yearOf(checkedAt(plans, STATS.verifiedAt));
   const from = plans[0] ? `: от ${price(plans[0].priceRub)}/мес` : '';
   return {
@@ -33,18 +56,21 @@ export async function generateMetadata({ params }) {
 
 export default async function GeoPage({ params }) {
   const { geo: slug } = await params;
-  const geo = getGeo(slug);
+  const geo = getGeoPage(slug);
   if (!geo) notFound();
 
   const content = geoContent(slug);
-  const providers = providersForGeo(geo.code);
-  const plans = plansForGeo(geo.code);
+  const providers = providersForGeoPage(geo);
+  const plans = plansForGeoPage(geo);
   const payload = calculatorPayload();
   const cheapest = plans[0];
   const checked = checkedAt(plans, STATS.verifiedAt);
   const quick = geoAnswer(geo, plans, providers, checked);
   const lead = geoLead(geo.h1.replace(/^VPS (\(ВПС\) )?/, ''), plans, checked, geo.code);
-  const faqAll = [...(content?.faq || []), ...(quick ? [quick.faq] : [])];
+  const pay = payFaq(geo, plans, providers);
+  const faqAll = geo.country
+    ? [...(quick ? [quick.faq] : []), ...(pay ? [pay] : []), ...(content?.faq || [])]
+    : [...(content?.faq || []), ...(quick ? [quick.faq] : [])];
   const pageUrl = absUrl(`/vps/${slug}/`);
 
   return (
@@ -71,6 +97,7 @@ export default async function GeoPage({ params }) {
         lead={lead || geo.note}
         crumbs={[
           { href: '/vps', label: 'География' },
+          ...(geo.country ? [{ href: `/vps/${geo.parent}`, label: geo.parentName }] : []),
           { href: `/vps/${slug}`, label: geo.name },
         ]}
         badges={
@@ -102,7 +129,7 @@ export default async function GeoPage({ params }) {
           <div className="eyebrow">
             <span className="label">Зачем эта география</span>
           </div>
-          <h2>Кому подходит {geo.name}</h2>
+          <h2>{geo.inName ? `Кому подходит VPS ${geo.inName}` : `Кому подходит ${geo.name}`}</h2>
           <p className="lead mb">{content?.why}</p>
 
           <div className="grid-2 mt">
@@ -143,8 +170,8 @@ export default async function GeoPage({ params }) {
           <div className="eyebrow">
             <span className="label label-brass">Подбор</span>
           </div>
-          <h2 style={{ marginBottom: 24 }}>Подберём сервер с локацией {geo.name}</h2>
-          <Calculator payload={payload} presetGeo={slug} campaign={CAMPAIGN.geo(slug)} />
+          <h2 style={{ marginBottom: 24 }}>{geo.inName ? `Подберём сервер ${geo.inName}` : `Подберём сервер с локацией ${geo.name}`}</h2>
+          <Calculator payload={payload} presetGeo={geo.country ? geo.parent : slug} presetCountry={geo.country || null} campaign={CAMPAIGN.geo(slug)} />
         </div>
       </section>
 
@@ -155,7 +182,7 @@ export default async function GeoPage({ params }) {
               <div className="eyebrow">
                 <span className="label">Тарифы</span>
               </div>
-              <h2>Тарифы с этой локацией</h2>
+              <h2>{geo.inName ? `Тарифы VPS ${geo.inName}` : 'Тарифы с этой локацией'}</h2>
             </div>
             <Link href="/catalog" className="btn btn-ghost">
               Весь каталог
@@ -216,13 +243,13 @@ export default async function GeoPage({ params }) {
           <div className="eyebrow">
             <span className="label">Провайдеры</span>
           </div>
-          <h2 style={{ marginBottom: 24 }}>У кого есть эта локация</h2>
+          <h2 style={{ marginBottom: 24 }}>{geo.inName ? `Провайдеры с серверами ${geo.inName}` : 'У кого есть эта локация'}</h2>
           <div className="cards cards-2">
             {providers.map((p) => (
               <ProviderCard
                 key={p.slug}
                 provider={p}
-                minPrice={minPriceOf(p.slug)}
+                minPrice={geo.country ? plans.find((x) => x.providerSlug === p.slug)?.priceRub ?? minPriceOf(p.slug) : minPriceOf(p.slug)}
                 campaign={CAMPAIGN.geo(slug)}
                 geoLabel={geo.name}
               />
@@ -237,7 +264,7 @@ export default async function GeoPage({ params }) {
             <div className="eyebrow">
               <span className="label">Вопросы</span>
             </div>
-            <h2 style={{ marginBottom: 26 }}>Что спрашивают про эту географию</h2>
+            <h2 style={{ marginBottom: 26 }}>{geo.inName ? `Частые вопросы про VPS ${geo.inName}` : 'Что спрашивают про эту географию'}</h2>
             <div className="stack-lg">
               {faqAll.map((f) => (
                 <div key={f.q}>
@@ -256,7 +283,7 @@ export default async function GeoPage({ params }) {
             <span className="label">Другие направления</span>
           </div>
           <div className="chips">
-            {GEO_PAGES.filter((g) => g.slug !== slug).map((g) => (
+            {ALL_GEO_PAGES.filter((g) => g.slug !== slug).map((g) => (
               <Link key={g.slug} href={`/vps/${g.slug}`} className="chip chip-light">
                 {g.name}
               </Link>

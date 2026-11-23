@@ -25,7 +25,7 @@ const PAGES = [
   '/metodologiya', '/o-proekte',
   '/politika-konfidencialnosti', '/cookie',
   '/provajdery/timeweb', '/provajdery/vdsina',
-  '/vps-dlya/1c-bitrix', '/vps-dlya/n8n', '/vps/rossiya', '/vps/evropa',
+  '/vps-dlya/1c-bitrix', '/vps-dlya/n8n', '/vps/rossiya', '/vps/evropa', '/vps/niderlandy',
   '/novosti/nvme-protiv-ssd-kogda-raznica-zametna',
   '/novosti/timeweb-cloud-vtoroe-mesto-reyting-partnerskih-programm',
   '/novosti/adminvps-desyat-let-i-tridcat-tysyach-klientov',

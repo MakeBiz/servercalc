@@ -109,12 +109,13 @@ function match(payload, f) {
   return out;
 }
 
-export default function Calculator({ payload, presetTask = null, presetGeo = 'any', campaign = CAMPAIGN.calculator, compact = false, intro = null, hero = false }) {
+export default function Calculator({ payload, presetTask = null, presetGeo = 'any', presetCountry = null, campaign = CAMPAIGN.calculator, compact = false, intro = null, hero = false }) {
   const presetTaskObj = payload.tasks.find((t) => t.slug === presetTask) || null;
 
   const [task, setTask] = useState(presetTask);
   const [geo, setGeo] = useState(presetGeo);
-  const [country, setCountry] = useState(null);
+  // страница страны (/vps/niderlandy) открывает подбор сразу с регионом и страной
+  const [country, setCountry] = useState(presetCountry);
   const [game, setGame] = useState(null);
   const [players, setPlayers] = useState(10);
   const [ram, setRam] = useState(presetTaskObj?.ram ?? 0);
@@ -172,7 +173,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
     writeParams({
       task: task && task !== presetTask ? task : null,
       geo: geo && geo !== presetGeo ? geo : null,
-      country: country || null,
+      country: country && country !== presetCountry ? country : null,
       ram: ram || null,
       cpu: cpu || null,
       budget: budget || null,
@@ -180,7 +181,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
       req: extras.length ? extras.join(',') : null,
       sort: sort !== 'opt' ? sort : null,
     });
-  }, [task, geo, country, ram, cpu, budget, pay, extras, sort, presetTask, presetGeo]);
+  }, [task, geo, country, ram, cpu, budget, pay, extras, sort, presetTask, presetGeo, presetCountry]);
 
   const taskObj = payload.tasks.find((t) => t.slug === task) || null;
   const geoObj = geo && geo !== 'any' ? payload.geos.find((g) => g.slug === geo) : null;

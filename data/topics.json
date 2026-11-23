@@ -529,8 +529,9 @@
    "cta": "Таблица тарифов Амстердам и Роттердам: Timeweb, Hostman, Hostes, Fornex, is*hosting",
    "wave": 1,
    "waveStart": "2026-11-09",
-   "status": "planned",
-   "note": ""
+   "status": "done",
+   "note": "Страница страны создана 24.11.2026 (шаблон /vps/[geo] с taxonomy.countryPages): тарифы Нидерландов из региона Европа по стране в локации",
+   "published": "2026-11-24"
   },
   {
    "id": "ru-027",

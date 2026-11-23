@@ -1,5 +1,5 @@
 import { absUrl, SITE_NAME } from '@/lib/site';
-import { TASKS, GEO_PAGES, STATS, VISIBLE_PLANS, PROVIDERS, PAGE_PROVIDERS, providersForTask, plansForGeo, minPriceOf, sortForProvidersPage } from '@/lib/data';
+import { TASKS, ALL_GEO_PAGES, STATS, VISIBLE_PLANS, PROVIDERS, PAGE_PROVIDERS, providersForTask, plansForGeoPage, minPriceOf, sortForProvidersPage } from '@/lib/data';
 import ARTICLES from '@/data/provider-articles.json';
 import paymentsData from '@/data/payments.json';
 import { price } from '@/lib/format';
@@ -45,8 +45,8 @@ export function GET() {
   }
 
   out.push('## VPS по странам и регионам', '');
-  for (const geo of GEO_PAGES) {
-    const plans = plansForGeo(geo.code);
+  for (const geo of ALL_GEO_PAGES) {
+    const plans = plansForGeoPage(geo);
     const iso = checkedAt(plans, STATS.verifiedAt);
     out.push(`### ${geo.h1 || geo.name}`);
     out.push(absUrl(`/vps/${geo.slug}/`));
