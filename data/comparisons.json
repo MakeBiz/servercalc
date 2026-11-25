@@ -8,6 +8,11 @@
     { "slug": "timeweb-ili-fornex", "a": "timeweb", "b": "fornex" },
     { "slug": "adminvps-ili-fornex", "a": "adminvps", "b": "fornex" },
     { "slug": "timeweb-ili-ruvds", "a": "timeweb", "b": "ruvds" },
-    { "slug": "adminvps-ili-firstvds", "a": "adminvps", "b": "firstvds" }
+    { "slug": "adminvps-ili-firstvds", "a": "adminvps", "b": "firstvds" },
+    { "slug": "timeweb-ili-hostes", "a": "timeweb", "b": "hostes" },
+    { "slug": "adminvps-ili-hostes", "a": "adminvps", "b": "hostes" },
+    { "slug": "aeza-ili-hostes", "a": "aeza", "b": "hostes" },
+    { "slug": "hostes-ili-hostman", "a": "hostes", "b": "hostman" },
+    { "slug": "timeweb-ili-hostman", "a": "timeweb", "b": "hostman" }
   ]
 }
