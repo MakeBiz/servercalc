@@ -1,5 +1,6 @@
 ---
 title: "Fornex: сколько стоит VPS в Европе в рублях и бюджет сервера на год при росте евро"
+seoTitle: "Fornex: сколько стоит VPS в Европе в рублях, бюджет на год"
 date: 2026-11-03
 rubric: ceny
 provider: fornex

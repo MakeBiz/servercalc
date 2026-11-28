@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import PageHead from '@/components/PageHead';
+import Toc from '@/components/Toc';
 import OutLink from '@/components/OutLink';
 import JsonLd from '@/components/JsonLd';
 import Freshness from '@/components/Freshness';
@@ -12,6 +13,7 @@ import Landing from '@/components/Landing';
 import PairTable from '@/components/PairTable';
 import { checkedLine } from '@/lib/answer-first';
 import { pairPage } from '@/lib/pair-pages';
+import { seoTitle } from '@/lib/site';
 
 /**
  * Сравнение двух провайдеров по данным каталога (24.10.2026, раздел перенесён
@@ -37,7 +39,7 @@ export async function generateMetadata({ params }) {
   const b = side(pair.b);
   const title = pairTitle(pair);
   return {
-    title: `${title}: что выбрать, сравнение цен и тарифов VPS`,
+    title: seoTitle(`${title}: что выбрать, сравнение цен и тарифов VPS`),
     description: `${title}: стартовая цена${a.min && b.min ? ` от ${price(a.min)} и от ${price(b.min)}` : ''}, локации, задачи и промокоды. Данные каталога, цены проверены ${ruDate(STATS.verifiedAt)}`,
     alternates: { canonical: `/sravnenie/${slug}` },
   };
@@ -133,10 +135,18 @@ export default async function ComparePage({ params }) {
         </div>
       </PageHead>
 
+      <Toc
+        items={[
+          { id: 's-sravnenie', label: 'Сравнение по каталогу' },
+          { id: 's-vybor', label: 'Что выбрать' },
+          { id: 's-faq', label: 'Частые вопросы' },
+        ]}
+      />
+
       <section className="section paper">
         <div className="wrap">
           <div className="between mb">
-            <h2>{`${A} и ${B}: сравнение по каталогу`}</h2>
+            <h2 id="s-sravnenie">{`${A} и ${B}: сравнение по каталогу`}</h2>
             <Freshness date={STATS.verifiedAt} />
           </div>
           <div className="tbl-wrap">
@@ -171,7 +181,7 @@ export default async function ComparePage({ params }) {
 
       <section className="section paper-alt">
         <div className="wrap">
-          <h2>Что выбрать</h2>
+          <h2 id="s-vybor">Что выбрать</h2>
           <div className="grid-2 mt">
             {[[a, pickA], [b, pickB]].map(([x, why]) => (
               <div key={x.provider.slug}>
@@ -203,7 +213,7 @@ export default async function ComparePage({ params }) {
 
       <section className="section paper">
         <div className="wrap">
-          <h2>Частые вопросы</h2>
+          <h2 id="s-faq">Частые вопросы</h2>
           {faq.map((f) => (
             <div key={f.q} className="mt">
               <h3>{f.q}</h3>

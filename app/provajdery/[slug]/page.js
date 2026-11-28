@@ -2,12 +2,13 @@ import Link from 'next/link';
 import { partnerBonus } from '@/lib/quality';
 import { notFound } from 'next/navigation';
 import PageHead from '@/components/PageHead';
+import Toc from '@/components/Toc';
 import OutLink from '@/components/OutLink';
 import { withRef, refRel } from '@/lib/reflink';
 import JsonLd from '@/components/JsonLd';
 import Freshness from '@/components/Freshness';
 import TaskIcon from '@/components/TaskIcon';
-import { ProviderArticle, ProviderFaqAlt } from '@/components/ProviderArticle';
+import { ProviderArticle, ProviderFaqAlt, articleOf } from '@/components/ProviderArticle';
 import {
   PROVIDERS,
   PAGE_PROVIDERS,
@@ -153,6 +154,15 @@ export default async function ProviderPage({ params }) {
         </p>
       </PageHead>
 
+      <Toc
+        items={[
+          articleOf(slug) && { id: 'obzor', label: 'Обзор' },
+          articleOf(slug)?.faq?.length > 0 && { id: 'faq', label: 'Частые вопросы' },
+          servicesOf(slug).length > 0 && { id: 'servisy', label: 'Сервисы и цены' },
+          { id: 's-tarify', label: 'Тарифы в базе' },
+        ]}
+      />
+
       <section className="section paper">
         <div className="wrap">
           <div className="grid-2">
@@ -221,7 +231,7 @@ export default async function ProviderPage({ params }) {
               <div className="eyebrow">
                 <span className="label">Тарифы</span>
               </div>
-              <h2>Что есть в базе</h2>
+              <h2 id="s-tarify">Что есть в базе</h2>
             </div>
             <Freshness date={STATS.verifiedAt} />
           </div>

@@ -1,5 +1,6 @@
 ---
 title: "Сколько оперативной памяти нужно VPS: таблица по задачам и цена каждого гигабайта"
+seoTitle: "Сколько оперативной памяти нужно VPS: таблица по задачам и цены"
 date: 2026-11-06
 rubric: obzory
 tasks: [sajt, telegram-bot, n8n, magazin, 1c-bitrix, baza-dannyh]

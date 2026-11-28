@@ -2,6 +2,7 @@ import FeaturedPartner from '@/components/FeaturedPartner';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import PageHead from '@/components/PageHead';
+import Toc from '@/components/Toc';
 import Calculator from '@/components/Calculator';
 import ProviderCard from '@/components/ProviderCard';
 import JsonLd from '@/components/JsonLd';
@@ -105,6 +106,18 @@ export default async function TaskPage({ params }) {
         }
       />
 
+      <Toc
+        items={[
+          { id: 's-pochemu', label: 'Сколько ресурсов нужно' },
+          isWin && winRows.length > 0 && { id: 's-windows', label: 'Цена с лицензией Windows' },
+          { id: 's-podbor', label: 'Подбор сервера' },
+          { id: 's-tarify', label: task.noTariffs ? 'Цена сервера с GPU' : 'Подходящие тарифы' },
+          { id: 's-provajdery', label: 'Провайдеры' },
+          faqAll.length > 0 && { id: 's-faq', label: 'Частые вопросы' },
+          related.length > 0 && { id: 's-chitat', label: 'Что почитать' },
+        ]}
+      />
+
       {quick && (
         <section className="section-tight paper">
           <div className="wrap">
@@ -121,7 +134,7 @@ export default async function TaskPage({ params }) {
           <div className="eyebrow">
             <span className="label">Сколько ресурсов нужно</span>
           </div>
-          <h2>Почему именно столько</h2>
+          <h2 id="s-pochemu">Почему именно столько</h2>
           <p className="lead mb">{content?.why}</p>
 
           <div className="cards" style={{ marginTop: 26 }}>
@@ -177,7 +190,7 @@ export default async function TaskPage({ params }) {
             <div className="eyebrow">
               <span className="label">Цена с лицензией</span>
             </div>
-            <h2>
+            <h2 id="s-windows">
               Windows VPS {content.sizing[1].cpu} × {content.sizing[1].ram} ГБ с лицензией: итог в месяц
             </h2>
             <p className="lead mb">
@@ -230,7 +243,7 @@ export default async function TaskPage({ params }) {
           <div className="eyebrow">
             <span className="label label-brass">Подбор</span>
           </div>
-          <h2 style={{ marginBottom: 24 }}>Подберём под {task.name.toLowerCase()}</h2>
+          <h2 id="s-podbor" style={{ marginBottom: 24 }}>Подберём под {task.name.toLowerCase()}</h2>
           <Calculator payload={payload} presetTask={slug} campaign={CAMPAIGN.task(slug)} />
         </div>
       </section>
@@ -244,7 +257,7 @@ export default async function TaskPage({ params }) {
               <div className="eyebrow">
                 <span className="label">Тарифы</span>
               </div>
-              <h2>{task.noTariffs ? 'Сервер с GPU: цену считают отдельно' : 'Подходящие тарифы из базы'}</h2>
+              <h2 id="s-tarify">{task.noTariffs ? 'Сервер с GPU: цену считают отдельно' : 'Подходящие тарифы из базы'}</h2>
               {task.noTariffs ? (
                 <p className="lead">
                   Цена сервера с видеокартой зависит от модели GPU и объёма видеопамяти и считается
@@ -324,7 +337,7 @@ export default async function TaskPage({ params }) {
           <div className="eyebrow">
             <span className="label">Провайдеры</span>
           </div>
-          <h2 style={{ marginBottom: 24 }}>Кто заявляет эту задачу</h2>
+          <h2 id="s-provajdery" style={{ marginBottom: 24 }}>Кто заявляет эту задачу</h2>
           <div className="cards cards-2">
             {providers.map((p) => (
               <ProviderCard key={p.slug} provider={p} minPrice={task.noTariffs ? null : minPriceOf(p.slug)} campaign={CAMPAIGN.task(slug)} />
@@ -340,7 +353,7 @@ export default async function TaskPage({ params }) {
             <div className="eyebrow">
               <span className="label">Вопросы</span>
             </div>
-            <h2 style={{ marginBottom: 26 }}>Что спрашивают про {task.name.toLowerCase()}</h2>
+            <h2 id="s-faq" style={{ marginBottom: 26 }}>Что спрашивают про {task.name.toLowerCase()}</h2>
             <div className="stack-lg">
               {faqAll.map((f) => (
                 <div key={f.q}>
@@ -360,7 +373,7 @@ export default async function TaskPage({ params }) {
             <div className="eyebrow">
               <span className="label">Разборы по теме</span>
             </div>
-            <h2 style={{ marginBottom: 26 }}>Что почитать перед выбором</h2>
+            <h2 id="s-chitat" style={{ marginBottom: 26 }}>Что почитать перед выбором</h2>
             <div className="cards cards-2">
               {related.map((p) => (
                 <Link key={p.slug} href={`/novosti/${p.slug}`} className="card">

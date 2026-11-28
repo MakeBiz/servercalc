@@ -19,7 +19,7 @@ export default function ProviderCard({ provider, minPrice, campaign, geoLabel })
       <div className="prov-head">
         {logoOf(provider.slug) ? (
           <span className={logoOf(provider.slug).dark ? 'prov-mark prov-img rc5-dark' : 'prov-mark prov-img'} aria-hidden="true">
-            <img src={logoOf(provider.slug).src} alt="" width="28" height="28" loading="lazy" decoding="async" />
+            <img src={logoOf(provider.slug).src} alt={`Логотип ${provider.name}`} width="28" height="28" loading="lazy" decoding="async" />
           </span>
         ) : (
           <span className="prov-mark" style={{ background: provider.color }}>

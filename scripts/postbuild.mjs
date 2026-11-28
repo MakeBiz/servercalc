@@ -161,6 +161,48 @@ for (const [ruPath, enPath, exact] of LANG.pairs) {
 }
 console.log(`[postbuild] hreflang ru/en: ${hrefl} страниц`);
 
+/* ---------- dateModified на каждой странице (28.11.2026) ----------
+   У части шаблонов в разметке не было даты изменения: поиск и нейросети не видели,
+   насколько страница свежая. Дата берётся из sitemap.xml, это единственный источник
+   дат на сайте: страницы с данными живут по дате проверки базы, документы по дате
+   правки текста. Узел WebPage дописывается только туда, где dateModified ещё нет */
+{
+  const smFile = path.join(OUT, 'sitemap.xml');
+  let dated = 0;
+  if (fs.existsSync(smFile)) {
+    const sm = fs.readFileSync(smFile, 'utf8');
+    const re = /<url>\s*<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/g;
+    let m;
+    while ((m = re.exec(sm))) {
+      const loc = m[1].trim();
+      const day = m[2].trim().slice(0, 10);
+      const rel = loc.replace(BASE, '').replace(/^\/|\/$/g, '');
+      const file = path.join(OUT, rel, 'index.html');
+      if (!fs.existsSync(file)) continue;
+      let html = fs.readFileSync(file, 'utf8');
+      if (html.includes('"dateModified"')) continue;
+      const name = ((html.match(/<title>([^<]*)<\/title>/) || [])[1] || '')
+        .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+      const node = {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        '@id': `${loc}#webpage`,
+        url: loc,
+        name,
+        inLanguage: 'ru-RU',
+        isPartOf: { '@id': `${BASE}/#site` },
+        publisher: { '@id': `${BASE}/#org` },
+        dateModified: day,
+      };
+      const tag = `<script type="application/ld+json">${JSON.stringify(node).replace(/</g, '\\u003c')}</script>`;
+      html = html.replace('</head>', `${tag}</head>`);
+      fs.writeFileSync(file, html);
+      dated += 1;
+    }
+  }
+  console.log(`[postbuild] dateModified из sitemap: ${dated} страниц`);
+}
+
 /* ---------- IndexNow после каждой сборки (29.10.2026) ----------
    Считаем отпечаток текста каждой страницы (содержимое <main>, без скриптов),
    сравниваем с манифестом прошлой выкладки на живом сайте и отправляем в IndexNow

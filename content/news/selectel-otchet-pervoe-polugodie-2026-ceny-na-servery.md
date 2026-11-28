@@ -1,5 +1,6 @@
 ---
 title: "Отчёт Selectel за полугодие: что финансы провайдера говорят о ценах на серверы"
+seoTitle: "Отчёт Selectel за полугодие 2026: что он говорит о ценах на серверы"
 date: 2026-09-08
 rubric: novosti
 provider: selectel

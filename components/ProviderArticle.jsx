@@ -2,8 +2,8 @@ import Link from 'next/link';
 import JsonLd from '@/components/JsonLd';
 import ARTICLES from '@/data/provider-articles.json';
 import paymentsData from '@/data/payments.json';
-import { PROVIDERS, GEOS, minPriceOf, PROVIDER_ORDER } from '@/lib/data';
-import { absUrl } from '@/lib/site';
+import { PROVIDERS, GEOS, minPriceOf, PROVIDER_ORDER, plansOf } from '@/lib/data';
+import { absUrl, ORG_ID } from '@/lib/site';
 import { pairsOf } from '@/lib/compare';
 import { price } from '@/lib/format';
 import { withRef, refRel } from '@/lib/reflink';
@@ -44,13 +44,17 @@ export function ProviderArticle({ provider }) {
     [T.founded, f.founded], [T.hq, f.hq], [T.legal, f.legal],
     [T.dcs, (f.datacenters || []).join(', ')], [T.products, (f.products || []).join(', ')],
   ].filter((r) => r[1]);
+  // 28.11.2026: дата изменения страницы это последняя проверка цен её тарифов,
+  // а не дата сверки фактов о компании: цены на странице обновляются чаще
+  const modified = plansOf(provider.slug).reduce((m, p) => (p.verifiedAt > m ? p.verifiedAt : m), a.checkedAt || '');
   return (
     <section className="section paper" id="obzor">
       <JsonLd data={{
         '@context': 'https://schema.org', '@type': 'Article',
         headline: a.sections[0]?.h || provider.name, about: { '@type': 'Organization', name: provider.name, url: provider.site, ...(f.founded ? { foundingDate: f.founded } : {}) },
-        dateModified: a.checkedAt, inLanguage: LANG, mainEntityOfPage: absUrl(`${BASE}/${provider.slug}`),
-        publisher: { '@type': 'Organization', name: 'ServerCalc', url: absUrl('/') }, citation: a.sources,
+        dateModified: modified, inLanguage: LANG, mainEntityOfPage: absUrl(`${BASE}/${provider.slug}`),
+        author: { '@type': 'Organization', name: 'ServerCalc', url: absUrl('/') },
+        publisher: { '@type': 'Organization', '@id': ORG_ID, name: 'ServerCalc', url: absUrl('/') }, citation: a.sources,
       }} />
       <div className="wrap pa-grid">
         <article className="pa-body">

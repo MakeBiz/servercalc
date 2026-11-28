@@ -7,7 +7,8 @@ import OutLink from '@/components/OutLink';
 import { allPosts, getPost, rubricName } from '@/lib/news';
 import { getProvider, minPriceOf } from '@/lib/data';
 import { price, ruDate } from '@/lib/format';
-import { absUrl, SITE_NAME } from '@/lib/site';
+import Toc from '@/components/Toc';
+import { absUrl, SITE_NAME, ORG_ID, SITE_ID, seoTitle } from '@/lib/site';
 
 export function generateStaticParams() {
   return allPosts().map((p) => ({ slug: p.slug }));
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }) {
   const post = getPost(slug);
   if (!post) return {};
   return {
-    title: post.title,
+    title: seoTitle(post.seoTitle || post.title),
     description: post.description,
     alternates: { canonical: `/novosti/${slug}` },
     openGraph: {
@@ -57,8 +58,10 @@ export default async function PostPage({ params }) {
           description: post.description,
           datePublished: post.date,
           dateModified: post.updated || post.date,
-          author: { '@type': 'Organization', name: post.author },
-          publisher: { '@type': 'Organization', name: SITE_NAME },
+          author: { '@type': 'Organization', name: post.author, url: absUrl('/o-proekte'), parentOrganization: { '@id': ORG_ID } },
+          publisher: { '@type': 'Organization', '@id': ORG_ID, name: SITE_NAME, url: absUrl('/') },
+          isPartOf: { '@id': SITE_ID },
+          image: absUrl('/opengraph-image.png'),
           mainEntityOfPage: absUrl(`/novosti/${slug}`),
           inLanguage: 'ru-RU',
         }}
@@ -82,6 +85,8 @@ export default async function PostPage({ params }) {
           </>
         }
       />
+
+      <Toc items={post.toc} narrow />
 
       <section className="section paper">
         <div className="wrap-narrow">

@@ -1,5 +1,6 @@
 ---
 title: "Сколько стоит VPS в Timeweb Cloud в ноябре 2026: линейки Premium, Ultra и High CPU в рублях"
+seoTitle: "Сколько стоит VPS в Timeweb Cloud в ноябре 2026: Premium, Ultra, High CPU"
 date: 2026-11-01
 rubric: ceny
 provider: timeweb

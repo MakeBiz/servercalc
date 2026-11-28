@@ -121,6 +121,8 @@ export default function HomePage() {
           description:
             'Независимый справочный каталог виртуальных серверов (VPS/ВПС) с подбором под задачу по открытой формуле и проверенной ценой у каждого тарифа',
           areaServed: 'RU',
+          publishingPrinciples: absUrl('/metodologiya'),
+          mainEntityOfPage: absUrl('/o-proekte'),
         }}
       />
       <JsonLd
@@ -278,7 +280,7 @@ export default function HomePage() {
               return (
                 <Link key={p.slug} href={`/provajdery/${p.slug}`} className="pv-tile" style={{ '--c': p.color }}>
                   <span className="pv-tile-top">
-                    {logoOf(p.slug) && <span className={logoOf(p.slug).dark ? 'pv-tile-logo rc5-dark' : 'pv-tile-logo'} aria-hidden="true"><img src={logoOf(p.slug).src} alt="" width="28" height="28" loading="lazy" decoding="async" /></span>}
+                    {logoOf(p.slug) && <span className={logoOf(p.slug).dark ? 'pv-tile-logo rc5-dark' : 'pv-tile-logo'} aria-hidden="true"><img src={logoOf(p.slug).src} alt={`Логотип ${p.name}`} width="28" height="28" loading="lazy" decoding="async" /></span>}
                     <span className="pv-tile-name">{p.name}</span>
                   </span>
                   <span className="pv-tile-meta">от {price(minPriceOf(p.slug))} в месяц{locs.length ? ` · ${locs.join(', ')}` : ''}</span>

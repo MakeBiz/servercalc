@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
+import Toc from '@/components/Toc';
 import JsonLd from '@/components/JsonLd';
 import providersRaw from '@/data/providers.json';
 import index from '@/data/price-index.json';
@@ -139,10 +140,20 @@ export default function PriceIndexPage() {
         }
       />
 
+      <Toc
+        items={[
+          CLASSES.length > 0 && { id: 's-deshevye', label: 'Самые дешёвые по памяти' },
+          BY_PROVIDER.length > 0 && { id: 's-podnyali', label: 'Кто поднял цены' },
+          { id: 's-izmeneniya', label: 'Как изменились цены' },
+          WITHDRAWN.length > 0 && { id: 's-snyaty', label: 'Сняты с продажи' },
+          { id: 's-sejchas', label: 'Самые дешёвые сейчас' },
+        ]}
+      />
+
       {CLASSES.length > 0 && (
         <section className="section paper">
           <div className="wrap">
-            <h2>Самые дешёвые VPS в России по объёму памяти</h2>
+            <h2 id="s-deshevye">Самые дешёвые VPS в России по объёму памяти</h2>
             <p className="dim">По три самых дешёвых провайдера в каждом классе, цена в месяц на {dmy(CHECKED)}. Если цена только при предоплате, это написано рядом</p>
             <div className="tbl-wrap mt">
               <div className="tbl-scroll">
@@ -174,7 +185,7 @@ export default function PriceIndexPage() {
       {BY_PROVIDER.length > 0 && (
         <section className="section paper-alt">
           <div className="wrap">
-            <h2>Кто поднял цены</h2>
+            <h2 id="s-podnyali">Кто поднял цены</h2>
             <div className="tbl-wrap mt">
               <div className="tbl-scroll">
                 <table className="tbl">
@@ -200,7 +211,7 @@ export default function PriceIndexPage() {
 
       <section className="section paper">
         <div className="wrap">
-          <h2>Как изменились цены с {dmy(FROM)} по {dmy(TO)}</h2>
+          <h2 id="s-izmeneniya">Как изменились цены с {dmy(FROM)} по {dmy(TO)}</h2>
           <p className="dim">Цена в месяц в валюте провайдера. Сначала тарифы с самым большим изменением</p>
           <div className="tbl-wrap mt">
             <div className="tbl-scroll">
@@ -235,7 +246,7 @@ export default function PriceIndexPage() {
       {WITHDRAWN.length > 0 && (
         <section className="section paper-alt">
           <div className="wrap">
-            <h2>Сняты с продажи или заменены</h2>
+            <h2 id="s-snyaty">Сняты с продажи или заменены</h2>
             <ul className="list-check">
               {WITHDRAWN.map((w) => (
                 <li key={`${w.providerSlug}-${w.name}`}>
@@ -249,7 +260,7 @@ export default function PriceIndexPage() {
 
       <section className="section paper">
         <div className="wrap">
-          <h2>Самые дешёвые VPS в России сейчас</h2>
+          <h2 id="s-sejchas">Самые дешёвые VPS в России сейчас</h2>
           <ul className="list-check">
             {CHEAP.map((c) => (
               <li key={c.label}>С {c.label}: {planName(c.p)}, {priceText(c.p)}</li>

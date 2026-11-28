@@ -2,6 +2,7 @@ import FeaturedPartner from '@/components/FeaturedPartner';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import PageHead from '@/components/PageHead';
+import Toc from '@/components/Toc';
 import Calculator from '@/components/Calculator';
 import ProviderCard from '@/components/ProviderCard';
 import JsonLd from '@/components/JsonLd';
@@ -114,6 +115,16 @@ export default async function GeoPage({ params }) {
         }
       />
 
+      <Toc
+        items={[
+          { id: 's-komu', label: 'Кому подходит' },
+          { id: 's-podbor', label: 'Подбор сервера' },
+          { id: 's-tarify', label: 'Тарифы' },
+          { id: 's-provajdery', label: 'Провайдеры' },
+          faqAll.length > 0 && { id: 's-faq', label: 'Частые вопросы' },
+        ]}
+      />
+
       {quick && (
         <section className="section-tight paper">
           <div className="wrap">
@@ -129,7 +140,7 @@ export default async function GeoPage({ params }) {
           <div className="eyebrow">
             <span className="label">Зачем эта география</span>
           </div>
-          <h2>{geo.inName ? `Кому подходит VPS ${geo.inName}` : `Кому подходит ${geo.name}`}</h2>
+          <h2 id="s-komu">{geo.inName ? `Кому подходит VPS ${geo.inName}` : `Кому подходит ${geo.name}`}</h2>
           <p className="lead mb">{content?.why}</p>
 
           <div className="grid-2 mt">
@@ -170,7 +181,7 @@ export default async function GeoPage({ params }) {
           <div className="eyebrow">
             <span className="label label-brass">Подбор</span>
           </div>
-          <h2 style={{ marginBottom: 24 }}>{geo.inName ? `Подберём сервер ${geo.inName}` : `Подберём сервер с локацией ${geo.name}`}</h2>
+          <h2 id="s-podbor" style={{ marginBottom: 24 }}>{geo.inName ? `Подберём сервер ${geo.inName}` : `Подберём сервер с локацией ${geo.name}`}</h2>
           <Calculator payload={payload} presetGeo={geo.country ? geo.parent : slug} presetCountry={geo.country || null} campaign={CAMPAIGN.geo(slug)} />
         </div>
       </section>
@@ -182,7 +193,7 @@ export default async function GeoPage({ params }) {
               <div className="eyebrow">
                 <span className="label">Тарифы</span>
               </div>
-              <h2>{geo.inName ? `Тарифы VPS ${geo.inName}` : 'Тарифы с этой локацией'}</h2>
+              <h2 id="s-tarify">{geo.inName ? `Тарифы VPS ${geo.inName}` : 'Тарифы с этой локацией'}</h2>
             </div>
             <Link href="/catalog" className="btn btn-ghost">
               Весь каталог
@@ -243,7 +254,7 @@ export default async function GeoPage({ params }) {
           <div className="eyebrow">
             <span className="label">Провайдеры</span>
           </div>
-          <h2 style={{ marginBottom: 24 }}>{geo.inName ? `Провайдеры с серверами ${geo.inName}` : 'У кого есть эта локация'}</h2>
+          <h2 id="s-provajdery" style={{ marginBottom: 24 }}>{geo.inName ? `Провайдеры с серверами ${geo.inName}` : 'У кого есть эта локация'}</h2>
           <div className="cards cards-2">
             {providers.map((p) => (
               <ProviderCard
@@ -264,7 +275,7 @@ export default async function GeoPage({ params }) {
             <div className="eyebrow">
               <span className="label">Вопросы</span>
             </div>
-            <h2 style={{ marginBottom: 26 }}>{geo.inName ? `Частые вопросы про VPS ${geo.inName}` : 'Что спрашивают про эту географию'}</h2>
+            <h2 id="s-faq" style={{ marginBottom: 26 }}>{geo.inName ? `Частые вопросы про VPS ${geo.inName}` : 'Что спрашивают про эту географию'}</h2>
             <div className="stack-lg">
               {faqAll.map((f) => (
                 <div key={f.q}>

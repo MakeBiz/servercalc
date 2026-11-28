@@ -574,7 +574,7 @@ export default function Calculator({ payload, presetTask = null, presetGeo = 'an
                   {feat && <span className="rc5-ribbon">{feat.label} · {feat.promo?.text}</span>}
                   {pr.logo ? (
                     <span className={pr.logo.dark ? 'rc5-logo rc5-img rc5-dark' : 'rc5-logo rc5-img'} aria-hidden="true">
-                      <img src={pr.logo.src} alt="" width="40" height="40" loading={i < 3 ? 'eager' : 'lazy'} decoding="async" />
+                      <img src={pr.logo.src} alt={`Логотип ${pr.name}`} width="40" height="40" loading={i < 3 ? 'eager' : 'lazy'} decoding="async" />
                     </span>
                   ) : (
                     <span className="rc5-logo" style={{ '--c': pr.color }} aria-hidden="true">{ini}</span>

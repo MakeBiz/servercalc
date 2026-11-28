@@ -2,7 +2,8 @@ import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import SecHead from '@/components/SecHead';
 import { STATS, PROVIDERS, bonusDisclosure } from '@/lib/data';
-import { SITE, SITE_NAME } from '@/lib/site';
+import JsonLd from '@/components/JsonLd';
+import { SITE, SITE_NAME, ORG_ID, SITE_ID, absUrl } from '@/lib/site';
 import { ruDate, plural } from '@/lib/format';
 
 export const metadata = {
@@ -15,6 +16,19 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'AboutPage',
+          '@id': `${absUrl('/o-proekte')}#webpage`,
+          url: absUrl('/o-proekte'),
+          name: 'Что такое ServerCalc',
+          inLanguage: 'ru-RU',
+          isPartOf: { '@id': SITE_ID },
+          about: { '@id': ORG_ID },
+          mainEntity: { '@id': ORG_ID },
+        }}
+      />
       <PageHead
         eyebrow="О сервисе"
         title="Что такое ServerCalc"

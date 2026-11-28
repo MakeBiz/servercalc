@@ -1,5 +1,6 @@
 ---
 title: "Что нового в Timeweb Cloud за октябрь 2026: серверы в Польше, Испании и Италии, логи AI Gateway и экспорт DNS"
+seoTitle: "Что нового в Timeweb Cloud за октябрь 2026: новые локации и сервисы"
 date: 2026-11-01
 rubric: novosti
 provider: timeweb

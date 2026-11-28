@@ -1,5 +1,6 @@
 ---
 title: "Промокод AdminVPS MakeBiz30 и MakeBizYear: сколько экономит сервер за первый месяц и за год"
+seoTitle: "Промокод AdminVPS MakeBiz30 и MakeBizYear: сколько экономит за год"
 date: 2026-10-30
 rubric: obzory
 provider: adminvps

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import PageHead from '@/components/PageHead';
+import Toc from '@/components/Toc';
 import OutLink from '@/components/OutLink';
 import JsonLd from '@/components/JsonLd';
 import { getProvider } from '@/lib/data';
@@ -146,10 +147,19 @@ export default async function ServicePage({ params }) {
         </p>
       </PageHead>
 
+      <Toc
+        items={[
+          { id: 's-kak', label: 'Как устроено' },
+          { id: 's-tablica', label: s.tableTitle },
+          { id: 's-byudzhet', label: 'Бюджет' },
+          { id: 's-faq', label: 'Частые вопросы' },
+        ]}
+      />
+
       <section className="section paper">
         <div className="wrap">
           <div className="prose" style={{ maxWidth: 760 }}>
-            <h2>{s.name} в {provider.name}: как это устроено</h2>
+            <h2 id="s-kak">{s.name} в {provider.name}: как это устроено</h2>
             {s.intro.map((p) => (
               <p key={p.slice(0, 40)}>{p}</p>
             ))}
@@ -184,7 +194,7 @@ export default async function ServicePage({ params }) {
           <div className="eyebrow">
             <span className="label">Цены</span>
           </div>
-          <h2>{s.tableTitle}</h2>
+          <h2 id="s-tablica">{s.tableTitle}</h2>
           <p className="faint" style={{ marginBottom: 20 }}>{s.tableNote}</p>
           <Table s={s} />
           <div className="row mt">
@@ -202,7 +212,7 @@ export default async function ServicePage({ params }) {
         <div className="wrap">
           <div className="grid-2">
             <div className="prose">
-              <h2>Что это значит для бюджета</h2>
+              <h2 id="s-byudzhet">Что это значит для бюджета</h2>
               {s.budget.map((p) => (
                 <p key={p.slice(0, 40)}>{p}</p>
               ))}
@@ -229,7 +239,7 @@ export default async function ServicePage({ params }) {
           <div className="eyebrow">
             <span className="label">Вопросы</span>
           </div>
-          <h2 style={{ marginBottom: 26 }}>Частые вопросы: {s.name}</h2>
+          <h2 id="s-faq" style={{ marginBottom: 26 }}>Частые вопросы: {s.name}</h2>
           <div className="stack-lg">
             {s.faq.map((f) => (
               <div key={f.q}>

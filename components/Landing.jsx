@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import PageHead from '@/components/PageHead';
+import Toc from '@/components/Toc';
 import JsonLd from '@/components/JsonLd';
 import AnswerTable from '@/components/AnswerTable';
 import OutLink from '@/components/OutLink';
@@ -53,10 +54,10 @@ export default function Landing({
   const top = endCta?.plan || plans[0];
   const topProvider = top ? getProvider(top.providerSlug) : null;
 
-  const Section = ({ s, alt }) => (
+  const Section = ({ s, alt, id }) => (
     <section className={`section ${alt ? 'paper-alt' : 'paper'}`}>
       <div className="wrap" style={{ maxWidth: 860 }}>
-        <h2 style={{ marginBottom: 14 }}>{s.h2}</h2>
+        <h2 id={id} style={{ marginBottom: 14 }}>{s.h2}</h2>
         <div className="stack">
           {s.paras.map((p, i) => (
             <Para key={i} p={p} />
@@ -123,13 +124,21 @@ export default function Landing({
         }
       />
 
+      <Toc
+        items={[
+          table && { id: 's-tablica', label: table.h2 },
+          ...sections.map((s, i) => ({ id: `s-${i + 1}`, label: s.h2 })),
+          faq.length > 0 && { id: 's-faq', label: 'Частые вопросы' },
+        ]}
+      />
+
       {table && (
         <section className="section paper">
           <div className="wrap">
             <div className="eyebrow">
               <span className="label">{table.label || 'Сначала дешёвые'}</span>
             </div>
-            <h2>{table.h2}</h2>
+            <h2 id="s-tablica">{table.h2}</h2>
             {table.lead && <p className="lead">{table.lead}</p>}
             <div className="mt">
               {plans.length ? (
@@ -148,7 +157,7 @@ export default function Landing({
 
       {sections.map((s, i) => (
         <div key={s.h2}>
-          <Section s={s} alt={i % 2 === 0} />
+          <Section s={s} alt={i % 2 === 0} id={`s-${i + 1}`} />
           {i === midAfter && midCta && (
             <section className="section-tight paper">
               <div className="wrap" style={{ maxWidth: 860 }}>
@@ -177,7 +186,7 @@ export default function Landing({
             <div className="eyebrow">
               <span className="label">Вопросы</span>
             </div>
-            <h2 style={{ marginBottom: 26 }}>Частые вопросы</h2>
+            <h2 id="s-faq" style={{ marginBottom: 26 }}>Частые вопросы</h2>
             <div className="stack-lg">
               {faq.map((f) => (
                 <div key={f.q}>

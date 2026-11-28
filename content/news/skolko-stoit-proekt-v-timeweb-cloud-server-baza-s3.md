@@ -1,5 +1,6 @@
 ---
 title: "Сколько стоит проект целиком в Timeweb Cloud: сервер, база, S3, бэкапы и мониторинг"
+seoTitle: "Сколько стоит проект в Timeweb Cloud: сервер, база, S3 и бэкапы"
 date: 2026-11-01
 rubric: obzory
 provider: timeweb
