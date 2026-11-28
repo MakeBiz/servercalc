@@ -5,15 +5,23 @@ import { STATS, PROVIDERS, bonusDisclosure } from '@/lib/data';
 import JsonLd from '@/components/JsonLd';
 import { SITE, SITE_NAME, ORG_ID, SITE_ID, absUrl } from '@/lib/site';
 import { ruDate, plural } from '@/lib/format';
+import { DOC_DATES } from '@/lib/page-dates';
+import { verificationLog, sourceCoverage } from '@/lib/verification-log';
 
 export const metadata = {
   title: { absolute: 'Что такое ServerCalc: каталог VPS с проверенными ценами' },
   description:
-    'Что такое ServerCalc, откуда берутся данные в каталоге, по каким принципам работает сервис и что планируется добавить дальше',
+    'Что такое ServerCalc, откуда данные в каталоге, как и когда сверяются цены, по каким принципам работает сервис и кто его ведёт',
   alternates: { canonical: '/o-proekte' },
 };
 
+// дата правки текста страницы, та же уходит в карту сайта (lib/page-dates.js)
+const UPDATED = DOC_DATES['o-proekte'];
+
 export default function AboutPage() {
+  const log = verificationLog(5);
+  const cover = sourceCoverage();
+  const tariffs = (n) => `${n} ${plural(n, 'тариф', 'тарифа', 'тарифов')}`;
   return (
     <>
       <JsonLd
@@ -27,6 +35,7 @@ export default function AboutPage() {
           isPartOf: { '@id': SITE_ID },
           about: { '@id': ORG_ID },
           mainEntity: { '@id': ORG_ID },
+          dateModified: UPDATED,
         }}
       />
       <PageHead
@@ -38,6 +47,7 @@ export default function AboutPage() {
           <>
             <span className="badge badge-brass">{STATS.plans} {plural(STATS.plans, 'тариф с проверенной ценой', 'тарифа с проверенной ценой', 'тарифов с проверенной ценой')}</span>
             <span className="badge">база проверена {ruDate(STATS.verifiedAt)}</span>
+            <span className="badge">страница обновлена {ruDate(UPDATED)}</span>
           </>
         }
       />
@@ -72,7 +82,52 @@ export default function AboutPage() {
               партнёрской схеме.
             </p>
 
-            <SecHead n="03">Принципы</SecHead>
+            <SecHead n="03" id="sverka">Как идёт сверка цен</SecHead>
+            <p>
+              Сверка устроена одинаково для каждого тарифа и повторяется раз в неделю:
+            </p>
+            <ol className="num-list">
+              <li>Открываем страницу прайса на сайте провайдера. Ссылка на неё хранится в базе у каждого тарифа: сейчас она есть у {cover.withSource} из {cover.total} тарифов на витрине</li>
+              <li>Сравниваем цену, ядра, память и диск с записью в базе. Если что-то изменилось, правим запись</li>
+              <li>Ставим тарифу дату проверки. Она видна в каталоге и на странице провайдера, а там рядом с датой стоит ссылка «прайс» на страницу, с которой сверялась цена</li>
+              <li>Цены зарубежных провайдеров пересчитываем в рубли по курсу Банка России, курс и его дата указаны под каталогом, исходная цена в валюте остаётся в записи тарифа</li>
+              <li>Тариф, который не проверялся дольше {STATS.staleDays} {plural(STATS.staleDays, 'дня', 'дней', 'дней')}, скрывается автоматически, пока его не сверят снова</li>
+            </ol>
+            <p>
+              Ниже срез базы на {ruDate(STATS.verifiedAt)}: когда тарифы на витрине проверялись в последний раз.
+              Таблица собирается из тех же дат, что стоят у цен в каталоге, поэтому её можно перепроверить.
+            </p>
+          </div>
+
+          <div className="tbl-wrap mt">
+            <div className="tbl-scroll">
+              <table className="tbl" style={{ minWidth: 520 }}>
+                <thead>
+                  <tr>
+                    <th>Дата сверки</th>
+                    <th>Тарифов</th>
+                    <th>Провайдеры</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {log.map((r) => (
+                    <tr key={r.date}>
+                      <td style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>{ruDate(r.date)}</td>
+                      <td className="td-num">{r.plans}</td>
+                      <td className="dim">{r.providers.join(', ')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p className="faint mt">
+            Всего на витрине {tariffs(STATS.plans)}{STATS.hidden > 0 ? `, ещё ${STATS.hidden} ${plural(STATS.hidden, 'скрыт', 'скрыто', 'скрыто')} до следующей сверки` : ''}.
+            Нашли цену, которая разошлась с сайтом провайдера: напишите на {SITE.contactEmail}, проверим и поправим
+          </p>
+
+          <div className="prose mt-lg">
+            <SecHead n="04">Принципы</SecHead>
             <ul className="roman-list">
               <li>Формула подбора публикуется целиком и меняется публично</li>
               <li>Порядок «Оптимально» считается по надёжности и цене, {bonusDisclosure()}, реклама только отдельным блоком с пометкой «Реклама»</li>
@@ -82,7 +137,7 @@ export default function AboutPage() {
               <li>Мы не пишем «лучший» без опубликованного критерия сравнения</li>
             </ul>
 
-            <SecHead n="04">Что будет дальше</SecHead>
+            <SecHead n="05">Что будет дальше</SecHead>
             <p>
               Ближайшие планы: перевод базы на автоматическое обновление цен, отдельное поле цены
               продления рядом с промо-ценой, учёт стоимости адреса IPv4 и панели в стоимости
@@ -91,7 +146,7 @@ export default function AboutPage() {
               методике. Таких данных на русском рынке сейчас практически нет.
             </p>
 
-            <SecHead n="05">Кто ведёт проект</SecHead>
+            <SecHead n="06" id="redakciya">Кто ведёт проект</SecHead>
             <p>
               {SITE.operator
                 ? `Оператор сервиса: ${SITE.operator}.`
@@ -100,11 +155,19 @@ export default function AboutPage() {
               платежи за серверы: все договоры заключаются напрямую с выбранным провайдером.
             </p>
             <p>
+              Обзоры провайдеров, материалы <Link href="/zhurnal">журнала</Link> и{' '}
+              <Link href="/novosti">новости</Link> выходят за подписью «Редакция {SITE_NAME}». Правила
+              для них одни: факт берётся из первоисточника, цена из каталога с датой проверки, в обзоре
+              провайдера обязателен раздел с ограничениями. Перед публикацией каждая страница проходит
+              автоматическую проверку: цены в тексте сравниваются с каталогом, проверяются ссылки и разметка.
+              Формула подбора описана в <Link href="/metodologiya">методологии</Link>.
+            </p>
+            <p>
               {SITE.contactEmail
                 ? `Для связи: ${SITE.contactEmail}`
                 : 'Адрес для обращений будет опубликован здесь вместе с реквизитами оператора.'}
             </p>
-            <SecHead n="06">География работы</SecHead>
+            <SecHead n="07">География работы</SecHead>
             <p>
               Сервис рассчитан на пользователей по всей России и одинаково доступен из любого
               региона страны: это онлайн-каталог, привязки к одному городу у него нет. Цены указаны

@@ -24,8 +24,9 @@ import {
 } from '@/lib/data';
 import { CAMPAIGN } from '@/lib/utm';
 import { PROMOS } from '@/lib/promos';
-import { price, plural, ruDate, termShort } from '@/lib/format';
-import { absUrl } from '@/lib/site';
+import { price, plural, ruDate, termShort, monthYear } from '@/lib/format';
+import { absUrl, seoTitle } from '@/lib/site';
+import { latest } from '@/lib/page-dates';
 import { pairsOf, pairTitle } from '@/lib/compare';
 import { servicesOf, fromLabel } from '@/lib/provider-services';
 
@@ -49,14 +50,22 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const provider = getProvider(slug);
   if (!provider) return {};
+  const plans = plansOf(slug);
   const min = minPriceOf(slug);
-  const count = plansOf(slug).length;
+  const count = plans.length;
+  const priced = latest(plans.map((p) => p.verifiedAt));
+  const promo = PROMOS.some((x) => x.provider && x.provider.slug === slug);
+  const tariffs = `${count} ${plural(count, 'тариф', 'тарифа', 'тарифов')}`;
+  // Метод журнала, замер 07.11.2026: брендовые запросы на 4-10 месте и 0 кликов, поэтому цифра в title.
+  // 28.11.2026: в title и description то, чего нет на сайте самого провайдера: месяц сверки цен,
+  // промокод или с кем сравнить. Месяц берётся из даты последней сверки тарифов, а не из календаря
   return {
-    // Метод журнала, замер 07.11.2026: брендовые запросы на 4-10 месте и 0 кликов. Цифра в title и в начале description
     title: min
-      ? `${provider.name}: VPS от ${price(min)} в месяц, ${count} ${plural(count, 'тариф', 'тарифа', 'тарифов')}, обзор`
+      ? seoTitle(`${provider.name}: цены VPS на ${monthYear(priced)} от ${price(min)}/мес, ${promo ? 'промокод' : 'аналоги'} и обзор`)
       : `${provider.name}: обзор провайдера, тарифы и цены VPS (ВПС)`,
-    description: `${min ? `${provider.name}: VPS от ${price(min)} в месяц, ${count} ${plural(count, 'тариф', 'тарифа', 'тарифов')} с проверенной ценой. ` : ''}${clipSentence(provider.description, 140)} Что провайдер закрывает, а что нет, и под какие задачи подходит`,
+    description: min
+      ? `${provider.name}: ${tariffs} VPS от ${price(min)} в месяц, цены сверены ${ruDate(priced)}. Таблица тарифов, плюсы и ограничения${promo ? ', действующий промокод' : ''}, с кем сравнить`
+      : clipSentence(`${provider.name}: ${provider.description}`, 155),
     alternates: { canonical: `/provajdery/${slug}` },
   };
 }
@@ -73,6 +82,8 @@ export default async function ProviderPage({ params }) {
   const tasks = TASKS.filter((t) => (provider.tasks || []).includes(t.slug));
   const geos = GEOS.filter((g) => (provider.geos || []).includes(g.code));
   const isPartner = provider.affiliateStatus === 'active';
+  // 28.11.2026: дата сверки цен именно этого провайдера, а не всей базы
+  const pricedAt = latest(plans.map((p) => p.verifiedAt));
 
   return (
     <>
@@ -123,6 +134,7 @@ export default async function ProviderPage({ params }) {
         badges={
           <>
             {min && <span className="badge badge-brass">тарифы от {price(min)}</span>}
+            {pricedAt && <span className="badge">цены сверены {ruDate(pricedAt)}</span>}
             <span className="badge">
               {provider.country === 'RU' ? 'российский провайдер' : 'зарубежный провайдер'}
             </span>
@@ -233,7 +245,7 @@ export default async function ProviderPage({ params }) {
               </div>
               <h2 id="s-tarify">Что есть в базе</h2>
             </div>
-            <Freshness date={STATS.verifiedAt} />
+            <Freshness date={pricedAt || STATS.verifiedAt} />
           </div>
 
           {plans.length === 0 ? (

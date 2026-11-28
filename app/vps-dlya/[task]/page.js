@@ -17,6 +17,7 @@ import { taskLead, checkedAt, checkedLine, yearOf, planName, provName, termNote 
 import { windowsLead, windowsFrom } from '@/lib/windows';
 import { cheapestForRow, windowsByProvider, separateLicenses } from '@/lib/sizing-prices';
 import { absUrl } from '@/lib/site';
+import { fitDescription } from '@/lib/seo';
 
 export function generateStaticParams() {
   return TASKS.map((t) => ({ task: t.slug }));
@@ -33,11 +34,15 @@ export async function generateMetadata({ params }) {
   const year = yearOf(checkedAt(suited, STATS.verifiedAt));
   const winFrom = slug === 'windows' ? windowsFrom(suited) : null;
   const from = slug === 'windows'
-    ? (winFrom ? `: от ${price(winFrom)}/мес с лицензией` : '')
+    ? (winFrom ? `: от ${price(winFrom)} с лицензией` : '')
     : !task.noTariffs && suited[0] ? `: от ${price(suited[0].priceRub)}/мес` : '';
   return {
     title: { absolute: `${task.titleShort || task.h1}, цены ${year}${from}` },
-    description: `${task.intent}. Рекомендованная конфигурация, что проверить у провайдера и подходящие тарифы с проверенной ценой`,
+    description: fitDescription(task.intent, [[
+      'Рекомендованная конфигурация, что проверить у провайдера и подходящие тарифы с проверенной ценой',
+      'Рекомендованная конфигурация и подходящие тарифы с проверенной ценой',
+      'Конфигурация и тарифы с проверенной ценой',
+    ]]),
     alternates: { canonical: `/vps-dlya/${slug}` },
   };
 }

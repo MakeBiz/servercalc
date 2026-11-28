@@ -20,7 +20,8 @@ export async function generateMetadata({ params }) {
   if (!post) return {};
   return {
     title: seoTitle(post.seoTitle || post.title),
-    description: post.description,
+    // seoDescription (28.11.2026): короткое описание для выдачи, если лид длиннее 160 знаков
+    description: post.seoDescription || post.description,
     alternates: { canonical: `/novosti/${slug}` },
     openGraph: {
       type: 'article',

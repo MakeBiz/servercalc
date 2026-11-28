@@ -7,6 +7,7 @@ import { STATS } from '@/lib/data';
 import { price, ruDate } from '@/lib/format';
 import { absUrl } from '@/lib/site';
 import { checkedLine, yearOf, planName, priceText, dmy } from '@/lib/answer-first';
+import { fitDescription } from '@/lib/seo';
 import { providerRows, scoreRows, FEATURE_NAMES } from '@/lib/provider-stats';
 
 /**
@@ -21,9 +22,9 @@ const TOP = ROWS.slice(0, 3);
 const YEAR = yearOf(CHECKED);
 
 export const metadata = {
-  title: { absolute: `Лучший VPS-хостинг в России ${YEAR}: рейтинг ${ROWS.length} провайдеров по проверенным ценам` },
+  title: { absolute: `Лучший VPS-хостинг в России ${YEAR}: рейтинг ${ROWS.length} провайдеров с ценами` },
   description: TOP.length
-    ? `Рейтинг VPS-хостинга с серверами в России по открытой формуле: 60% надёжность провайдера, 40% цена тарифа с 2 ГБ. Первые три: ${TOP.map((r) => r.name).join(', ')}. Цены проверены ${dmy(CHECKED)}`
+    ? fitDescription(`Рейтинг VPS-хостинга в России по открытой формуле: 60% надёжность, 40% цена тарифа с 2 ГБ. Первые три: ${TOP.map((r) => r.name).join(', ')}`, [`Цены проверены ${dmy(CHECKED)}`])
     : 'Рейтинг VPS-хостинга в России по открытой формуле',
   alternates: { canonical: `${PATH}/` },
 };

@@ -6,6 +6,7 @@ rubric: novosti
 provider: timeweb
 tasks: [ai, dev]
 description: "Во второй половине октября Timeweb Cloud выпустил 13 обновлений: 3 новые локации выделенных серверов, резервные модели в AI Gateway, Kubernetes без публичного IP и экспорт DNS-зоны"
+seoDescription: "Во второй половине октября Timeweb Cloud выпустил 13 обновлений: 3 новые локации выделенных серверов, резервные модели в AI Gateway, экспорт DNS"
 author: Редакция ServerCalc
 ---
 

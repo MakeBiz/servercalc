@@ -3,6 +3,7 @@ import PageHead from '@/components/PageHead';
 import { SITE, SITE_NAME, METRIKA_ID } from '@/lib/site';
 import { STATS } from '@/lib/data';
 import { ruDate } from '@/lib/format';
+import { DOC_DATES } from '@/lib/page-dates';
 
 export const metadata = {
   title: 'Политика конфиденциальности',
@@ -12,7 +13,8 @@ export const metadata = {
   robots: { index: true, follow: true },
 };
 
-const UPDATED = '2026-11-24';
+// та же дата уходит в карту сайта (lib/page-dates.js)
+const UPDATED = DOC_DATES['politika-konfidencialnosti'];
 
 export default function PrivacyPage() {
   return (

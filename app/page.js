@@ -40,7 +40,7 @@ const prv = (n) => `${n} ${plural(n, 'провайдера', 'провайдер
 
 export const metadata = {
   title: `Аренда VPS (ВПС) и VDS от ${price(MIN_ALL)}/мес: подбор под задачу | ServerCalc`,
-  description: `Аренда VPS (ВПС) и VDS: подбор сервера под задачу, регион и бюджет. ${tar(STATS.plans)} от ${prv(STATS.providers)}, в России от ${price(MIN_RU)} в месяц, у каждой цены дата проверки (${dmy(STATS.verifiedAt)})`,
+  description: `Аренда VPS (ВПС) и VDS: подбор сервера под задачу и бюджет. ${tar(STATS.plans)} от ${prv(STATS.providers)}, в России от ${price(MIN_RU)} в месяц, цены проверены ${dmy(STATS.verifiedAt)}`,
   alternates: { canonical: '/' },
 };
 

@@ -6,6 +6,7 @@ import { WEIGHTS_TABLE } from '@/lib/score';
 import { QUALITY_TABLE } from '@/lib/quality';
 import { STATS, REQUIREMENTS, PROVIDERS } from '@/lib/data';
 import { ruDate, plural } from '@/lib/format';
+import { DOC_DATES } from '@/lib/page-dates';
 
 export const metadata = {
   title: { absolute: 'Как ServerCalc считает рейтинг «Оптимально»: методология подбора' },
@@ -26,7 +27,7 @@ export default function MethodologyPage() {
           <>
             <span className="badge badge-brass">формула открыта</span>
             <span className="badge">прибавка приоритета раскрыта</span>
-            <span className="badge">обновлено {ruDate(STATS.verifiedAt)}</span>
+            <span className="badge">обновлено {ruDate(DOC_DATES.metodologiya)}</span>
           </>
         }
       />
@@ -119,6 +120,8 @@ export default function MethodologyPage() {
               рекламный блок с пометкой «Реклама», в список он не встроен. Часть ссылок партнёрские, это сказано под
               результатами подбора.
             </p>
+            {/* 28.11.2026: таблица в своей прокрутке, без неё страница на телефоне уезжала вбок на 346 px */}
+            <div className="tbl-wrap"><div className="tbl-scroll">
             <table className="tbl">
               <thead>
                 <tr>
@@ -137,6 +140,7 @@ export default function MethodologyPage() {
                 ))}
               </tbody>
             </table>
+            </div></div>
 
             <SecHead n="04" id="s-4">Как выбирается тариф внутри провайдера</SecHead>
             <p>

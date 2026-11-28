@@ -5,6 +5,7 @@ date: 2026-10-30
 rubric: obzory
 provider: adminvps
 description: "Промокод AdminVPS MakeBiz30 снимает 30% с первого месяца, MakeBizYear 5% с первого года. Считаем в рублях на тарифах Promo, Micro и Start и когда выгоднее платить за год."
+seoDescription: "Промокод AdminVPS MakeBiz30 снимает 30% с первого месяца, MakeBizYear 5% с первого года. Расчёт в рублях на тарифах Promo, Micro и Start"
 author: Редакция ServerCalc
 tasks: ["sajt", "telegram-bot", "1c-bitrix"]
 ---

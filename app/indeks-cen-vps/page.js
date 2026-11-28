@@ -4,6 +4,7 @@ import Toc from '@/components/Toc';
 import JsonLd from '@/components/JsonLd';
 import providersRaw from '@/data/providers.json';
 import index from '@/data/price-index.json';
+import { fitDescription } from '@/lib/seo';
 import { VISIBLE_PLANS, STATS } from '@/lib/data';
 import { CATALOG_HIDDEN } from '@/lib/catalog';
 import { num } from '@/lib/format';
@@ -77,7 +78,10 @@ const LEAD =
 
 export const metadata = {
   title: { absolute: `Цены на VPS в России: ${MONTH} ${YEAR}. Самые дешёвые тарифы и что подорожало` },
-  description: `Самые дешёвые VPS в России с 1, 2, 4 и 8 ГБ памяти на ${dmy(CHECKED)} и как изменились цены ${ROWS.length} тарифов: ${UP.length} подорожали, ${SAME} без изменений. Сверка с сайтами провайдеров, обновление раз в месяц`,
+  description: fitDescription(
+    `Самые дешёвые VPS в России с 1, 2, 4 и 8 ГБ памяти на ${dmy(CHECKED)} и как изменились цены ${ROWS.length} тарифов: ${UP.length} подорожали, ${DOWN.length ? `${DOWN.length} подешевели, ` : ''}${SAME} без изменений`,
+    [['Сверка с сайтами провайдеров раз в месяц', 'Обновление раз в месяц']]
+  ),
   alternates: { canonical: `${PATH}/` },
 };
 

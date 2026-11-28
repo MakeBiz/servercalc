@@ -14,6 +14,7 @@ import { price, plural, ruDate, termShort } from '@/lib/format';
 import { taskAnswer, geoAnswer, itemListLd } from '@/lib/geo-answer';
 import { geoLead, checkedAt, checkedLine, yearOf } from '@/lib/answer-first';
 import { absUrl } from '@/lib/site';
+import { fitDescription } from '@/lib/seo';
 
 export function generateStaticParams() {
   return ALL_GEO_PAGES.map((g) => ({ geo: g.slug }));
@@ -50,7 +51,11 @@ export async function generateMetadata({ params }) {
   const from = plans[0] ? `: от ${price(plans[0].priceRub)}/мес` : '';
   return {
     title: { absolute: `${geo.h1}, цены ${year}${from}` },
-    description: `${geo.note}. Провайдеры с этой локацией и тарифы с проверенной ценой, кому подходит такое размещение`,
+    description: fitDescription(geo.note, [[
+      'Провайдеры с этой локацией и тарифы с проверенной ценой, кому подходит такое размещение',
+      'Провайдеры и тарифы с проверенной ценой, кому подходит такое размещение',
+      'Провайдеры и тарифы с проверенной ценой',
+    ]]),
     alternates: { canonical: `/vps/${slug}` },
   };
 }

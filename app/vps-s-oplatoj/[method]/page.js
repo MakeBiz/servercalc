@@ -4,6 +4,8 @@ import PageHead from '@/components/PageHead';
 import ProviderCard from '@/components/ProviderCard';
 import JsonLd from '@/components/JsonLd';
 import { PAY_METHODS, getPayMethod, providersByPayment, paymentList, PAYMENTS_CHECKED } from '@/lib/payments';
+import { payDate, catalogDate } from '@/lib/page-dates';
+import { fitDescription } from '@/lib/seo';
 import { plansOf } from '@/lib/data';
 import { CAMPAIGN } from '@/lib/utm';
 import { price, plural, ruDate } from '@/lib/format';
@@ -11,6 +13,18 @@ import { absUrl } from '@/lib/site';
 
 export function generateStaticParams() {
   return PAY_METHODS.map((m) => ({ method: m.slug }));
+}
+
+// 28.11.2026: описание до 160 знаков, имён провайдеров столько, сколько влезает
+function payDescription(m, list) {
+  for (let n = Math.min(5, list.length); n >= 2; n -= 1) {
+    const d = fitDescription(`Какие VPS-провайдеры принимают оплату ${m.name}: ${list.slice(0, n).map((p) => p.name).join(', ')}`, [[
+      'Цены с датой проверки и способы оплаты по официальным страницам провайдеров',
+      'Цены с датой проверки и способы оплаты с сайтов провайдеров',
+    ]]);
+    if (d.includes('Цены с датой')) return d;
+  }
+  return fitDescription(`Какие VPS-провайдеры принимают оплату ${m.name}`, ['Цены с датой проверки и способы оплаты с сайтов провайдеров']);
 }
 
 export async function generateMetadata({ params }) {
@@ -21,7 +35,7 @@ export async function generateMetadata({ params }) {
   const from = list[0]?.minPrice ? `: от ${price(list[0].minPrice)}/мес` : '';
   return {
     title: { absolute: `${m.h1}${from}` },
-    description: `Какие VPS-провайдеры принимают оплату ${m.name}: ${list.slice(0, 5).map((p) => p.name).join(', ')}. Цены с датой проверки и способы оплаты по официальным страницам провайдеров`,
+    description: payDescription(m, list),
     alternates: { canonical: `/vps-s-oplatoj/${method}` },
   };
 }
@@ -54,7 +68,8 @@ export default async function PayPage({ params }) {
           inLanguage: 'ru-RU',
           name: m.h1,
           url: pageUrl,
-          dateModified: PAYMENTS_CHECKED,
+          // страница меняется и при сверке способов оплаты, и при сверке цен в таблице: дата та же, что в карте сайта
+          dateModified: payDate(),
           mainEntity: {
             '@type': 'ItemList',
             name: `Провайдеры VPS с оплатой ${m.name}`,
@@ -72,6 +87,7 @@ export default async function PayPage({ params }) {
           <>
             <span className="badge badge-brass">{list.length} {plural(list.length, 'провайдер', 'провайдера', 'провайдеров')}</span>
             {cheapest?.minPrice && <span className="badge">от {price(cheapest.minPrice)} в месяц</span>}
+            <span className="badge">цены проверены {ruDate(catalogDate())}</span>
           </>
         }
       />

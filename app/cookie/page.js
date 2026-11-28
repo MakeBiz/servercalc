@@ -2,6 +2,7 @@ import Link from 'next/link';
 import PageHead from '@/components/PageHead';
 import { METRIKA_ID, SITE_NAME } from '@/lib/site';
 import { ruDate } from '@/lib/format';
+import { DOC_DATES } from '@/lib/page-dates';
 
 export const metadata = {
   title: 'Использование cookie',
@@ -10,7 +11,8 @@ export const metadata = {
   alternates: { canonical: '/cookie' },
 };
 
-const UPDATED = '2026-11-24';
+// та же дата уходит в карту сайта (lib/page-dates.js)
+const UPDATED = DOC_DATES.cookie;
 
 const COOKIES = [
   {
